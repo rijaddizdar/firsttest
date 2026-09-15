@@ -43,14 +43,14 @@ The app does not have a final name yet. This README calls it **"the app."**
 
 ## 2. Meet Penny, the guide
 
-Penny was chosen from four guide-animal concepts (a squirrel, a pangolin, an octopus and a beaver) that were reviewed on a visual concept board.
+Penny was chosen from four guide-animal concepts (a squirrel, a pangolin, an octopus and a beaver) that were reviewed on a visual concept board. In round 4 Penny was redesigned as a **glossy 3D character**, chosen from three 3D directions (soft clay, glossy movie look and low-poly).
 
 | | |
 |---|---|
 | **Name** | Penny (a working name that still needs a trademark check before launch) |
 | **Animal** | Pangolin |
 | **Personality** | Calm, kind and careful. A little shy but brave. When something seems unsafe she curls into a ball, then teaches kids to stop and ask a grown-up. |
-| **Look** | Warm copper body covered in round scales that look like shiny coins, a soft peach face with a long snout, big friendly eyes and a teal scarf. |
+| **Look** | A glossy 3D character, like a figure from an animated movie. Warm copper body covered in round, shiny metal coin scales on her head, back and curly tail; a soft peach face with a short snout; big expressive eyes; a teal knit scarf. She sits upright and faces the child, with little arms that wave and cheer. |
 | **Teaching superpower** | Keeping money safe, and noticing small things that add up |
 
 ### Colors
@@ -71,6 +71,15 @@ Penny was chosen from four guide-animal concepts (a squirrel, a pangolin, an oct
 | After a mistake | "That's okay, Mia! Mistakes help our brains grow. Let's try one more time." |
 | Level done | "You did it, Mia! Look, a shiny new coin just grew on my scales!" |
 
+### How Penny moves
+
+| Moment | What she does |
+|---|---|
+| **Idle** | Breathes, blinks, looks around and waves |
+| **Celebrate** | Hops, cheers, coins fly, and a shiny new coin grows on her scales |
+| **Curl up** | Rolls into a coin ball, then peeks out to help |
+| **Reduce Motion** | Calm still poses that fade instead of moving |
+
 ### Why a pangolin?
 
 - **Money is part of her design.** Her coin scales make her easy to recognize and remember, and they double as a reward: finishing lessons adds shiny new scales.
@@ -87,6 +96,7 @@ A path of levels and short daily lessons are common learning-app patterns. We bo
 - Green is never the main brand color. The palette is copper, teal and peach.
 - The streak icon is a **coin**, not a flame.
 - There are **no hearts or lives**. Mistakes never lock a child out of learning.
+- Answer feedback is a soft full-screen glow in mint green and warm apricot, not a solid green or red banner, and there is never an X.
 - The art style, characters and phrases are our own.
 
 ---
@@ -123,14 +133,16 @@ World  →  Level  →  Lesson  →  Screens
 
 | | Right answer | Wrong answer |
 |---|---|---|
-| **Motion** | The chosen answer pops, and coins and sparkles burst out | The chosen answer does a gentle wobble |
-| **Penny** | Hops happily | Curls into a ball, then peeks out to help |
+| **Screen glow** | The whole screen glows soft green, spreading out from the chosen answer | The screen glows warm apricot from the edges (never red) |
+| **Motion** | The chosen answer pops, a soft ripple spreads, and coins and sparkles burst out | The chosen answer does a gentle wobble |
+| **Badge** | A check | A hint light bulb |
+| **Penny** | Hops and cheers | Curls into a ball, then peeks out to help |
 | **Sound** | A short, happy chime | A soft "boop" (no buzzer) |
 | **Touch** | A light haptic tap | None |
 | **Message** | "Yes, Mia! A coat keeps us warm and safe. That's a need!" | "Good try, Mia! See how the coat keeps her warm in the snow? That makes it a need." |
 | **What happens next** | Move on | The picture becomes the hint, then the child tries again. The question comes back later in the lesson. |
 
-There is never a red X, a scary sound or a lost life. When the device has **Reduce Motion** turned on, bursts and wobbles become soft fades. Sounds and music can be turned off.
+There is never a red X, a scary sound or a lost life. Color is never the only signal: the badge, the words, Penny and the sound all say it too. When the device has **Reduce Motion** turned on, nothing bounces or wobbles; the glow and message fade in slowly and Penny shows a still pose. Sounds and music can be turned off.
 
 ### Rewards and progress
 
@@ -142,6 +154,8 @@ There is never a red X, a scary sound or a lost life. When the device has **Redu
 | **Penny's scales** | Finishing a level adds new shiny scales to Penny. |
 | **The map** | Each child has their own level path showing what's done, what's next and what's still locked. |
 
+In the app, stars, coins, streaks and level icons use **Fluent Emoji 3D** icons (Microsoft, MIT license), not Apple emoji. The emoji in this README are placeholders.
+
 ---
 
 ## 4. A sample lesson, step by step
@@ -151,8 +165,8 @@ There is never a red X, a scary sound or a lost life. When the device has **Redu
 1. **Hello.** Penny bounces in: *"Hi, Mia! Today we'll learn about needs and wants!"*
 2. **Learn.** Two pictures. A child in a warm coat in the snow is labeled **NEED**: *"Something we must have to stay safe and healthy."* A child holding a balloon next to a teddy bear is labeled **WANT**: *"A fun extra. Nice, but we're okay without it."*
 3. **Tap to choose.** A snowy picture and the question *"It's snowing outside. Is a warm coat a need or a want?"* with two big buttons, 👍 Need and 🎈 Want. Penny adds: *"Look at the picture, Mia!"*
-4. **Right answer.** The button pops, coins and sparkles burst out, and Penny hops: *"Yes, Mia! A coat keeps us warm and safe. That's a need!"*
-5. **Or a wrong answer.** The button wobbles and Penny curls up, then peeks out: *"Good try, Mia! See how the coat keeps her warm in the snow? That makes it a need."* Mia tries again.
+4. **Right answer.** The screen glows soft green, the button pops, coins and sparkles burst out, and Penny hops: *"Yes, Mia! A coat keeps us warm and safe. That's a need!"*
+5. **Or a wrong answer.** The screen glows warm apricot, the button wobbles and Penny curls up, then peeks out: *"Good try, Mia! See how the coat keeps her warm in the snow? That makes it a need."* Mia tries again.
 6. **Sort it.** Mia drags water, a bed, a balloon and ice cream into the Need and Want baskets. Each drop gets the same right or wrong effect.
 7. **Yay!** Mia's avatar celebrates next to Penny: *"Lesson done, Mia!"* ⭐⭐⭐, +10 play coins, 🪙 3-day streak.
 
@@ -161,6 +175,8 @@ There is never a red X, a scary sound or a lost life. When the device has **Redu
 ## 5. The level map
 
 13 levels in 4 worlds. Kid-facing summaries are written the way Penny would say them. "Grown-up idea" is the concept underneath.
+
+Level icons are shown as emoji here; the app uses the matching Fluent Emoji 3D icons.
 
 ### World 1 · Money Basics
 
@@ -243,7 +259,7 @@ After setup, the app opens to **"Who's learning?"** and each child just taps the
 Children can change all of this at any time:
 
 - Name or nickname
-- Avatar built from ready-made parts: skin tone, hair, outfit, accessories
+- Avatar built from ready-made parts: **boy or girl**; **hairstyle** (short, spiky, curly, long, puffs, braids, or a headscarf for girls); **skin tone** (6); **hair color** (6, or a scarf color with the headscarf); **outfit color** (6); accessories later.
 - Favorite color theme
 - Penny's scarf color
 - Sounds, music, voice and calm mode on or off
@@ -328,12 +344,22 @@ Everything a child reads or hears follows these rules.
 | Parent sign-in | **Sign in with Apple** via Apple's AuthenticationServices framework | The only login method; used by the parent only |
 | Local storage | **SwiftData** for offline progress and cached content | Lessons keep working without internet and sync later |
 | Lessons | Lesson content as **data files** (for example JSON) bundled with the app | Writers can add lessons without changing app code |
-| Animation | SwiftUI animations for pops, wobbles and bursts | No heavy third-party SDKs |
+| Animation | SwiftUI animations for pops, wobbles, bursts and the screen glow. | No heavy third-party SDKs |
+| Penny (prototype) | Pre-rendered transparent video clips (HEVC with alpha) and stills from one commissioned, rigged 3D model, played with AVFoundation | Best glossy look, no 3D engine risk while testing lessons |
+| Penny (MVP) | The same model drawn live with **RealityKit** (USDZ) | Scarf colors, outfits and new scales change at runtime; SceneKit is soft-deprecated |
+| Icons | Fluent Emoji 3D assets (MIT) bundled in the app, with the MIT notice on a credits screen in the parent area | 3D style that matches Penny; free for commercial use |
 | Sound and touch | AVFoundation for sounds; SwiftUI sensory feedback for haptics | First-party frameworks |
 | Accessibility | Dynamic Type, VoiceOver labels, Reduce Motion support, color contrast checks | Kids of all abilities can learn |
 | Localization | English first, with strings prepared for translation | Easier to add languages later |
 
 **Third-party code rule:** no third-party analytics, advertising or tracking SDKs (see [section 9](#9-childrens-privacy-and-the-app-store-kids-category)). Any other third-party library needs a privacy review first.
+
+### Making Penny
+
+1. Commission one rigged glossy 3D Penny model with idle, talk, celebrate and curl-up animations; the contract assigns us full rights.
+2. Prototype: pre-rendered clips (teal scarf only).
+3. MVP: move Penny to live RealityKit when scarf colors, outfits and growing scales ship; first compare live and rendered Penny on a real iPad, since glossy lighting looks simpler live.
+4. Effects such as coin bursts stay in SwiftUI (or Lottie).
 
 ### Backend
 
@@ -397,7 +423,7 @@ Because the server stores children's names, profiles and progress, the app shoul
 | Parent's email (or Apple's private relay address) | Consent records and important account notices only, never marketing | Account deletion |
 | Proof of parental consent | Legal record | As long as required by law, then deleted |
 | Child's first name or nickname | Penny greets the child | Profile deletion |
-| Avatar and customization choices | Show the child's own look | Profile deletion |
+| Avatar and customization choices | Show the child's own look (including the boy or girl look) | Profile deletion |
 | Lesson progress, stars, play coins, streaks | Keep progress across devices | Profile deletion |
 | Time spent per day | Parent dashboard and daily time limit | Rolling window (for example 90 days), then deleted |
 | Parent code | Lock the dashboard | Stored only as a salted hash, never in plain text |
@@ -425,15 +451,17 @@ Because the server stores children's names, profiles and progress, the app shoul
 | Phase | What happens | Status |
 |---|---|---|
 | **0 · Concept** | Choose the guide animal, level path, sample lesson flow, account and parent dashboard model; write this README | ✅ Done |
-| **1 · Design** | Final Penny artwork and animations, full lesson scripts for World 1, UI design, app name and trademark check, privacy and legal review | ⏳ Next |
-| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families | Not started |
-| **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync | Not started |
+| **1 · Design** | Commission the rigged glossy 3D Penny model and animations, Fluent Emoji 3D icon set and credits screen, full lesson scripts for World 1, UI design, trademark search for the chosen app name and for Penny, privacy and legal review | ⏳ Next |
+| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | Not started |
+| **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync; Penny live in RealityKit | Not started |
 | **4 · Full path** | All 13 levels, level checks, rewards shop, accessibility and localization passes | Not started |
 | **5 · Launch** | App Store submission in the Kids Category | Not started |
 
 ### Open questions
 
-- **App name.** Still a placeholder. It needs a trademark check, and Penny's name does too.
+- **App name.** A favorite has been picked; it needs a trademark search before it is published.
+- **Penny's name.** Penny's name also needs a trademark check. "Penny" is already used by kids' money apps (e.g. Penny Time, Penny Pals).
+- **Oldest iOS and iPad supported.** Live RealityKit Penny needs iOS 18 or newer.
 - **Backend platform.** Not chosen yet.
 - **Parental consent method.** Which FTC-recognized method to use, decided with legal review.
 - **Parent sign-in on a child's own device.** How a parent signs in with their Apple Account on a device logged in with a child Apple Account.
