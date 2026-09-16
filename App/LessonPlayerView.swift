@@ -96,6 +96,9 @@ struct LessonPlayerView: View {
                     .transition(.opacity)
             }
         }
+        // Screenshot / UI-test hook only: jump straight to the first question in a
+        // right- or wrong-answer glow state. Absent env var = normal play.
+        .onAppear(perform: applyUITestFeedbackIfNeeded)
         // Motion-aware: fade-only when Reduce Motion is on.
         .animation(reduceMotion ? .easeInOut(duration: 0.4) : .spring(duration: 0.4), value: step)
         .animation(.easeInOut(duration: 0.4), value: feedback)
@@ -264,6 +267,24 @@ struct LessonPlayerView: View {
     private func exit() {
         resetFeedback()
         app.route = .lessonMap
+    }
+
+    /// Screenshots only: pre-seed the first question in a right/wrong glow state.
+    private func applyUITestFeedbackIfNeeded() {
+        guard let kind = ProcessInfo.processInfo.environment["UITEST_LESSON_FEEDBACK"] else { return }
+        let q = needsAndWantsQuestions[0]
+        step = .question(0)
+        switch kind {
+        case "right":
+            if let correct = q.choices.first(where: { $0.isCorrect }) {
+                chosenID = correct.id; feedback = .right; burst = true
+            }
+        case "wrong":
+            if let wrong = q.choices.first(where: { !$0.isCorrect }) {
+                chosenID = wrong.id; wobbleID = wrong.id; feedback = .wrong; mistakes = 1
+            }
+        default: break
+        }
     }
 
     // MARK: - View helpers

@@ -65,7 +65,8 @@ struct CoinBurst: View {
     var pieceCount = 14
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var launched = false
+    @State private var launched = false   // flown outward
+    @State private var faded = false      // faded away at the end of the burst
 
     var body: some View {
         ZStack {
@@ -74,17 +75,33 @@ struct CoinBurst: View {
                     .font(.system(size: i % 3 == 0 ? 18 : 14))
                     .foregroundStyle(i % 3 == 0 ? Palette.skyTeal : Palette.copper)
                     .offset(offset(for: i))
-                    .opacity(launched ? (reduceMotion ? 0.9 : 0) : 0)
+                    .opacity(pieceOpacity)
             }
         }
         .allowsHitTesting(false)
         .onChange(of: isActive) { _, active in
-            guard active else { launched = false; return }
-            if reduceMotion {
-                withAnimation(.easeIn(duration: 0.3)) { launched = true }
-            } else {
-                launched = false
-                withAnimation(.easeOut(duration: 0.9)) { launched = true }
+            trigger(active)
+        }
+        .onAppear { if isActive { trigger(true) } }
+    }
+
+    /// Coins are visible while they fly out, then gently fade. Under Reduce
+    /// Motion they simply fade in place (no flying), never invisible.
+    private var pieceOpacity: Double {
+        guard launched else { return 0 }
+        if reduceMotion { return 0.9 }
+        return faded ? 0 : 1
+    }
+
+    private func trigger(_ active: Bool) {
+        guard active else { launched = false; faded = false; return }
+        launched = false; faded = false
+        if reduceMotion {
+            withAnimation(.easeIn(duration: 0.3)) { launched = true }
+        } else {
+            // Fly out (visible), then fade away.
+            withAnimation(.easeOut(duration: 0.7)) { launched = true } completion: {
+                withAnimation(.easeIn(duration: 0.45)) { faded = true }
             }
         }
     }

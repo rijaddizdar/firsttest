@@ -23,6 +23,24 @@ enum Route: Equatable {
     case parentDashboard    // 5b. Code-locked parent dashboard
 }
 
+extension Route {
+    /// Map a UITEST_ROUTE env string to a route (screenshots / UI tests only).
+    init?(uiTestName: String) {
+        switch uiTestName {
+        case "welcome":          self = .welcome
+        case "grownUpCheck":     self = .grownUpCheck
+        case "createParentCode": self = .createParentCode
+        case "addKid":           self = .addKid
+        case "whosLearning":     self = .whosLearning
+        case "lessonMap":        self = .lessonMap
+        case "lesson":           self = .lesson
+        case "parentGate":       self = .parentGate
+        case "parentDashboard":  self = .parentDashboard
+        default:                 return nil
+        }
+    }
+}
+
 /// Per-kid parental control (README section 6).
 struct ParentSettings {
     var dailyLimitMinutes: Int = 20
@@ -53,6 +71,14 @@ final class AppState: ObservableObject {
         self.kids = [mia]
         self.selectedKidID = mia.id
         self.parentCode = "1234" // demo PIN so the dashboard is reachable
+
+        // Deep-link hook for screenshots / UI tests only. Harmless in normal use
+        // (the env var is simply absent). Lets a launcher jump straight to a
+        // given screen, e.g. `UITEST_ROUTE=lessonMap`.
+        if let raw = ProcessInfo.processInfo.environment["UITEST_ROUTE"],
+           let route = Route(uiTestName: raw) {
+            self.route = route
+        }
     }
 
     var selectedKid: Kid? {
