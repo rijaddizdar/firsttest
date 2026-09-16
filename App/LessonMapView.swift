@@ -23,12 +23,12 @@ struct LessonMapView: View {
         VStack(spacing: 0) {
             header(for: kid)
             ScrollView {
-                VStack(spacing: 28) {
+                VStack(spacing: Metric.xl) {
                     ForEach(SampleData.worlds, id: \.self) { world in
                         worldSection(world, kid: kid)
                     }
                 }
-                .padding(.vertical, 20)
+                .padding(.vertical, Metric.lg)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -38,9 +38,10 @@ struct LessonMapView: View {
     // MARK: Header — greeting + rewards
 
     private func header(for kid: Kid) -> some View {
-        VStack(spacing: 12) {
+        VStack(spacing: Metric.md) {
             HStack {
                 Button {
+                    Haptics.selection()
                     app.route = .whosLearning
                 } label: {
                     Image(systemName: "chevron.left.circle.fill")
@@ -48,34 +49,46 @@ struct LessonMapView: View {
                         .foregroundStyle(Palette.teal)
                 }
                 Spacer()
-                AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 44)
-                Text(kid.name).font(.headline).foregroundStyle(Palette.ink)
+                AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 46)
+                Text(kid.name).font(.kidHeadline).foregroundStyle(Palette.ink)
             }
 
-            HStack(spacing: 10) {
-                RewardChip(symbol: "star.fill", value: "\(kid.totalStars)", tint: .yellow)
-                RewardChip(symbol: "circle.fill", value: "\(kid.coins)", tint: Palette.copper)
+            HStack(spacing: Metric.sm) {
+                RewardChip(symbol: "star.fill", value: "\(kid.totalStars)", tint: Palette.gold)
+                RewardChip(symbol: "dollarsign.circle.fill", value: "\(kid.coins)", tint: Palette.copper)
                 // Streak uses a coin, never a flame (README section 2).
                 RewardChip(symbol: "circle.hexagongrid.fill", value: "\(kid.currentStreak)-day", tint: Palette.teal)
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
-        .padding(.bottom, 14)
-        .background(Palette.peach.opacity(0.5))
+        .padding(.horizontal, Metric.lg)
+        .padding(.top, Metric.md)
+        .padding(.bottom, Metric.md)
+        .background(
+            LinearGradient(colors: [Palette.peach.opacity(0.7), Palette.peach.opacity(0.0)],
+                           startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea(edges: .top)
+        )
     }
 
     // MARK: World section
 
     private func worldSection(_ world: String, kid: Kid) -> some View {
-        VStack(spacing: 16) {
-            Text(world.uppercased())
-                .font(.caption.weight(.heavy))
-                .tracking(1.5)
-                .foregroundStyle(Palette.teal.opacity(0.8))
+        let tint = Palette.worldTint(world)
+        return VStack(spacing: Metric.md) {
+            // A soft tinted banner marks each "world" of the path.
+            HStack(spacing: 8) {
+                Circle().fill(tint.0).frame(width: 10, height: 10)
+                Text(world.uppercased())
+                    .font(.kidCaption)
+                    .tracking(1.5)
+                    .foregroundStyle(tint.0)
+            }
+            .padding(.horizontal, 16).padding(.vertical, 7)
+            .background(Capsule().fill(tint.0.opacity(0.12)))
 
             ForEach(SampleData.levels(in: world)) { level in
                 LevelNode(level: level,
+                          tint: tint,
                           state: kid.lockState(for: level.id),
                           stars: kid.starsByLevel[level.id] ?? 0) {
                     tap(level, kid: kid)
@@ -95,66 +108,83 @@ struct LessonMapView: View {
 /// One level "bubble" on the path.
 struct LevelNode: View {
     let level: MoneyLevel
+    var tint: (Color, Color) = (Palette.teal, Palette.skyTeal)
     let state: LevelLockState
     let stars: Int
     let action: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var pulse = false
+
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 16) {
-                ZStack {
-                    Circle().fill(bubbleColor)
-                        .frame(width: 66, height: 66)
-                        .overlay(Circle().stroke(ringColor, lineWidth: 4))
-                    Image(systemName: state == .locked ? "lock.fill" : level.symbolName)
-                        .font(.system(size: 26))
-                        .foregroundStyle(state == .locked ? Palette.ink.opacity(0.4) : .white)
-                }
+            HStack(spacing: Metric.md) {
+                bubble
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 5) {
                     HStack(spacing: 8) {
-                        Text("\(level.id).").font(.headline).foregroundStyle(Palette.ink.opacity(0.5))
-                        Text(level.title).font(.headline).foregroundStyle(Palette.ink)
+                        Text("\(level.id).").font(.kidHeadline).foregroundStyle(Palette.ink.opacity(0.4))
+                        Text(level.title).font(.kidHeadline).foregroundStyle(Palette.ink)
                     }
                     Text(level.kidSummary)
-                        .font(.subheadline)
+                        .font(.kidCallout)
                         .foregroundStyle(Palette.ink.opacity(0.6))
                         .fixedSize(horizontal: false, vertical: true)
 
                     if state == .completed {
                         StarRow(earned: stars, size: 16)
                     } else if state == .current && level.isPlayable {
-                        Text("Tap to play ▶").font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
+                        Label("Tap to play", systemImage: "play.fill")
+                            .font(.kidCaption).foregroundStyle(tint.0)
                     } else if state == .current {
-                        Text("Coming soon").font(.caption).foregroundStyle(Palette.ink.opacity(0.45))
+                        Text("Coming soon").font(.kidFootnote).foregroundStyle(Palette.ink.opacity(0.45))
                     }
                 }
                 Spacer(minLength: 0)
+                if state == .completed {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.title3).foregroundStyle(tint.0.opacity(0.85))
+                }
             }
-            .padding(14)
-            .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .padding(Metric.md)
+            .cardSurface(radius: 22, strong: state == .current)
             .overlay(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(state == .current ? Palette.teal : .clear, lineWidth: 2)
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .stroke(state == .current ? tint.0 : .clear, lineWidth: 2.5)
             )
-            .opacity(state == .locked ? 0.6 : 1)
-            .padding(.horizontal, 20)
+            .opacity(state == .locked ? 0.65 : 1)
+            .scaleEffect(state == .current && pulse && !reduceMotion ? 1.015 : 1)
+            .padding(.horizontal, Metric.lg)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableCard())
         .disabled(state == .locked)
         .accessibilityHint(accessibilityHint)
-    }
-
-    private var bubbleColor: Color {
-        switch state {
-        case .completed: return Palette.copper
-        case .current:   return level.isPlayable ? Palette.teal : Palette.skyTeal
-        case .locked:    return Palette.lockGrey
+        .onAppear {
+            guard state == .current, level.isPlayable, !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 1.3).repeatForever(autoreverses: true)) { pulse = true }
         }
     }
 
-    private var ringColor: Color {
-        state == .current ? Palette.teal.opacity(0.35) : .clear
+    private var bubble: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    state == .locked
+                    ? AnyShapeStyle(Palette.lockGrey)
+                    : AnyShapeStyle(LinearGradient(colors: [tint.0.lighter(0.12), tint.0, tint.0.darker(0.1)],
+                                                   startPoint: .top, endPoint: .bottom))
+                )
+                .frame(width: 68, height: 68)
+                .overlay(
+                    Ellipse().fill(.white.opacity(0.3))
+                        .frame(width: 34, height: 18).blur(radius: 3).offset(y: -16)
+                )
+                .overlay(Circle().stroke(.white.opacity(0.7), lineWidth: 2))
+            Image(systemName: state == .locked ? "lock.fill" : level.symbolName)
+                .font(.system(size: 27, weight: .medium))
+                .foregroundStyle(state == .locked ? Palette.ink.opacity(0.4) : .white)
+        }
+        .softShadow()
     }
 
     private var accessibilityHint: String {

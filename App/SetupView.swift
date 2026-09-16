@@ -20,35 +20,45 @@ struct GrownUpCheckView: View {
     @State private var timer: Timer?
 
     var body: some View {
-        VStack(spacing: 28) {
+        VStack(spacing: Metric.lg) {
             Spacer()
-            PennyView(mood: .idle, size: 130)
+            PennyView(mood: .idle, size: 140)
 
             Text("Grown-ups only")
-                .font(.largeTitle.weight(.heavy))
+                .font(.kidHero)
                 .foregroundStyle(Palette.teal)
 
             Text("Press and hold the button for 3 seconds.")
-                .font(.title3)
+                .font(.kidBody)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink.opacity(0.7))
-                .padding(.horizontal, 30)
+                .foregroundStyle(Palette.ink.opacity(0.65))
+                .padding(.horizontal, Metric.xl)
 
             Spacer()
 
             // Circular hold target with a progress ring.
             ZStack {
                 Circle()
-                    .stroke(Palette.lockGrey.opacity(0.4), lineWidth: 12)
+                    .fill(.white)
+                    .softShadow()
+                Circle()
+                    .stroke(Palette.lockGrey.opacity(0.35), lineWidth: 14)
+                    .padding(10)
                 Circle()
                     .trim(from: 0, to: progress)
-                    .stroke(Palette.teal, style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                    .stroke(
+                        AngularGradient(colors: [Palette.skyTeal, Palette.teal], center: .center),
+                        style: StrokeStyle(lineWidth: 14, lineCap: .round)
+                    )
                     .rotationEffect(.degrees(-90))
+                    .padding(10)
                 Image(systemName: "hand.tap.fill")
                     .font(.system(size: 46))
                     .foregroundStyle(isHolding ? Palette.teal : Palette.copper)
+                    .scaleEffect(isHolding && !reduceMotion ? 0.9 : 1)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isHolding)
             }
-            .frame(width: 170, height: 170)
+            .frame(width: 180, height: 180)
             .contentShape(Circle())
             // A long press is exactly the "task young children can't easily do".
             .gesture(
@@ -59,15 +69,15 @@ struct GrownUpCheckView: View {
             .accessibilityLabel("Press and hold to continue as a grown-up")
 
             Text(isHolding ? "Keep holding…" : "Hold to continue")
-                .font(.headline)
-                .foregroundStyle(Palette.ink.opacity(0.6))
+                .font(.kidCaption)
+                .foregroundStyle(Palette.ink.opacity(0.55))
 
             Spacer()
 
             Button("Back") { app.route = .welcome }
-                .buttonStyle(BigButtonStyle(fill: Palette.lockGrey, textColor: Palette.ink))
-                .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+                .buttonStyle(SoftButtonStyle(tint: Palette.ink.opacity(0.55)))
+                .padding(.horizontal, Metric.pagePadding)
+                .padding(.bottom, Metric.lg)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .kidPageBackground()
@@ -116,51 +126,54 @@ struct CreateParentCodeView: View {
     private let codeLength = 6
 
     var body: some View {
-        VStack(spacing: 22) {
+        VStack(spacing: Metric.lg) {
             Spacer()
-            Image(systemName: "lock.fill")
-                .font(.system(size: 54))
-                .foregroundStyle(Palette.teal)
+            ZStack {
+                Circle().fill(Palette.teal.opacity(0.12)).frame(width: 92, height: 92)
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(Palette.teal)
+            }
 
             Text("Create a parent code")
-                .font(.largeTitle.weight(.heavy))
+                .font(.kidTitle)
                 .foregroundStyle(Palette.teal)
 
             Text("A 6-digit code — not a birthday. It locks the parent dashboard.")
-                .font(.body)
+                .font(.kidBody)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink.opacity(0.7))
-                .padding(.horizontal, 30)
+                .foregroundStyle(Palette.ink.opacity(0.65))
+                .padding(.horizontal, Metric.xl)
 
             codeField("Enter code", text: $code)
             codeField("Confirm code", text: $confirm)
 
             if let error {
-                Text(error).font(.subheadline).foregroundStyle(Palette.copper)
+                Text(error).font(.kidCaption).foregroundStyle(Palette.copper)
             }
 
             Spacer()
 
             Button("Save code") { save() }
-                .buttonStyle(BigButtonStyle(fill: Palette.teal))
+                .buttonStyle(BigButtonStyle(fill: Palette.teal, icon: "checkmark"))
                 .disabled(code.count != codeLength || confirm.count != codeLength)
-                .opacity(code.count == codeLength && confirm.count == codeLength ? 1 : 0.5)
-                .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+                .padding(.horizontal, Metric.pagePadding)
+                .padding(.bottom, Metric.lg)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .kidPageBackground()
     }
 
     private func codeField(_ title: String, text: Binding<String>) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(title).font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+        VStack(alignment: .leading, spacing: Metric.xs) {
+            Text(title).font(.kidCaption).foregroundStyle(Palette.ink.opacity(0.55))
             SecureField("••••••", text: text)
-                .font(.title2.monospaced())
+                .font(.system(.title2, design: .rounded).monospaced())
                 .multilineTextAlignment(.center)
                 .padding(16)
-                .background(.white, in: RoundedRectangle(cornerRadius: 16))
-                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.skyTeal.opacity(0.4), lineWidth: 1.5))
+                .background(.white, in: RoundedRectangle(cornerRadius: Metric.chipRadius, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: Metric.chipRadius, style: .continuous).stroke(Palette.skyTeal.opacity(0.4), lineWidth: 1.5))
+                .softShadow()
                 #if os(iOS)
                 .keyboardType(.numberPad)
                 #endif
@@ -170,7 +183,7 @@ struct CreateParentCodeView: View {
                     if filtered != new { text.wrappedValue = filtered }
                 }
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, Metric.pagePadding)
     }
 
     private func save() {
@@ -191,46 +204,53 @@ struct AddKidView: View {
     @State private var colorIndex = 0
 
     var body: some View {
-        VStack(spacing: 22) {
+        VStack(spacing: Metric.lg) {
             Spacer()
             // Live preview of the chosen avatar.
-            AvatarBadge(kind: kind, color: Palette.avatarChoices[colorIndex], size: 110)
+            AvatarBadge(kind: kind, color: Palette.avatarChoices[colorIndex], size: 116)
+                .animation(.spring(response: 0.35, dampingFraction: 0.6), value: colorIndex)
+                .animation(.spring(response: 0.35, dampingFraction: 0.6), value: kind)
 
             Text("Add a kid")
-                .font(.largeTitle.weight(.heavy))
+                .font(.kidTitle)
                 .foregroundStyle(Palette.teal)
 
             // Name — first name / nickname only (README section 6). No last names.
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: Metric.xs) {
                 Text("What should we call them?")
-                    .font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+                    .font(.kidCaption).foregroundStyle(Palette.ink.opacity(0.55))
                 TextField("First name or nickname", text: $name)
-                    .font(.title3)
+                    .font(.kidBody)
                     .padding(16)
-                    .background(.white, in: RoundedRectangle(cornerRadius: 16))
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.skyTeal.opacity(0.4), lineWidth: 1.5))
+                    .background(.white, in: RoundedRectangle(cornerRadius: Metric.chipRadius, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: Metric.chipRadius, style: .continuous).stroke(Palette.skyTeal.opacity(0.4), lineWidth: 1.5))
+                    .softShadow()
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, Metric.pagePadding)
 
             // Boy / girl look (README section 6).
             Picker("Avatar", selection: $kind) {
                 ForEach(AvatarKind.allCases) { k in Text(k.label).tag(k) }
             }
             .pickerStyle(.segmented)
-            .padding(.horizontal, 24)
+            .padding(.horizontal, Metric.pagePadding)
 
             // Avatar colour pick.
-            VStack(spacing: 8) {
-                Text("Pick a colour").font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
-                HStack(spacing: 12) {
+            VStack(spacing: Metric.sm) {
+                Text("Pick a colour").font(.kidCaption).foregroundStyle(Palette.ink.opacity(0.55))
+                HStack(spacing: 14) {
                     ForEach(Palette.avatarChoices.indices, id: \.self) { i in
                         Circle()
                             .fill(Palette.avatarChoices[i])
-                            .frame(width: 40, height: 40)
-                            .overlay(
-                                Circle().stroke(Palette.ink, lineWidth: colorIndex == i ? 3 : 0)
-                            )
-                            .onTapGesture { colorIndex = i }
+                            .frame(width: 42, height: 42)
+                            .overlay(Circle().stroke(.white, lineWidth: colorIndex == i ? 3 : 0))
+                            .overlay(Circle().stroke(Palette.ink.opacity(colorIndex == i ? 0.5 : 0), lineWidth: 2).padding(-3))
+                            .scaleEffect(colorIndex == i ? 1.15 : 1)
+                            .softShadow()
+                            .onTapGesture {
+                                Haptics.selection()
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.55)) { colorIndex = i }
+                            }
                             .accessibilityLabel("Colour \(i + 1)")
                     }
                 }
@@ -239,19 +259,20 @@ struct AddKidView: View {
             Spacer()
 
             Button("Start learning") {
+                Haptics.selection()
                 app.addKid(name: name, kind: kind, colorIndex: colorIndex)
                 app.route = .whosLearning
             }
-            .buttonStyle(BigButtonStyle(fill: Palette.teal))
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .buttonStyle(BigButtonStyle(fill: Palette.teal, icon: "sparkles"))
+            .padding(.horizontal, Metric.pagePadding)
+            .padding(.bottom, Metric.lg)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .kidPageBackground()
     }
 }
 
-/// A round avatar badge built from an SF Symbol placeholder + colour.
+/// A round, glossy avatar badge built from an SF Symbol placeholder + colour.
 struct AvatarBadge: View {
     let kind: AvatarKind
     let color: Color
@@ -259,13 +280,24 @@ struct AvatarBadge: View {
 
     var body: some View {
         ZStack {
-            Circle().fill(color.opacity(0.25))
-            Circle().stroke(color, lineWidth: 3)
+            Circle()
+                .fill(
+                    RadialGradient(colors: [color.lighter(0.28), color, color.darker(0.12)],
+                                   center: UnitPoint(x: 0.35, y: 0.3),
+                                   startRadius: 1, endRadius: size * 0.6)
+                )
+            // Glossy top highlight.
+            Ellipse().fill(.white.opacity(0.3))
+                .frame(width: size * 0.5, height: size * 0.28)
+                .blur(radius: size * 0.03)
+                .offset(y: -size * 0.22)
+            Circle().stroke(.white.opacity(0.8), lineWidth: size * 0.03)
             Image(systemName: kind.symbolName)
-                .font(.system(size: size * 0.5))
-                .foregroundStyle(color)
+                .font(.system(size: size * 0.52, weight: .medium))
+                .foregroundStyle(.white)
         }
         .frame(width: size, height: size)
+        .softShadow()
     }
 }
 

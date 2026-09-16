@@ -81,22 +81,29 @@ placeholder only.
 **Built and run.** Compiles clean for the iOS Simulator SDK
 (`iphonesimulator27.0`, Xcode 27) with the `xcodebuild … build` command above —
 `** BUILD SUCCEEDED **`, no warnings from the app code, and `#Preview` macros
-expand fine. The app was then installed and launched on an **iPhone 17 simulator
-(iOS 27.0)** and every main screen was captured — see
-[`docs/screenshots/`](screenshots). Every SF Symbol used resolves at runtime (no
-blank glyphs), and layout is correct on the iPhone 17.
+expand fine. The app was installed and launched on an **iPhone 17 simulator
+(iOS 27.0)** and every main screen was captured after the round-5 visual +
+motion polish pass — see [`docs/screenshots/round5/`](screenshots/round5).
+Reduce Motion was also verified: every animated screen degrades to a calm still
+pose (no blank, colour never the only signal). Every SF Symbol resolves at
+runtime, and layout is correct on the iPhone 17.
 
 ### Screenshots
 
+The latest visual-polish pass (round 5) is in
+[`screenshots/round5/`](screenshots/round5); the original set stays in
+`screenshots/` for comparison.
+
 | Screen | File |
 |---|---|
-| Welcome | `screenshots/01-welcome.png` |
-| Create parent code | `screenshots/02-parent-code.png` |
-| Who's learning? | `screenshots/03-whos-learning.png` |
-| Level map | `screenshots/04-lesson-map.png` |
-| Needs & Wants — right answer (soft-green glow) | `screenshots/05-lesson-right.png` |
-| Needs & Wants — wrong answer (warm-apricot glow) | `screenshots/06-lesson-wrong.png` |
-| Parent dashboard | `screenshots/07-parent-dashboard.png` |
+| Welcome | `screenshots/round5/01-welcome.png` |
+| Create parent code | `screenshots/round5/02-parent-code.png` |
+| Who's learning? | `screenshots/round5/03-whos-learning.png` |
+| Level map | `screenshots/round5/04-lesson-map.png` |
+| Needs & Wants — right answer (soft-green glow, Penny cheers) | `screenshots/round5/05-lesson-right.png` |
+| Needs & Wants — wrong answer (warm-apricot glow, Penny curls) | `screenshots/round5/06-lesson-wrong.png` |
+| Lesson complete (stars + coins celebration) | `screenshots/round5/07-lesson-complete.png` |
+| Parent dashboard | `screenshots/round5/08-parent-dashboard.png` |
 
 ### Reproducing the screenshots
 
@@ -106,7 +113,8 @@ they only matter when set) so the screens can be captured deterministically:
 - `UITEST_ROUTE` — jump to a screen (`welcome`, `createParentCode`,
   `whosLearning`, `lessonMap`, `lesson`, `parentDashboard`, …)
 - `UITEST_LESSON_FEEDBACK` — with `UITEST_ROUTE=lesson`, pre-seed the first
-  question's `right` or `wrong` answer glow
+  question's `right` or `wrong` answer glow, or `complete` to jump to the
+  lesson-complete celebration
 
 ```sh
 xcrun simctl boot "iPhone 17"

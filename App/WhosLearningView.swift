@@ -12,69 +12,92 @@ struct WhosLearningView: View {
     private let columns = [GridItem(.adaptive(minimum: 120), spacing: 20)]
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: Metric.lg) {
             HStack {
                 Spacer()
                 // Parent-area entry. Small and top-corner so a child doesn't
                 // wander in; it still leads to the code gate.
                 Button {
+                    Haptics.selection()
                     app.route = .parentGate
                 } label: {
                     Label("Grown-ups", systemImage: "gearshape.fill")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.kidCaption)
                         .foregroundStyle(Palette.teal)
+                        .padding(.horizontal, 14).padding(.vertical, 8)
+                        .background(Capsule().fill(.white).softShadow())
                 }
+                .buttonStyle(.plain)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
+            .padding(.horizontal, Metric.lg)
+            .padding(.top, Metric.md)
+
+            PennyView(mood: .wave, size: 128)
 
             Text("Who's learning?")
-                .font(.largeTitle.weight(.heavy))
+                .font(.kidTitle)
                 .foregroundStyle(Palette.teal)
 
-            PennyView(mood: .wave, size: 120)
-
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 20) {
+                LazyVGrid(columns: columns, spacing: Metric.lg) {
                     ForEach(app.kids) { kid in
                         Button {
+                            Haptics.selection()
                             app.selectedKidID = kid.id
                             app.route = .lessonMap
                         } label: {
-                            VStack(spacing: 10) {
-                                AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 96)
+                            VStack(spacing: Metric.sm) {
+                                AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 100)
                                 Text(kid.name)
-                                    .font(.title3.weight(.bold))
+                                    .font(.kidHeadline)
                                     .foregroundStyle(Palette.ink)
                             }
+                            .padding(.vertical, Metric.md)
+                            .frame(maxWidth: .infinity)
+                            .cardSurface()
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressableCard())
                     }
 
                     // Add-another-kid tile routes back through the grown-up gate.
                     Button {
                         app.route = .parentGate
                     } label: {
-                        VStack(spacing: 10) {
+                        VStack(spacing: Metric.sm) {
                             ZStack {
-                                Circle().stroke(Palette.lockGrey, style: StrokeStyle(lineWidth: 3, dash: [6]))
+                                Circle().stroke(Palette.lockGrey, style: StrokeStyle(lineWidth: 3, dash: [7]))
                                 Image(systemName: "plus")
-                                    .font(.system(size: 40))
+                                    .font(.system(size: 40, weight: .semibold))
                                     .foregroundStyle(Palette.lockGrey)
                             }
-                            .frame(width: 96, height: 96)
-                            Text("Add kid").font(.title3).foregroundStyle(Palette.ink.opacity(0.6))
+                            .frame(width: 100, height: 100)
+                            Text("Add kid").font(.kidHeadline).foregroundStyle(Palette.ink.opacity(0.55))
                         }
+                        .padding(.vertical, Metric.md)
+                        .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableCard())
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, Metric.pagePadding)
+                .padding(.top, Metric.xs)
             }
 
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .kidPageBackground()
+    }
+}
+
+/// A gentle spring press for whole-card tappable tiles.
+struct PressableCard: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.95 : 1))
+            .opacity(configuration.isPressed ? 0.9 : 1)
+            .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.6),
+                       value: configuration.isPressed)
     }
 }
 

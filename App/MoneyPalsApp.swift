@@ -27,6 +27,7 @@ struct MoneyPalsApp: App {
 /// layer NavigationStack on top where deeper navigation is needed.
 struct RootView: View {
     @EnvironmentObject private var app: AppState
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Group {
@@ -42,8 +43,19 @@ struct RootView: View {
             case .parentDashboard:  ParentDashboardView()
             }
         }
-        // Cross-fade between routes; respects Reduce Motion (opacity only).
-        .transition(.opacity)
-        .animation(.easeInOut(duration: 0.25), value: app.route)
+        .id(app.route)
+        // Springy push between routes; a plain cross-fade under Reduce Motion.
+        .transition(routeTransition)
+        .animation(reduceMotion ? .easeInOut(duration: 0.28)
+                                : .spring(response: 0.5, dampingFraction: 0.82),
+                   value: app.route)
+    }
+
+    private var routeTransition: AnyTransition {
+        if reduceMotion { return .opacity }
+        return .asymmetric(
+            insertion: .move(edge: .trailing).combined(with: .opacity),
+            removal: .move(edge: .leading).combined(with: .opacity)
+        )
     }
 }

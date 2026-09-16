@@ -35,16 +35,24 @@ struct ParentGateView: View {
             .padding(.horizontal, 20).padding(.top, 12)
 
             Spacer()
-            Image(systemName: "lock.fill").font(.system(size: 52)).foregroundStyle(Palette.teal)
+            ZStack {
+                Circle().fill(Palette.teal.opacity(0.12)).frame(width: 92, height: 92)
+                Image(systemName: "lock.fill").font(.system(size: 44)).foregroundStyle(Palette.teal)
+            }
             Text("Enter parent code")
-                .font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
+                .font(.kidTitle).foregroundStyle(Palette.teal)
 
             // Six dots showing entry progress.
-            HStack(spacing: 14) {
+            HStack(spacing: 16) {
                 ForEach(0..<codeLength, id: \.self) { i in
                     Circle()
-                        .fill(i < entry.count ? Palette.teal : Palette.lockGrey.opacity(0.4))
+                        .fill(i < entry.count
+                              ? AnyShapeStyle(LinearGradient(colors: [Palette.skyTeal, Palette.teal],
+                                                             startPoint: .top, endPoint: .bottom))
+                              : AnyShapeStyle(Palette.lockGrey.opacity(0.35)))
                         .frame(width: 18, height: 18)
+                        .scaleEffect(i < entry.count ? 1.1 : 1)
+                        .animation(.spring(response: 0.25, dampingFraction: 0.5), value: entry.count)
                 }
             }
             .rotationEffect(.degrees(shake ? 1.5 : 0))
@@ -52,14 +60,14 @@ struct ParentGateView: View {
 
             if app.isLockedOut {
                 Text("Too many tries. Try again in \(max(0, Int(app.lockoutUntil!.timeIntervalSince(now).rounded(.up)))) seconds.")
-                    .font(.subheadline).foregroundStyle(Palette.copper)
-                    .multilineTextAlignment(.center).padding(.horizontal, 30)
+                    .font(.kidCaption).foregroundStyle(Palette.copper)
+                    .multilineTextAlignment(.center).padding(.horizontal, Metric.xl)
             } else if showError {
                 Text("That code isn't right. Try again.")
-                    .font(.subheadline).foregroundStyle(Palette.copper)
+                    .font(.kidCaption).foregroundStyle(Palette.copper)
             } else {
                 Text("Demo code: 1234 (padded to 6 not required in mock)")
-                    .font(.caption).foregroundStyle(Palette.ink.opacity(0.4))
+                    .font(.kidFootnote).foregroundStyle(Palette.ink.opacity(0.4))
             }
 
             // Number pad.
@@ -79,16 +87,19 @@ struct ParentGateView: View {
         return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 18), count: 3), spacing: 18) {
             ForEach(keys, id: \.self) { key in
                 if key.isEmpty {
-                    Color.clear.frame(height: 64)
+                    Color.clear.frame(height: 66)
                 } else {
                     Button { tap(key) } label: {
                         Text(key)
-                            .font(.title.weight(.semibold))
-                            .frame(maxWidth: .infinity, minHeight: 64)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 18))
+                            .font(.system(.title, design: .rounded).weight(.semibold))
+                            .frame(maxWidth: .infinity, minHeight: 66)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous).fill(.white)
+                            )
                             .foregroundStyle(Palette.ink)
+                            .softShadow()
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableCard())
                 }
             }
         }
@@ -96,6 +107,7 @@ struct ParentGateView: View {
     }
 
     private func tap(_ key: String) {
+        Haptics.selection()
         showError = false
         if key == "⌫" {
             if !entry.isEmpty { entry.removeLast() }
@@ -142,21 +154,26 @@ struct ParentDashboardView: View {
                 dataSection
                 footer
             }
-            .padding(20)
+            .padding(Metric.lg)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Palette.cream.ignoresSafeArea())
+        .kidPageBackground()
     }
 
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text("Parent dashboard").font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
-                Text("Only you can see this.").font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+                Text("Parent dashboard").font(.kidTitle).foregroundStyle(Palette.teal)
+                Text("Only you can see this.").font(.kidCaption).foregroundStyle(Palette.ink.opacity(0.6))
             }
             Spacer()
-            Button("Done") { app.route = .whosLearning }
-                .font(.headline).foregroundStyle(Palette.teal)
+            Button("Done") {
+                Haptics.selection()
+                app.route = .whosLearning
+            }
+                .font(.kidHeadline).foregroundStyle(Palette.teal)
+                .padding(.horizontal, 16).padding(.vertical, 8)
+                .background(Capsule().fill(Palette.teal.opacity(0.12)))
         }
     }
 
@@ -211,7 +228,7 @@ private struct KidProgressCard: View {
         }) {
             HStack(spacing: 10) {
                 stat("Stars", "\(kid.totalStars)", "star.fill", .yellow)
-                stat("Coins", "\(kid.coins)", "circle.fill", Palette.copper)
+                stat("Coins", "\(kid.coins)", "dollarsign.circle.fill", Palette.copper)
                 stat("Streak", "\(kid.currentStreak)d", "circle.hexagongrid.fill", Palette.teal)
                 stat("Best", "\(kid.bestStreak)d", "trophy.fill", Palette.teal)
             }
@@ -240,12 +257,14 @@ private struct KidProgressCard: View {
     }
 
     private func stat(_ label: String, _ value: String, _ symbol: String, _ tint: Color) -> some View {
-        VStack(spacing: 4) {
-            Image(systemName: symbol).foregroundStyle(tint)
-            Text(value).font(.headline).foregroundStyle(Palette.ink)
-            Text(label).font(.caption2).foregroundStyle(Palette.ink.opacity(0.5))
+        VStack(spacing: 5) {
+            Image(systemName: symbol).font(.callout.weight(.bold)).foregroundStyle(tint)
+            Text(value).font(.kidHeadline).foregroundStyle(Palette.ink)
+            Text(label).font(.kidFootnote).foregroundStyle(Palette.ink.opacity(0.5))
         }
         .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(tint.opacity(0.08)))
     }
 }
 
@@ -257,17 +276,20 @@ private struct DashCard<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 10) {
+        VStack(alignment: .leading, spacing: Metric.md) {
+            HStack(spacing: Metric.sm) {
                 if let leading { leading() }
-                if let icon { Image(systemName: icon).foregroundStyle(Palette.teal) }
-                Text(title).font(.title3.weight(.bold)).foregroundStyle(Palette.ink)
+                if let icon {
+                    Image(systemName: icon).foregroundStyle(Palette.teal)
+                        .font(.headline)
+                }
+                Text(title).font(.kidHeadline).foregroundStyle(Palette.ink)
             }
             content
         }
-        .padding(18)
+        .padding(Metric.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .cardSurface()
     }
 }
 

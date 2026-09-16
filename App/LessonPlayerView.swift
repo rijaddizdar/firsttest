@@ -107,30 +107,33 @@ struct LessonPlayerView: View {
     // MARK: Hello
 
     private var helloScreen: some View {
-        VStack(spacing: 26) {
+        VStack(spacing: Metric.lg) {
             LessonTopBar(title: "Needs & Wants") { exit() }
             Spacer()
-            PennyView(mood: .wave, size: 180)
+            PennyView(mood: .wave, size: 190)
             // Penny greets the child BY NAME (README §3 / §6).
             SpeechBubble(text: "Hi, \(kidName)! Today we'll learn about needs and wants!")
-                .padding(.horizontal, 24)
+                .padding(.horizontal, Metric.pagePadding)
             Spacer()
-            Button("Let's go!") { step = .learn }
-                .buttonStyle(BigButtonStyle(fill: Palette.teal))
-                .padding(.horizontal, 24).padding(.bottom, 24)
+            Button("Let's go!") {
+                Haptics.selection()
+                step = .learn
+            }
+                .buttonStyle(BigButtonStyle(fill: Palette.teal, icon: "play.fill"))
+                .padding(.horizontal, Metric.pagePadding).padding(.bottom, Metric.lg)
         }
     }
 
     // MARK: Learn
 
     private var learnScreen: some View {
-        VStack(spacing: 22) {
+        VStack(spacing: Metric.lg) {
             LessonTopBar(title: "Needs & Wants") { exit() }
             Text("Needs and Wants")
-                .font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
+                .font(.kidTitle).foregroundStyle(Palette.teal)
 
             // Two picture cards — a NEED and a WANT (README §4 step 2).
-            HStack(spacing: 16) {
+            HStack(spacing: Metric.md) {
                 ConceptCard(symbol: "snowflake",
                             badge: "NEED", badgeColor: Palette.teal,
                             caption: "Something we must have to stay safe and healthy.")
@@ -138,13 +141,16 @@ struct LessonPlayerView: View {
                             badge: "WANT", badgeColor: Palette.copper,
                             caption: "A fun extra. Nice, but we're okay without it.")
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, Metric.lg)
 
-            PennyView(mood: .idle, size: 110)
+            PennyView(mood: .idle, size: 120)
             Spacer()
-            Button("I'm ready") { step = .question(0) }
-                .buttonStyle(BigButtonStyle(fill: Palette.teal))
-                .padding(.horizontal, 24).padding(.bottom, 24)
+            Button("I'm ready") {
+                Haptics.selection()
+                step = .question(0)
+            }
+                .buttonStyle(BigButtonStyle(fill: Palette.teal, icon: "checkmark"))
+                .padding(.horizontal, Metric.pagePadding).padding(.bottom, Metric.lg)
         }
     }
 
@@ -153,23 +159,25 @@ struct LessonPlayerView: View {
     private func questionScreen(index: Int) -> some View {
         let q = needsAndWantsQuestions[index]
         let answered = feedback == .right   // only a right answer advances
-        return VStack(spacing: 20) {
-            LessonTopBar(title: "Question \(index + 1) of \(needsAndWantsQuestions.count)") { exit() }
+        return VStack(spacing: Metric.md) {
+            LessonTopBar(title: "Question \(index + 1) of \(needsAndWantsQuestions.count)",
+                         progress: Double(index) / Double(needsAndWantsQuestions.count)) { exit() }
 
             // Penny reacts: cheer on right, curl on wrong, else idle.
-            PennyView(mood: pennyMood, size: 120)
+            PennyView(mood: pennyMood, size: 128)
+                .id(pennyMood)   // re-trigger her motion when the mood changes
 
             SpeechBubble(text: bubbleText(for: q, answered: answered))
-                .padding(.horizontal, 24)
+                .padding(.horizontal, Metric.pagePadding)
 
             Text(q.prompt)
-                .font(.title2.weight(.bold))
+                .font(.kidTitle2)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Palette.ink)
-                .padding(.horizontal, 24)
+                .padding(.horizontal, Metric.pagePadding)
 
             // Big picture answer buttons (README §3 "Tap to choose").
-            HStack(spacing: 16) {
+            HStack(spacing: Metric.md) {
                 ForEach(q.choices) { choice in
                     ChoiceButton(
                         choice: choice,
@@ -180,16 +188,19 @@ struct LessonPlayerView: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, Metric.lg)
 
             Spacer()
 
             if answered {
                 Button(index + 1 < needsAndWantsQuestions.count ? "Next" : "Finish") {
+                    Haptics.selection()
                     advance(from: index)
                 }
-                .buttonStyle(BigButtonStyle(fill: Palette.teal))
-                .padding(.horizontal, 24).padding(.bottom, 24)
+                .buttonStyle(BigButtonStyle(fill: Palette.teal,
+                                            icon: index + 1 < needsAndWantsQuestions.count ? "arrow.right" : "flag.checkered"))
+                .padding(.horizontal, Metric.pagePadding).padding(.bottom, Metric.lg)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .overlay(CoinBurst(isActive: burst).allowsHitTesting(false))
@@ -201,30 +212,37 @@ struct LessonPlayerView: View {
         // Fewer mistakes -> more stars (3 for a clean run, min 1).
         let stars = max(1, 3 - mistakes)
         let coins = 10
-        return VStack(spacing: 22) {
+        return VStack(spacing: Metric.lg) {
             Spacer()
-            PennyView(mood: .cheer, size: 180)
+            PennyView(mood: .cheer, size: 190)
             Text("Lesson done, \(kidName)!")
-                .font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
-            StarRow(earned: stars, size: 40)
-            HStack(spacing: 12) {
-                RewardChip(symbol: "circle.fill", value: "+\(coins)", tint: Palette.copper)
+                .font(.kidHero).multilineTextAlignment(.center)
+                .foregroundStyle(Palette.teal)
+                .padding(.horizontal, Metric.lg)
+            // Stars pop in one at a time for a satisfying reveal.
+            StarRow(earned: stars, size: 44, animated: true)
+            HStack(spacing: Metric.sm) {
+                RewardChip(symbol: "dollarsign.circle.fill", value: "+\(coins)", tint: Palette.copper)
                 RewardChip(symbol: "circle.hexagongrid.fill",
                            value: "\((app.selectedKid?.currentStreak ?? 0) + 1)-day", tint: Palette.teal)
             }
             Text("You kept trying, and you got it!")
-                .font(.title3).foregroundStyle(Palette.ink.opacity(0.7))
+                .font(.kidBody).foregroundStyle(Palette.ink.opacity(0.65))
             Spacer()
             Button("Back to the map") {
+                Haptics.selection()
                 // Commit rewards once, then leave.
                 app.completeLesson(levelID: levelID, stars: stars, coins: coins)
                 app.route = .lessonMap
             }
-            .buttonStyle(BigButtonStyle(fill: Palette.teal))
-            .padding(.horizontal, 24).padding(.bottom, 24)
+            .buttonStyle(BigButtonStyle(fill: Palette.teal, icon: "map.fill"))
+            .padding(.horizontal, Metric.pagePadding).padding(.bottom, Metric.lg)
         }
-        .overlay(CoinBurst(isActive: true).allowsHitTesting(false))
-        .onAppear { Haptics.success() }
+        .overlay(CoinBurst(isActive: true, pieceCount: 26).allowsHitTesting(false))
+        .onAppear {
+            Haptics.success()
+            SoundFX.play(.celebrate)
+        }
     }
 
     // MARK: - Answer handling
@@ -236,12 +254,15 @@ struct LessonPlayerView: View {
             feedback = .right
             burst = true
             Haptics.rightAnswerTap()
+            SoundFX.play(.correct)
         } else {
             // Gentle wrong-answer state: apricot glow, wobble, Penny curls.
             // No red X, no buzzer, no lost life. The child simply tries again.
             mistakes += 1
             feedback = .wrong
             wobbleID = choice.id
+            Haptics.gentleNudge()
+            SoundFX.play(.tryAgain)
             // Clear the apricot glow after a beat so the question is ready again.
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
                 if feedback == .wrong {
@@ -283,6 +304,9 @@ struct LessonPlayerView: View {
             if let wrong = q.choices.first(where: { !$0.isCorrect }) {
                 chosenID = wrong.id; wobbleID = wrong.id; feedback = .wrong; mistakes = 1
             }
+        case "complete":
+            // Screenshot the celebration screen (clean run -> 3 stars).
+            mistakes = 0; step = .complete
         default: break
         }
     }
@@ -317,21 +341,37 @@ struct LessonPlayerView: View {
 
 private struct LessonTopBar: View {
     let title: String
+    var progress: Double? = nil
     let onClose: () -> Void
     var body: some View {
-        HStack {
-            Button(action: onClose) {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.title2).foregroundStyle(Palette.ink.opacity(0.35))
+        VStack(spacing: 10) {
+            HStack {
+                Button(action: onClose) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2).foregroundStyle(Palette.ink.opacity(0.3))
+                }
+                .accessibilityLabel("Close lesson")
+                Spacer()
+                Text(title).font(.kidCaption).foregroundStyle(Palette.ink.opacity(0.65))
+                Spacer()
+                // Balance the layout.
+                Image(systemName: "xmark.circle.fill").font(.title2).foregroundStyle(.clear)
             }
-            .accessibilityLabel("Close lesson")
-            Spacer()
-            Text(title).font(.headline).foregroundStyle(Palette.ink.opacity(0.7))
-            Spacer()
-            // Balance the layout.
-            Image(systemName: "xmark.circle.fill").font(.title2).foregroundStyle(.clear)
+            if let progress {
+                // A slim progress track for the question sequence.
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(Palette.lockGrey.opacity(0.3))
+                        Capsule().fill(LinearGradient(colors: [Palette.skyTeal, Palette.teal],
+                                                      startPoint: .leading, endPoint: .trailing))
+                            .frame(width: max(8, geo.size.width * progress))
+                    }
+                }
+                .frame(height: 8)
+                .animation(.spring(response: 0.5, dampingFraction: 0.8), value: progress)
+            }
         }
-        .padding(.horizontal, 20).padding(.top, 12)
+        .padding(.horizontal, Metric.lg).padding(.top, Metric.md)
     }
 }
 
@@ -341,25 +381,30 @@ private struct ConceptCard: View {
     let badgeColor: Color
     let caption: String
     var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: symbol)
-                .font(.system(size: 54))
-                .foregroundStyle(badgeColor)
-                .frame(height: 70)
+        VStack(spacing: Metric.sm) {
+            ZStack {
+                Circle().fill(badgeColor.opacity(0.12)).frame(width: 84, height: 84)
+                Image(systemName: symbol)
+                    .font(.system(size: 44))
+                    .foregroundStyle(badgeColor)
+            }
             Text(badge)
-                .font(.headline.weight(.heavy))
+                .font(.kidCaption.weight(.heavy))
                 .foregroundStyle(.white)
-                .padding(.horizontal, 14).padding(.vertical, 5)
-                .background(badgeColor, in: Capsule())
+                .padding(.horizontal, 16).padding(.vertical, 6)
+                .background(
+                    Capsule().fill(LinearGradient(colors: [badgeColor.lighter(0.1), badgeColor.darker(0.08)],
+                                                  startPoint: .top, endPoint: .bottom))
+                )
             Text(caption)
-                .font(.footnote)
+                .font(.kidFootnote)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink.opacity(0.7))
+                .foregroundStyle(Palette.ink.opacity(0.65))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity)
-        .padding(16)
-        .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .padding(Metric.md)
+        .cardSurface(radius: 22)
     }
 }
 
@@ -370,51 +415,72 @@ private struct ChoiceButton: View {
     let wobble: Bool
     let action: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 10) {
-                Image(systemName: choice.symbol)
-                    .font(.system(size: 44))
-                    .foregroundStyle(fg)
+            VStack(spacing: Metric.sm) {
+                ZStack {
+                    Circle().fill(iconWell).frame(width: 76, height: 76)
+                    Image(systemName: choice.symbol)
+                        .font(.system(size: 40, weight: .medium))
+                        .foregroundStyle(iconTint)
+                }
                 Text(choice.label)
-                    .font(.title3.weight(.bold))
+                    .font(.kidHeadline)
                     .foregroundStyle(fg)
                 // Badge is a check (right) or a hint light bulb (wrong) — never
                 // an X. Colour is never the only signal (README §3).
                 Group {
                     switch state {
-                    case .correct:  Image(systemName: "checkmark.circle.fill")
-                    case .tryAgain: Image(systemName: "lightbulb.fill")
-                    case .normal:   Image(systemName: "circle").opacity(0)
+                    case .correct:  Label("Yes!", systemImage: "checkmark.circle.fill")
+                    case .tryAgain: Label("Try again", systemImage: "lightbulb.fill")
+                    case .normal:   Text(" ").opacity(0)
                     }
                 }
-                .font(.title2)
-                .foregroundStyle(state == .correct ? Palette.teal : Palette.copper)
+                .font(.kidCaption)
+                .foregroundStyle(state == .correct ? Palette.rightInk : Palette.copper)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 22)
-            .background(bg, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(border, lineWidth: 3))
-            .scaleEffect(state == .correct ? 1.04 : 1)
+            .padding(.vertical, Metric.lg)
+            .background(bg, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(border, lineWidth: 3))
+            .softShadow()
+            .scaleEffect(state == .correct && !reduceMotion ? 1.05 : 1)
             .rotationEffect(.degrees(wobble ? 3 : 0))
-            .animation(.easeInOut(duration: 0.12).repeatCount(3, autoreverses: true), value: wobble)
+            .animation(.spring(response: 0.35, dampingFraction: 0.5), value: state)
+            .animation(.easeInOut(duration: 0.1).repeatCount(4, autoreverses: true), value: wobble)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableCard())
         .accessibilityLabel(choice.label)
         .accessibilityValue(accessibilityValue)
     }
 
     private var fg: Color { Palette.ink }
-    private var bg: Color {
+    private var iconTint: Color {
         switch state {
-        case .correct:  return Palette.rightGlow.opacity(0.5)
-        case .tryAgain: return Palette.wrongGlow.opacity(0.4)
-        case .normal:   return .white
+        case .correct:  return Palette.rightInk
+        case .tryAgain: return Palette.copper
+        case .normal:   return Palette.teal
+        }
+    }
+    private var iconWell: Color {
+        switch state {
+        case .correct:  return Palette.rightGlow.opacity(0.6)
+        case .tryAgain: return Palette.wrongGlow.opacity(0.5)
+        case .normal:   return Palette.skyTeal.opacity(0.18)
+        }
+    }
+    private var bg: some ShapeStyle {
+        switch state {
+        case .correct:  return AnyShapeStyle(Palette.rightGlow.opacity(0.35))
+        case .tryAgain: return AnyShapeStyle(Palette.wrongGlow.opacity(0.3))
+        case .normal:   return AnyShapeStyle(Color.white)
         }
     }
     private var border: Color {
         switch state {
-        case .correct:  return Palette.teal
+        case .correct:  return Palette.rightInk
         case .tryAgain: return Palette.copper
         case .normal:   return Palette.skyTeal.opacity(0.4)
         }
