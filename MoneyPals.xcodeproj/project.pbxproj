@@ -17,13 +17,16 @@
 		3E0425D38E825E074701EAC4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E943B89B772EF954F054989 /* Models.swift */; };
 		4198AF8A9B3A9D37C069C54D /* WhosLearningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D81C26B77C156D8758D707 /* WhosLearningView.swift */; };
 		55C347986DD0E060A04510F5 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F913406D798ED8F534E5B14 /* SetupView.swift */; };
+		5766A74DD1519120512C2EA5 /* FLUENT-EMOJI-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */; };
 		92C6F410D1D32DC12BC746CB /* LessonPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555C3D4C0C33B90E354DA45 /* LessonPlayerView.swift */; };
+		D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F9608B7567912942FCB5C0 /* Assets.xcassets */; };
 		DDFE5B096B9C6F12EE1544E9 /* LessonMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A07287E0FBDE0B4B1CAD076 /* LessonMapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0F913406D798ED8F534E5B14 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		159D193871901D0A02C68C89 /* SharedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUI.swift; sourceTree = "<group>"; };
+		1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "FLUENT-EMOJI-LICENSE.txt"; sourceTree = "<group>"; };
 		243AB16FCE7A72608E00992A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		2E2AB334CFBADD137713E105 /* PennyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PennyView.swift; sourceTree = "<group>"; };
 		6555C3D4C0C33B90E354DA45 /* LessonPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonPlayerView.swift; sourceTree = "<group>"; };
@@ -35,6 +38,7 @@
 		B7D7C18EA4F687AA178C6EAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C3D81C26B77C156D8758D707 /* WhosLearningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhosLearningView.swift; sourceTree = "<group>"; };
 		C6032D053F513B51FC32153B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D8F9608B7567912942FCB5C0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F6FAE50A3137D5AB12AF29D2 /* MoneyPals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MoneyPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -59,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				243AB16FCE7A72608E00992A /* AppState.swift */,
+				D8F9608B7567912942FCB5C0 /* Assets.xcassets */,
 				B7D7C18EA4F687AA178C6EAE /* Info.plist */,
 				6A07287E0FBDE0B4B1CAD076 /* LessonMapView.swift */,
 				6555C3D4C0C33B90E354DA45 /* LessonPlayerView.swift */,
@@ -71,8 +76,17 @@
 				C6032D053F513B51FC32153B /* Theme.swift */,
 				9714D1B1836EF57A707856BE /* WelcomeView.swift */,
 				C3D81C26B77C156D8758D707 /* WhosLearningView.swift */,
+				9FB0767EFED7B9EFE4525E1F /* Resources */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		9FB0767EFED7B9EFE4525E1F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +97,7 @@
 			buildConfigurationList = 40307721B899725AAF6DF74A /* Build configuration list for PBXNativeTarget "MoneyPals" */;
 			buildPhases = (
 				9ADBFB0D6D0698E16D2859BD /* Sources */,
+				9BA8351833A6155F4A350F0B /* Resources */,
 			);
 			buildRules = (
 			);
@@ -124,6 +139,18 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9BA8351833A6155F4A350F0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */,
+				5766A74DD1519120512C2EA5 /* FLUENT-EMOJI-LICENSE.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9ADBFB0D6D0698E16D2859BD /* Sources */ = {

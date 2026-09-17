@@ -35,8 +35,8 @@ private let needsAndWantsQuestions: [Question] = [
         prompt: "It's snowing outside. Is a warm coat a need or a want?",
         pennyHint: "Look at the picture, {name}!",
         choices: [
-            .init(label: "Need", symbol: "hand.thumbsup.fill", isCorrect: true),
-            .init(label: "Want", symbol: "balloon.fill", isCorrect: false)
+            .init(label: "Need", symbol: "thumbs-up", isCorrect: true),
+            .init(label: "Want", symbol: "balloon", isCorrect: false)
         ],
         correctLine: "Yes, {name}! A coat keeps us warm and safe. That's a need!",
         wrongLine: "Good try, {name}! See how the coat keeps her warm in the snow? That makes it a need."
@@ -45,8 +45,8 @@ private let needsAndWantsQuestions: [Question] = [
         prompt: "You are thirsty on a hot day. Is water a need or a want?",
         pennyHint: "Think about your body, {name}.",
         choices: [
-            .init(label: "Need", symbol: "drop.fill", isCorrect: true),
-            .init(label: "Want", symbol: "gamecontroller.fill", isCorrect: false)
+            .init(label: "Need", symbol: "droplet", isCorrect: true),
+            .init(label: "Want", symbol: "balloon", isCorrect: false)
         ],
         correctLine: "That's it, {name}! Our bodies need water to stay healthy.",
         wrongLine: "Good try, {name}! We can't stay healthy without water, so water is a need."
@@ -127,14 +127,14 @@ struct LessonPlayerView: View {
         VStack(spacing: 22) {
             LessonTopBar(title: "Needs & Wants") { exit() }
             Text("Needs and Wants")
-                .font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
+                .font(.screenTitle).foregroundStyle(Palette.textHeading)
 
             // Two picture cards — a NEED and a WANT (README §4 step 2).
             HStack(spacing: 16) {
-                ConceptCard(symbol: "snowflake",
+                ConceptCard(icon: "coat",
                             badge: "NEED", badgeColor: Palette.teal,
                             caption: "Something we must have to stay safe and healthy.")
-                ConceptCard(symbol: "balloon.2.fill",
+                ConceptCard(icon: "balloon",
                             badge: "WANT", badgeColor: Palette.copper,
                             caption: "A fun extra. Nice, but we're okay without it.")
             }
@@ -163,9 +163,9 @@ struct LessonPlayerView: View {
                 .padding(.horizontal, 24)
 
             Text(q.prompt)
-                .font(.title2.weight(.bold))
+                .font(.question)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink)
+                .foregroundStyle(Palette.textBody)
                 .padding(.horizontal, 24)
 
             // Big picture answer buttons (README §3 "Tap to choose").
@@ -203,17 +203,18 @@ struct LessonPlayerView: View {
         let coins = 10
         return VStack(spacing: 22) {
             Spacer()
-            PennyView(mood: .cheer, size: 180)
+            PennyView(mood: .celebrate, size: 180)
             Text("Lesson done, \(kidName)!")
-                .font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
+                .font(.screenTitle).foregroundStyle(Palette.textHeading)
             StarRow(earned: stars, size: 40)
             HStack(spacing: 12) {
-                RewardChip(symbol: "circle.fill", value: "+\(coins)", tint: Palette.copper)
-                RewardChip(symbol: "circle.hexagongrid.fill",
+                RewardChip(icon: "coin", value: "+\(coins)", tint: Palette.copper)
+                // Streak icon is a coin, never a flame.
+                RewardChip(icon: "coin",
                            value: "\((app.selectedKid?.currentStreak ?? 0) + 1)-day", tint: Palette.teal)
             }
             Text("You kept trying, and you got it!")
-                .font(.title3).foregroundStyle(Palette.ink.opacity(0.7))
+                .font(.title3).foregroundStyle(Palette.textMuted)
             Spacer()
             Button("Back to the map") {
                 // Commit rewards once, then leave.
@@ -283,6 +284,8 @@ struct LessonPlayerView: View {
             if let wrong = q.choices.first(where: { !$0.isCorrect }) {
                 chosenID = wrong.id; wobbleID = wrong.id; feedback = .wrong; mistakes = 1
             }
+        case "complete":
+            step = .complete
         default: break
         }
     }
@@ -291,8 +294,8 @@ struct LessonPlayerView: View {
 
     private var pennyMood: PennyMood {
         switch feedback {
-        case .right: return .cheer
-        case .wrong: return .curl
+        case .right: return .cheer      // celebrate — arms up
+        case .wrong: return .encourage  // gentle, hands together (never a scold)
         case nil:    return .idle
         }
     }
@@ -336,16 +339,13 @@ private struct LessonTopBar: View {
 }
 
 private struct ConceptCard: View {
-    let symbol: String
+    let icon: String       // Fluent icon name
     let badge: String
     let badgeColor: Color
     let caption: String
     var body: some View {
         VStack(spacing: 12) {
-            Image(systemName: symbol)
-                .font(.system(size: 54))
-                .foregroundStyle(badgeColor)
-                .frame(height: 70)
+            FluentIcon(name: icon, size: 64)
             Text(badge)
                 .font(.headline.weight(.heavy))
                 .foregroundStyle(.white)
@@ -354,12 +354,12 @@ private struct ConceptCard: View {
             Text(caption)
                 .font(.footnote)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink.opacity(0.7))
+                .foregroundStyle(Palette.textMuted)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity)
         .padding(16)
-        .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .background(.white, in: RoundedRectangle(cornerRadius: Radius.bubble, style: .continuous))
     }
 }
 
@@ -373,50 +373,47 @@ private struct ChoiceButton: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 10) {
-                Image(systemName: choice.symbol)
-                    .font(.system(size: 44))
-                    .foregroundStyle(fg)
+                FluentIcon(name: choice.symbol, size: 56)
                 Text(choice.label)
-                    .font(.title3.weight(.bold))
+                    .font(.buttonLabel)
                     .foregroundStyle(fg)
                 // Badge is a check (right) or a hint light bulb (wrong) — never
                 // an X. Colour is never the only signal (README §3).
                 Group {
                     switch state {
-                    case .correct:  Image(systemName: "checkmark.circle.fill")
-                    case .tryAgain: Image(systemName: "lightbulb.fill")
-                    case .normal:   Image(systemName: "circle").opacity(0)
+                    case .correct:  FluentIcon(name: "check-mark", size: 26)
+                    case .tryAgain: FluentIcon(name: "light-bulb", size: 26)
+                    case .normal:   Color.clear.frame(width: 26, height: 26)
                     }
                 }
-                .font(.title2)
-                .foregroundStyle(state == .correct ? Palette.teal : Palette.copper)
+                .frame(height: 28)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 22)
-            .background(bg, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(border, lineWidth: 3))
-            .scaleEffect(state == .correct ? 1.04 : 1)
-            .rotationEffect(.degrees(wobble ? 3 : 0))
-            .animation(.easeInOut(duration: 0.12).repeatCount(3, autoreverses: true), value: wobble)
+            .background(bg, in: RoundedRectangle(cornerRadius: Radius.button, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Radius.button, style: .continuous).stroke(border, lineWidth: Border.choice))
+            .scaleEffect(state == .correct ? Motion.popScale : 1)
+            .rotationEffect(.degrees(wobble ? Motion.wobbleDeg : 0))
+            .animation(.easeInOut(duration: Motion.press).repeatCount(3, autoreverses: true), value: wobble)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(choice.label)
         .accessibilityValue(accessibilityValue)
     }
 
-    private var fg: Color { Palette.ink }
+    private var fg: Color { Palette.textBody }
     private var bg: Color {
         switch state {
-        case .correct:  return Palette.rightGlow.opacity(0.5)
-        case .tryAgain: return Palette.wrongGlow.opacity(0.4)
+        case .correct:  return Palette.stateCorrectBg
+        case .tryAgain: return Palette.stateRetryBg
         case .normal:   return .white
         }
     }
     private var border: Color {
         switch state {
-        case .correct:  return Palette.teal
-        case .tryAgain: return Palette.copper
-        case .normal:   return Palette.skyTeal.opacity(0.4)
+        case .correct:  return Palette.stateCorrectBorder
+        case .tryAgain: return Palette.stateRetryBorder
+        case .normal:   return Palette.borderField
         }
     }
     private var accessibilityValue: String {
