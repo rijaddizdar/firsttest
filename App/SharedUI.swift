@@ -1,7 +1,9 @@
 //
 //  SharedUI.swift
-//  Small reusable pieces: Penny's speech bubble, the coin/sparkle burst,
-//  the full-screen answer glow, and a Reduce-Motion-safe haptic helper.
+//  Small reusable pieces, ported from the Penny Design System components:
+//  the Fluent 3D icon wrapper, Penny's speech bubble (the one shadow in the
+//  app), the full-screen answer glow, the coin/sparkle burst, reward chips and
+//  the star row — plus a Reduce-Motion-safe haptic helper.
 //
 
 import SwiftUI
@@ -9,36 +11,56 @@ import SwiftUI
 import UIKit
 #endif
 
+// MARK: - Fluent Emoji 3D icon
+
+/// Reward and level art: Fluent Emoji 3D (Microsoft, MIT licence) rendered as a
+/// picture from the asset catalog. Glossy 3D is the only decorative icon style;
+/// never mix in a flat or line icon at picture scale. See the credits line in
+/// the grown-up area and App/Resources/FLUENT-EMOJI-LICENSE.txt.
+struct FluentIcon: View {
+    let name: String
+    var size: CGFloat = 28
+
+    var body: some View {
+        Image(name)
+            .resizable()
+            .interpolation(.high)
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .accessibilityHidden(true)
+    }
+}
+
 // MARK: - Speech bubble
 
-/// A rounded speech bubble for Penny's lines. Penny always uses the child's name
-/// (README section 3 / section 7 "Talk to the child").
+/// A rounded speech bubble for Penny's lines. Penny always uses the child's name.
+/// This bubble carries the ONLY drop shadow in the whole app: 0 3px 6px rgba(0,0,0,0.08).
 struct SpeechBubble: View {
     let text: String
     var tint: Color = .white
 
     var body: some View {
         Text(text)
-            .font(.title3.weight(.semibold))
-            .foregroundStyle(Palette.ink)
+            .font(.bubble)
+            .foregroundStyle(Palette.textBody)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
-            .background(tint, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .background(tint, in: RoundedRectangle(cornerRadius: Radius.bubble, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(Palette.skyTeal.opacity(0.5), lineWidth: 2)
+                RoundedRectangle(cornerRadius: Radius.bubble, style: .continuous)
+                    .stroke(Palette.borderBubble, lineWidth: Border.bubble)
             )
-            .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
+            .shadow(color: .black.opacity(0.08), radius: 6, y: 3) // the one shadow
     }
 }
 
 // MARK: - Full-screen answer glow
 
-/// Soft full-screen glow used for answer feedback (README section 3).
-/// Right = soft mint green, wrong = warm apricot. NEVER a solid banner, never
-/// red, never an X. Colour is only ONE of the signals (badge + words + Penny
-/// carry it too), so this is safe for colour-blind children.
+/// Soft full-screen radial glow for answer feedback. Right = soft mint spreading
+/// from the chosen answer (centre), wrong = warm apricot from the top edge.
+/// NEVER a solid banner, never red, never an X. Colour is only ONE signal (badge
+/// + words + Penny carry it too), so this is safe for colour-blind children.
 struct AnswerGlow: View {
     enum Kind { case right, wrong }
     let kind: Kind
@@ -58,7 +80,8 @@ struct AnswerGlow: View {
 
 // MARK: - Coin / sparkle burst
 
-/// A short burst of play coins and sparkles for a right answer / celebration.
+/// A short burst of ~14 play coins (copper) and sparkles (sky teal) for a right
+/// answer / celebration. They fly out ~130px over 700ms, then fade over 450ms.
 /// Under Reduce Motion the pieces fade in place instead of flying out.
 struct CoinBurst: View {
     var isActive: Bool
@@ -71,17 +94,16 @@ struct CoinBurst: View {
     var body: some View {
         ZStack {
             ForEach(0..<pieceCount, id: \.self) { i in
-                Image(systemName: i % 3 == 0 ? "sparkle" : "circle.fill")
-                    .font(.system(size: i % 3 == 0 ? 18 : 14))
-                    .foregroundStyle(i % 3 == 0 ? Palette.skyTeal : Palette.copper)
+                let sparkle = i % 3 == 0
+                Circle()
+                    .fill(sparkle ? Palette.skyTeal : Palette.copper)
+                    .frame(width: sparkle ? 18 : 14, height: sparkle ? 18 : 14)
                     .offset(offset(for: i))
                     .opacity(pieceOpacity)
             }
         }
         .allowsHitTesting(false)
-        .onChange(of: isActive) { _, active in
-            trigger(active)
-        }
+        .onChange(of: isActive) { _, active in trigger(active) }
         .onAppear { if isActive { trigger(true) } }
     }
 
@@ -97,11 +119,10 @@ struct CoinBurst: View {
         guard active else { launched = false; faded = false; return }
         launched = false; faded = false
         if reduceMotion {
-            withAnimation(.easeIn(duration: 0.3)) { launched = true }
+            withAnimation(.easeInOut(duration: Motion.glow)) { launched = true }
         } else {
-            // Fly out (visible), then fade away.
-            withAnimation(.easeOut(duration: 0.7)) { launched = true } completion: {
-                withAnimation(.easeIn(duration: 0.45)) { faded = true }
+            withAnimation(.easeOut(duration: Motion.burst)) { launched = true } completion: {
+                withAnimation(.easeIn(duration: Motion.burstFade)) { faded = true }
             }
         }
     }
@@ -109,7 +130,7 @@ struct CoinBurst: View {
     private func offset(for i: Int) -> CGSize {
         guard launched, !reduceMotion else { return .zero }
         let angle = Double(i) / Double(pieceCount) * 2 * .pi
-        let radius: CGFloat = 130
+        let radius = Motion.burstRadius
         return CGSize(width: cos(angle) * radius, height: sin(angle) * radius - 40)
     }
 }
@@ -117,9 +138,7 @@ struct CoinBurst: View {
 // MARK: - Haptics (iOS only, silent no-op elsewhere)
 
 enum Haptics {
-    /// Light tap for a right answer (README section 3 "Touch: a light haptic
-    /// tap" on right, "None" on wrong). No-op on non-UIKit platforms so the file
-    /// still parses on macOS.
+    /// Light tap for a right answer (light on right, none on wrong).
     static func rightAnswerTap() {
         #if canImport(UIKit)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -135,25 +154,27 @@ enum Haptics {
 
 // MARK: - Reward chip
 
-/// Small pill showing a reward count (stars / coins / streak).
+/// Small white capsule showing a reward count (stars / coins / streak).
+/// The streak icon is a COIN, never a flame. 1px hairline border in the tint.
 struct RewardChip: View {
-    let symbol: String
+    let icon: String   // Fluent icon name
     let value: String
     var tint: Color = Palette.teal
 
     var body: some View {
         HStack(spacing: 6) {
-            Image(systemName: symbol).foregroundStyle(tint)
-            Text(value).font(.headline).foregroundStyle(Palette.ink)
+            FluentIcon(name: icon, size: 22)
+            Text(value).font(.rowTitle).foregroundStyle(Palette.textBody)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .background(.white, in: Capsule())
-        .overlay(Capsule().stroke(tint.opacity(0.25), lineWidth: 1))
+        .overlay(Capsule().stroke(tint, lineWidth: Border.hairline))
     }
 }
 
-/// A row of up to 3 stars (README section 3 "Up to 3 stars per lesson").
+/// A row of up to 3 stars. Earned = a glossy Fluent star; unearned = a grey
+/// disc (never an X).
 struct StarRow: View {
     let earned: Int
     var total = 3
@@ -162,9 +183,13 @@ struct StarRow: View {
     var body: some View {
         HStack(spacing: 4) {
             ForEach(0..<total, id: \.self) { i in
-                Image(systemName: i < earned ? "star.fill" : "star")
-                    .font(.system(size: size))
-                    .foregroundStyle(i < earned ? Color.yellow : Palette.lockGrey)
+                if i < earned {
+                    FluentIcon(name: "star", size: size)
+                } else {
+                    Circle()
+                        .fill(Palette.lockGrey.opacity(0.5))
+                        .frame(width: size, height: size)
+                }
             }
         }
         .accessibilityLabel("\(earned) of \(total) stars")
