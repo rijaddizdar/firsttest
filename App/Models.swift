@@ -67,7 +67,7 @@ struct MoneyLevel: Identifiable {
     let title: String
     let kidSummary: String
     let world: String
-    let symbolName: String // SF Symbol placeholder for the Fluent 3D icon
+    let iconName: String   // Fluent Emoji 3D asset name (Assets.xcassets/Icons)
     /// Only Level 2 (Needs & Wants) is a fully playable lesson in this mock-up.
     let isPlayable: Bool
 }
@@ -76,22 +76,22 @@ enum SampleData {
     /// The 13 levels in 4 worlds, straight from README section 5.
     static let levels: [MoneyLevel] = [
         // World 1 · Money Basics
-        MoneyLevel(id: 1,  title: "What Is Money?",        kidSummary: "Money is something people trade for things.",       world: "Money Basics",  symbolName: "dollarsign.circle.fill",     isPlayable: false),
-        MoneyLevel(id: 2,  title: "Needs & Wants",          kidSummary: "Needs keep us safe. Wants are fun extras.",         world: "Money Basics",  symbolName: "tshirt.fill",                isPlayable: true),
-        MoneyLevel(id: 3,  title: "Earning Money",          kidSummary: "People earn money by doing jobs and helping.",      world: "Money Basics",  symbolName: "hands.sparkles.fill",        isPlayable: false),
+        MoneyLevel(id: 1,  title: "What Is Money?",        kidSummary: "Money is something people trade for things.",       world: "Money Basics",  iconName: "coin",               isPlayable: false),
+        MoneyLevel(id: 2,  title: "Needs & Wants",          kidSummary: "Needs keep us safe. Wants are fun extras.",         world: "Money Basics",  iconName: "coat",               isPlayable: true),
+        MoneyLevel(id: 3,  title: "Earning Money",          kidSummary: "People earn money by doing jobs and helping.",      world: "Money Basics",  iconName: "broom",              isPlayable: false),
         // World 2 · Save & Spend
-        MoneyLevel(id: 4,  title: "Saving Up",              kidSummary: "Keep some money now to use it later.",              world: "Save & Spend", symbolName: "banknote.fill",              isPlayable: false),
-        MoneyLevel(id: 5,  title: "Smart Spending",         kidSummary: "Stop, think and compare before you buy.",           world: "Save & Spend", symbolName: "cart.fill",                  isPlayable: false),
-        MoneyLevel(id: 6,  title: "Making a Budget",        kidSummary: "A money plan: spend some, save some, give some.",   world: "Save & Spend", symbolName: "list.clipboard.fill",        isPlayable: false),
+        MoneyLevel(id: 4,  title: "Saving Up",              kidSummary: "Keep some money now to use it later.",              world: "Save & Spend", iconName: "jar",                isPlayable: false),
+        MoneyLevel(id: 5,  title: "Smart Spending",         kidSummary: "Stop, think and compare before you buy.",           world: "Save & Spend", iconName: "shopping-cart",      isPlayable: false),
+        MoneyLevel(id: 6,  title: "Making a Budget",        kidSummary: "A money plan: spend some, save some, give some.",   world: "Save & Spend", iconName: "memo",               isPlayable: false),
         // World 3 · Money Helpers
-        MoneyLevel(id: 7,  title: "How Banks Work",         kidSummary: "A bank keeps money safe until you need it.",        world: "Money Helpers", symbolName: "building.columns.fill",      isPlayable: false),
-        MoneyLevel(id: 8,  title: "Interest",               kidSummary: "Saving in a bank can pay you a little extra.",      world: "Money Helpers", symbolName: "sparkles",                   isPlayable: false),
-        MoneyLevel(id: 9,  title: "Borrowing & Paying Back", kidSummary: "When you borrow, you promise to give it back.",    world: "Money Helpers", symbolName: "hands.and.sparkles.fill",    isPlayable: false),
+        MoneyLevel(id: 7,  title: "How Banks Work",         kidSummary: "A bank keeps money safe until you need it.",        world: "Money Helpers", iconName: "bank",              isPlayable: false),
+        MoneyLevel(id: 8,  title: "Interest",               kidSummary: "Saving in a bank can pay you a little extra.",      world: "Money Helpers", iconName: "sparkles",          isPlayable: false),
+        MoneyLevel(id: 9,  title: "Borrowing & Paying Back", kidSummary: "When you borrow, you promise to give it back.",    world: "Money Helpers", iconName: "handshake",         isPlayable: false),
         // World 4 · Big Money Ideas
-        MoneyLevel(id: 10, title: "Money Safety",           kidSummary: "Keep secrets safe. Ask a grown-up before buying.",  world: "Big Money Ideas", symbolName: "shield.fill",              isPlayable: false),
-        MoneyLevel(id: 11, title: "Taxes: Money We Share",  kidSummary: "Money grown-ups share to build things for all.",    world: "Big Money Ideas", symbolName: "building.2.fill",          isPlayable: false),
-        MoneyLevel(id: 12, title: "Giving & Sharing",       kidSummary: "Money can help other people and our community.",    world: "Big Money Ideas", symbolName: "gift.fill",                isPlayable: false),
-        MoneyLevel(id: 13, title: "Growing Money",          kidSummary: "Investing is like planting a money seed.",          world: "Big Money Ideas", symbolName: "leaf.fill",                isPlayable: false)
+        MoneyLevel(id: 10, title: "Money Safety",           kidSummary: "Keep secrets safe. Ask a grown-up before buying.",  world: "Big Money Ideas", iconName: "shield",            isPlayable: false),
+        MoneyLevel(id: 11, title: "Taxes: Money We Share",  kidSummary: "Money grown-ups share to build things for all.",    world: "Big Money Ideas", iconName: "classical-building", isPlayable: false),
+        MoneyLevel(id: 12, title: "Giving & Sharing",       kidSummary: "Money can help other people and our community.",    world: "Big Money Ideas", iconName: "heart-with-ribbon",  isPlayable: false),
+        MoneyLevel(id: 13, title: "Growing Money",          kidSummary: "Investing is like planting a money seed.",          world: "Big Money Ideas", iconName: "tree",              isPlayable: false)
     ]
 
     /// The four worlds, in map order.

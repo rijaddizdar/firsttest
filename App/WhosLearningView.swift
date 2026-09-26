@@ -20,17 +20,21 @@ struct WhosLearningView: View {
                 Button {
                     app.route = .parentGate
                 } label: {
-                    Label("Grown-ups", systemImage: "gearshape.fill")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Palette.teal)
+                    HStack(spacing: 6) {
+                        FluentIcon(name: "gear", size: 20)
+                        Text("Grown-ups")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(Palette.teal)
+                    }
                 }
+                .buttonStyle(PressableStyle())
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
 
             Text("Who's learning?")
-                .font(.largeTitle.weight(.heavy))
-                .foregroundStyle(Palette.teal)
+                .font(.screenTitle)
+                .foregroundStyle(Palette.textHeading)
 
             PennyView(mood: .wave, size: 120)
 
@@ -45,28 +49,29 @@ struct WhosLearningView: View {
                                 AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 96)
                                 Text(kid.name)
                                     .font(.title3.weight(.bold))
-                                    .foregroundStyle(Palette.ink)
+                                    .foregroundStyle(Palette.textBody)
                             }
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressableStyle())
                     }
 
                     // Add-another-kid tile routes back through the grown-up gate.
+                    // Dashed lock-grey ring (Penny Design System, shape-borders).
                     Button {
                         app.route = .parentGate
                     } label: {
                         VStack(spacing: 10) {
                             ZStack {
-                                Circle().stroke(Palette.lockGrey, style: StrokeStyle(lineWidth: 3, dash: [6]))
+                                Circle().stroke(Palette.lockGrey, style: StrokeStyle(lineWidth: Border.choice, dash: [6]))
                                 Image(systemName: "plus")
                                     .font(.system(size: 40))
                                     .foregroundStyle(Palette.lockGrey)
                             }
                             .frame(width: 96, height: 96)
-                            Text("Add kid").font(.title3).foregroundStyle(Palette.ink.opacity(0.6))
+                            Text("Add kid").font(.title3).foregroundStyle(Palette.textSoft)
                         }
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableStyle())
                 }
                 .padding(.horizontal, 24)
             }

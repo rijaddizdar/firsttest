@@ -1,8 +1,8 @@
-# Money lessons with Penny the Pangolin
+# Money lessons with Penny the Armadillo
 
-> **Status: concept stage.** Nothing is built yet. This repository has no app code, no Xcode project and no backend. This README describes the plan so the design, lessons and tech can be reviewed before any real work starts.
+> **Status: early prototype.** A SwiftUI mock-up lives in `App/` (welcome → grown-up setup → level map → one playable lesson → code-locked parent dashboard); it is in-memory only, with no backend, SwiftData or network yet. The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
 
-An iPhone and iPad app that teaches children the basics of money through short, playful, guided lessons, in the spirit of Duolingo. A friendly pangolin named **Penny** walks kids through a path of levels. Each level explores one money idea, from "What is money?" to "How can money grow?"
+An iPhone and iPad app that teaches children the basics of money through short, playful, guided lessons, in the spirit of Duolingo. A friendly armadillo named **Penny** walks kids through a path of levels. Each level explores one money idea, from "What is money?" to "How can money grow?"
 
 The app does not have a final name yet. This README calls it **"the app."**
 
@@ -43,14 +43,16 @@ The app does not have a final name yet. This README calls it **"the app."**
 
 ## 2. Meet Penny, the guide
 
-Penny was chosen from four guide-animal concepts (a squirrel, a pangolin, an octopus and a beaver) that were reviewed on a visual concept board. In round 4 Penny was redesigned as a **glossy 3D character**, chosen from three 3D directions (soft clay, glossy movie look and low-poly).
+Penny was chosen from four guide-animal concepts (a squirrel, a pangolin, an octopus and a beaver) that were reviewed on a visual concept board. In round 4 Penny was redesigned as a **glossy 3D character**, chosen from three 3D directions (soft clay, glossy movie look and low-poly). At the product owner's direction she is now an **armadillo whose shell bands are rows of coins** — gold coin faces with copper rims on a copper shell — and she rolls into a coin-banded ball when something feels risky. The earlier coin-scale reasoning, the curl-up habit and her teaching personality all carry over unchanged; the **Penny Design System** is the authoritative brand and visual guide.
+
+The mock-up in `App/` renders Penny from **provided placeholder art**: five poses (waving hello, two celebrations, a hands-together encouragement, and the coin-ball curl) cropped from a hand-designed character sheet, cut to transparency and bundled in `Assets.xcassets`. These are a stand-in; the shipped app will use a commissioned glossy 3D Penny (see section 8).
 
 | | |
 |---|---|
 | **Name** | Penny (a working name that still needs a trademark check before launch) |
-| **Animal** | Pangolin |
+| **Animal** | Armadillo (coin-banded shell) |
 | **Personality** | Calm, kind and careful. A little shy but brave. When something seems unsafe she curls into a ball, then teaches kids to stop and ask a grown-up. |
-| **Look** | A glossy 3D character, like a figure from an animated movie. Warm copper body covered in round, shiny metal coin scales on her head, back and curly tail; a soft peach face with a short snout; big expressive eyes; a teal knit scarf. She sits upright and faces the child, with little arms that wave and cheer. |
+| **Look** | A glossy character, like a figure from an animated movie. Warm copper body and shell banded with round, shiny coin faces; a soft peach face and belly with a short snout; big expressive eyes; a teal knit scarf; a curly coin-banded tail. She stands upright and faces the child, with little arms that wave and cheer, and rolls into a coin ball when something feels risky. |
 | **Teaching superpower** | Keeping money safe, and noticing small things that add up |
 
 ### Colors
@@ -80,13 +82,13 @@ Penny was chosen from four guide-animal concepts (a squirrel, a pangolin, an oct
 | **Curl up** | Rolls into a coin ball, then peeks out to help |
 | **Reduce Motion** | Calm still poses that fade instead of moving |
 
-### Why a pangolin?
+### Why an armadillo?
 
-- **Money is part of her design.** Her coin scales make her easy to recognize and remember, and they double as a reward: finishing lessons adds shiny new scales.
-- **Her careful personality fits the lessons.** Stopping, thinking and asking a grown-up are exactly the habits the Money Safety and Smart Spending levels teach.
-- **She sparks curiosity.** Pangolins are real, endangered animals, and many kids haven't met one yet.
+- **Money is part of her design.** Her coin-banded shell makes her easy to recognize and remember, and it doubles as a reward: finishing lessons adds shiny new coins to her bands.
+- **Her careful personality fits the lessons.** Rolling into a ball, stopping, thinking and asking a grown-up are exactly the habits the Money Safety and Smart Spending levels teach — and armadillos really do curl up.
+- **She sparks curiosity.** Armadillos are real animals with natural armour, and the coin-banded shell reads instantly as "money."
 
-**Known trade-off:** many young children don't know what a pangolin is. A short "Meet Penny" intro explains what a pangolin is and why her scales look like coins before the first lesson.
+**Known trade-off:** some young children may not know what an armadillo is. A short "Meet Penny" intro explains who Penny is and why her shell bands look like coins before the first lesson.
 
 ### Staying clearly different from Duolingo
 
@@ -154,7 +156,7 @@ There is never a red X, a scary sound or a lost life. Color is never the only si
 | **Penny's scales** | Finishing a level adds new shiny scales to Penny. |
 | **The map** | Each child has their own level path showing what's done, what's next and what's still locked. |
 
-In the app, stars, coins, streaks and level icons use **Fluent Emoji 3D** icons (Microsoft, MIT license), not Apple emoji. The emoji in this README are placeholders.
+In the app, stars, coins, streaks, level icons and answer pictures use **Fluent Emoji 3D** icons (Microsoft, MIT licence), not Apple emoji — bundled in `Assets.xcassets` with the licence text (`App/Resources/FLUENT-EMOJI-LICENSE.txt`) and credited on a line in the grown-up area. The emoji in this README are placeholders for those assets. UI chrome that has no Fluent equivalent (the close, back, add and press-and-hold controls) uses Apple SF Symbols.
 
 ---
 
@@ -249,7 +251,7 @@ After setup, the app opens to **"Who's learning?"** and each child just taps the
 
 1. **"What should I call you?"** The child types a **first name or nickname**. No last names.
 2. **"Make it yours!"** The child customizes their profile (see below).
-3. **Meet Penny.** A short intro to Penny and what a pangolin is.
+3. **Meet Penny.** A short intro to Penny and what an armadillo is.
 4. **The map.** From here on, **Penny uses the child's name** in her speech bubbles: *"Great job, Mia!"*
 
 > Penny's *recorded* voice can't say every possible name, so the name appears in speech bubbles and spoken lines stay name-free. On-device text-to-speech could say the name later if we decide it sounds good enough.
@@ -345,6 +347,7 @@ Everything a child reads or hears follows these rules.
 | Local storage | **SwiftData** for offline progress and cached content | Lessons keep working without internet and sync later |
 | Lessons | Lesson content as **data files** (for example JSON) bundled with the app | Writers can add lessons without changing app code |
 | Animation | SwiftUI animations for pops, wobbles, bursts and the screen glow. | No heavy third-party SDKs |
+| Penny (mock-up) | Provided placeholder art: five poses cropped from a hand-designed character sheet, cut to transparency and bundled in `Assets.xcassets`, swapped per mood in `PennyView` | Lets the mock-up read correctly before the 3D model is commissioned |
 | Penny (prototype) | Pre-rendered transparent video clips (HEVC with alpha) and stills from one commissioned, rigged 3D model, played with AVFoundation | Best glossy look, no 3D engine risk while testing lessons |
 | Penny (MVP) | The same model drawn live with **RealityKit** (USDZ) | Scarf colors, outfits and new scales change at runtime; SceneKit is soft-deprecated |
 | Icons | Fluent Emoji 3D assets (MIT) bundled in the app, with the MIT notice on a credits screen in the parent area | 3D style that matches Penny; free for commercial use |

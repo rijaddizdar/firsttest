@@ -25,13 +25,13 @@ struct GrownUpCheckView: View {
             PennyView(mood: .idle, size: 130)
 
             Text("Grown-ups only")
-                .font(.largeTitle.weight(.heavy))
-                .foregroundStyle(Palette.teal)
+                .font(.screenTitle)
+                .foregroundStyle(Palette.textHeading)
 
             Text("Press and hold the button for 3 seconds.")
                 .font(.title3)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink.opacity(0.7))
+                .foregroundStyle(Palette.textMuted)
                 .padding(.horizontal, 30)
 
             Spacer()
@@ -39,11 +39,13 @@ struct GrownUpCheckView: View {
             // Circular hold target with a progress ring.
             ZStack {
                 Circle()
-                    .stroke(Palette.lockGrey.opacity(0.4), lineWidth: 12)
+                    .stroke(Palette.lockGrey.opacity(0.4), lineWidth: Border.holdRing)
                 Circle()
                     .trim(from: 0, to: progress)
-                    .stroke(Palette.teal, style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                    .stroke(Palette.teal, style: StrokeStyle(lineWidth: Border.holdRing, lineCap: .round))
                     .rotationEffect(.degrees(-90))
+                // UI chrome (a hand-tap prompt): kept as an SF Symbol, which has
+                // no Fluent 3D equivalent (Penny Design System, "Iconography").
                 Image(systemName: "hand.tap.fill")
                     .font(.system(size: 46))
                     .foregroundStyle(isHolding ? Palette.teal : Palette.copper)
@@ -118,18 +120,16 @@ struct CreateParentCodeView: View {
     var body: some View {
         VStack(spacing: 22) {
             Spacer()
-            Image(systemName: "lock.fill")
-                .font(.system(size: 54))
-                .foregroundStyle(Palette.teal)
+            FluentIcon(name: "locked", size: 64)
 
             Text("Create a parent code")
-                .font(.largeTitle.weight(.heavy))
-                .foregroundStyle(Palette.teal)
+                .font(.screenTitle)
+                .foregroundStyle(Palette.textHeading)
 
             Text("A 6-digit code — not a birthday. It locks the parent dashboard.")
                 .font(.body)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Palette.ink.opacity(0.7))
+                .foregroundStyle(Palette.textMuted)
                 .padding(.horizontal, 30)
 
             codeField("Enter code", text: $code)
@@ -154,13 +154,13 @@ struct CreateParentCodeView: View {
 
     private func codeField(_ title: String, text: Binding<String>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(title).font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+            Text(title).font(.subheadline).foregroundStyle(Palette.textSoft)
             SecureField("••••••", text: text)
                 .font(.title2.monospaced())
                 .multilineTextAlignment(.center)
                 .padding(16)
-                .background(.white, in: RoundedRectangle(cornerRadius: 16))
-                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.skyTeal.opacity(0.4), lineWidth: 1.5))
+                .background(.white, in: RoundedRectangle(cornerRadius: Radius.field))
+                .overlay(RoundedRectangle(cornerRadius: Radius.field).stroke(Palette.borderField, lineWidth: Border.field))
                 #if os(iOS)
                 .keyboardType(.numberPad)
                 #endif
@@ -197,18 +197,18 @@ struct AddKidView: View {
             AvatarBadge(kind: kind, color: Palette.avatarChoices[colorIndex], size: 110)
 
             Text("Add a kid")
-                .font(.largeTitle.weight(.heavy))
-                .foregroundStyle(Palette.teal)
+                .font(.screenTitle)
+                .foregroundStyle(Palette.textHeading)
 
             // Name — first name / nickname only (README section 6). No last names.
             VStack(alignment: .leading, spacing: 6) {
                 Text("What should we call them?")
-                    .font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+                    .font(.subheadline).foregroundStyle(Palette.textSoft)
                 TextField("First name or nickname", text: $name)
                     .font(.title3)
                     .padding(16)
-                    .background(.white, in: RoundedRectangle(cornerRadius: 16))
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.skyTeal.opacity(0.4), lineWidth: 1.5))
+                    .background(.white, in: RoundedRectangle(cornerRadius: Radius.field))
+                    .overlay(RoundedRectangle(cornerRadius: Radius.field).stroke(Palette.borderField, lineWidth: Border.field))
             }
             .padding(.horizontal, 24)
 
@@ -221,14 +221,14 @@ struct AddKidView: View {
 
             // Avatar colour pick.
             VStack(spacing: 8) {
-                Text("Pick a colour").font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+                Text("Pick a colour").font(.subheadline).foregroundStyle(Palette.textSoft)
                 HStack(spacing: 12) {
                     ForEach(Palette.avatarChoices.indices, id: \.self) { i in
                         Circle()
                             .fill(Palette.avatarChoices[i])
                             .frame(width: 40, height: 40)
                             .overlay(
-                                Circle().stroke(Palette.ink, lineWidth: colorIndex == i ? 3 : 0)
+                                Circle().stroke(Palette.ink, lineWidth: colorIndex == i ? Border.avatar : 0)
                             )
                             .onTapGesture { colorIndex = i }
                             .accessibilityLabel("Colour \(i + 1)")
@@ -260,7 +260,7 @@ struct AvatarBadge: View {
     var body: some View {
         ZStack {
             Circle().fill(color.opacity(0.25))
-            Circle().stroke(color, lineWidth: 3)
+            Circle().stroke(color, lineWidth: Border.avatar)
             Image(systemName: kind.symbolName)
                 .font(.system(size: size * 0.5))
                 .foregroundStyle(color)

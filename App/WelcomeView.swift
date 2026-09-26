@@ -19,14 +19,14 @@ struct WelcomeView: View {
                 // App name is intentionally omitted (held pending a trademark
                 // search). "MoneyPals" is only a placeholder — see Theme.swift.
                 Text("Learn about money with Penny!")
-                    .font(.largeTitle.weight(.heavy))
+                    .font(.screenTitle)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(Palette.teal)
+                    .foregroundStyle(Palette.textHeading)
 
-                Text("Penny the pangolin makes learning about money fun.")
+                Text("Penny the armadillo makes learning about money fun.")
                     .font(.title3)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(Palette.ink.opacity(0.7))
+                    .foregroundStyle(Palette.textMuted)
             }
             .padding(.horizontal, 24)
 

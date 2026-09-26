@@ -53,10 +53,10 @@ struct LessonMapView: View {
             }
 
             HStack(spacing: 10) {
-                RewardChip(symbol: "star.fill", value: "\(kid.totalStars)", tint: .yellow)
-                RewardChip(symbol: "circle.fill", value: "\(kid.coins)", tint: Palette.copper)
-                // Streak uses a coin, never a flame (README section 2).
-                RewardChip(symbol: "circle.hexagongrid.fill", value: "\(kid.currentStreak)-day", tint: Palette.teal)
+                RewardChip(icon: "star", value: "\(kid.totalStars)", tint: Palette.star)
+                RewardChip(icon: "coin", value: "\(kid.coins)", tint: Palette.copper)
+                // Streak uses a coin, never a flame (Penny Design System).
+                RewardChip(icon: "coin", value: "\(kid.currentStreak)-day", tint: Palette.teal)
             }
         }
         .padding(.horizontal, 20)
@@ -105,20 +105,19 @@ struct LevelNode: View {
                 ZStack {
                     Circle().fill(bubbleColor)
                         .frame(width: 66, height: 66)
-                        .overlay(Circle().stroke(ringColor, lineWidth: 4))
-                    Image(systemName: state == .locked ? "lock.fill" : level.symbolName)
-                        .font(.system(size: 26))
-                        .foregroundStyle(state == .locked ? Palette.ink.opacity(0.4) : .white)
+                        // 4px translucent teal ring around the current level bubble.
+                        .overlay(Circle().stroke(ringColor, lineWidth: Border.levelRing))
+                    FluentIcon(name: state == .locked ? "locked" : level.iconName, size: 34)
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 8) {
-                        Text("\(level.id).").font(.headline).foregroundStyle(Palette.ink.opacity(0.5))
-                        Text(level.title).font(.headline).foregroundStyle(Palette.ink)
+                        Text("\(level.id).").font(.rowTitle).foregroundStyle(Palette.textFaint)
+                        Text(level.title).font(.rowTitle).foregroundStyle(Palette.textBody)
                     }
                     Text(level.kidSummary)
-                        .font(.subheadline)
-                        .foregroundStyle(Palette.ink.opacity(0.6))
+                        .font(.rowSub)
+                        .foregroundStyle(Palette.textSoft)
                         .fixedSize(horizontal: false, vertical: true)
 
                     if state == .completed {
@@ -126,21 +125,22 @@ struct LevelNode: View {
                     } else if state == .current && level.isPlayable {
                         Text("Tap to play ▶").font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
                     } else if state == .current {
-                        Text("Coming soon").font(.caption).foregroundStyle(Palette.ink.opacity(0.45))
+                        Text("Coming soon").font(.caption).foregroundStyle(Palette.textFaint)
                     }
                 }
                 Spacer(minLength: 0)
             }
             .padding(14)
-            .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .background(.white, in: RoundedRectangle(cornerRadius: Radius.bubble, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(state == .current ? Palette.teal : .clear, lineWidth: 2)
+                // 2px teal border marks the current level row.
+                RoundedRectangle(cornerRadius: Radius.bubble, style: .continuous)
+                    .stroke(state == .current ? Palette.teal : .clear, lineWidth: Border.bubble)
             )
             .opacity(state == .locked ? 0.6 : 1)
             .padding(.horizontal, 20)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableStyle())
         .disabled(state == .locked)
         .accessibilityHint(accessibilityHint)
     }

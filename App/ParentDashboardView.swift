@@ -35,9 +35,9 @@ struct ParentGateView: View {
             .padding(.horizontal, 20).padding(.top, 12)
 
             Spacer()
-            Image(systemName: "lock.fill").font(.system(size: 52)).foregroundStyle(Palette.teal)
+            FluentIcon(name: "locked", size: 64)
             Text("Enter parent code")
-                .font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
+                .font(.screenTitle).foregroundStyle(Palette.textHeading)
 
             // Six dots showing entry progress.
             HStack(spacing: 14) {
@@ -85,10 +85,10 @@ struct ParentGateView: View {
                         Text(key)
                             .font(.title.weight(.semibold))
                             .frame(maxWidth: .infinity, minHeight: 64)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 18))
-                            .foregroundStyle(Palette.ink)
+                            .background(.white, in: RoundedRectangle(cornerRadius: Radius.key))
+                            .foregroundStyle(Palette.textBody)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableStyle())
                 }
             }
         }
@@ -151,8 +151,8 @@ struct ParentDashboardView: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text("Parent dashboard").font(.largeTitle.weight(.heavy)).foregroundStyle(Palette.teal)
-                Text("Only you can see this.").font(.subheadline).foregroundStyle(Palette.ink.opacity(0.6))
+                Text("Parent dashboard").font(.screenTitle).foregroundStyle(Palette.textHeading)
+                Text("Only you can see this.").font(.subheadline).foregroundStyle(Palette.textSoft)
             }
             Spacer()
             Button("Done") { app.route = .whosLearning }
@@ -161,7 +161,7 @@ struct ParentDashboardView: View {
     }
 
     private var settingsSection: some View {
-        DashCard(title: "Settings", icon: "gearshape.fill") {
+        DashCard(title: "Settings", icon: "gear") {
             // Daily time limit per kid (README section 6).
             Stepper(value: $app.settings.dailyLimitMinutes, in: 5...120, step: 5) {
                 HStack {
@@ -184,20 +184,26 @@ struct ParentDashboardView: View {
     }
 
     private var dataSection: some View {
-        DashCard(title: "Data & privacy", icon: "hand.raised.fill") {
+        DashCard(title: "Data & privacy", icon: "shield") {
             // These are stubs in the mock — the real app deletes on the backend
             // and honours COPPA (README section 9).
             Text("Delete a child's data, or the whole account, at any time.")
-                .font(.footnote).foregroundStyle(Palette.ink.opacity(0.6))
+                .font(.footnote).foregroundStyle(Palette.textSoft)
             Text("No ads, no third-party analytics, no tracking. Only the data in README section 9 is kept.")
-                .font(.caption).foregroundStyle(Palette.ink.opacity(0.5))
+                .font(.caption).foregroundStyle(Palette.textFaint)
         }
     }
 
     private var footer: some View {
-        Text("Mock-up only — no real accounts, network or storage.")
-            .font(.caption2).foregroundStyle(Palette.ink.opacity(0.4))
-            .frame(maxWidth: .infinity, alignment: .center)
+        VStack(spacing: 6) {
+            // Credit for the bundled MIT-licensed Fluent Emoji 3D icon set.
+            Text("Icons: Fluent Emoji 3D by Microsoft, MIT licensed. See FLUENT-EMOJI-LICENSE.txt.")
+                .font(.caption2).foregroundStyle(Palette.textFaint)
+                .multilineTextAlignment(.center)
+            Text("Mock-up only — no real accounts, network or storage.")
+                .font(.caption2).foregroundStyle(Palette.textFaint)
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
@@ -210,10 +216,11 @@ private struct KidProgressCard: View {
             AnyView(AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 40))
         }) {
             HStack(spacing: 10) {
-                stat("Stars", "\(kid.totalStars)", "star.fill", .yellow)
-                stat("Coins", "\(kid.coins)", "circle.fill", Palette.copper)
-                stat("Streak", "\(kid.currentStreak)d", "circle.hexagongrid.fill", Palette.teal)
-                stat("Best", "\(kid.bestStreak)d", "trophy.fill", Palette.teal)
+                stat("Stars", "\(kid.totalStars)", "star")
+                stat("Coins", "\(kid.coins)", "coin")
+                // Streak icon is a coin, never a flame.
+                stat("Streak", "\(kid.currentStreak)d", "coin")
+                stat("Best", "\(kid.bestStreak)d", "trophy")
             }
             Divider()
             HStack {
@@ -221,7 +228,7 @@ private struct KidProgressCard: View {
                 Spacer()
                 Label("\(kid.minutesThisWeek) min this week", systemImage: "calendar")
             }
-            .font(.footnote).foregroundStyle(Palette.ink.opacity(0.6))
+            .font(.footnote).foregroundStyle(Palette.textSoft)
 
             Divider()
             // Per-level progress list (README section 6 "Progress per level").
@@ -239,11 +246,11 @@ private struct KidProgressCard: View {
         }
     }
 
-    private func stat(_ label: String, _ value: String, _ symbol: String, _ tint: Color) -> some View {
+    private func stat(_ label: String, _ value: String, _ icon: String) -> some View {
         VStack(spacing: 4) {
-            Image(systemName: symbol).foregroundStyle(tint)
-            Text(value).font(.headline).foregroundStyle(Palette.ink)
-            Text(label).font(.caption2).foregroundStyle(Palette.ink.opacity(0.5))
+            FluentIcon(name: icon, size: 26)
+            Text(value).font(.headline).foregroundStyle(Palette.textBody)
+            Text(label).font(.caption2).foregroundStyle(Palette.textFaint)
         }
         .frame(maxWidth: .infinity)
     }
@@ -260,14 +267,14 @@ private struct DashCard<Content: View>: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 10) {
                 if let leading { leading() }
-                if let icon { Image(systemName: icon).foregroundStyle(Palette.teal) }
-                Text(title).font(.title3.weight(.bold)).foregroundStyle(Palette.ink)
+                if let icon { FluentIcon(name: icon, size: 24) }
+                Text(title).font(.sectionTitle).foregroundStyle(Palette.textBody)
             }
             content
         }
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .background(.white, in: RoundedRectangle(cornerRadius: Radius.button, style: .continuous))
     }
 }
 
