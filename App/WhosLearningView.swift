@@ -283,5 +283,5 @@ private struct AvatarTile<Badge: View>: View {
 }
 
 #Preview {
-    WhosLearningView().environmentObject(AppState())
+    WhosLearningView().environmentObject(AppState.preview())
 }

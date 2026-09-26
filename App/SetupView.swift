@@ -176,8 +176,8 @@ struct CreateParentCodeView: View {
     private func save() {
         guard code.count == codeLength else { error = "Use 6 digits."; return }
         guard code == confirm else { error = "The codes don't match."; return }
-        // In the real app this is stored only as a salted hash (README section 9).
-        app.parentCode = code
+        // Stored only as a salted hash, never in plain text (README section 9).
+        app.setParentCode(code)
         app.route = .addKid
     }
 }
@@ -269,6 +269,6 @@ struct AvatarBadge: View {
     }
 }
 
-#Preview("Grown-up check") { GrownUpCheckView().environmentObject(AppState()) }
-#Preview("Parent code") { CreateParentCodeView().environmentObject(AppState()) }
-#Preview("Add kid") { AddKidView().environmentObject(AppState()) }
+#Preview("Grown-up check") { GrownUpCheckView().environmentObject(AppState.preview()) }
+#Preview("Parent code") { CreateParentCodeView().environmentObject(AppState.preview()) }
+#Preview("Add kid") { AddKidView().environmentObject(AppState.preview()) }

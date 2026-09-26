@@ -1,10 +1,15 @@
 //
 //  Models.swift
-//  Plain in-memory model types + sample data for the mock-up.
+//  The value types the screens work with.
 //
-//  This is a scaffold: no SwiftData, no backend, no networking. Everything lives
-//  in memory for the duration of the run. The real app would persist progress in
-//  SwiftData and sync to a first-party backend (README.md section 8).
+//  `Kid` is a read-only projection of what the store holds (Persistence/) plus
+//  the figures derived from the bundled content (Lessons/): which levels are
+//  unlocked, what a level's star rating is. Screens render it; they never mutate
+//  it. Every change goes through `AppState`, which writes to SwiftData and
+//  reloads.
+//
+//  The level map itself is content, not code: it comes from
+//  App/Content/curriculum.json (see `CurriculumLibrary`).
 //
 
 import SwiftUI
@@ -26,23 +31,28 @@ enum AvatarKind: String, CaseIterable, Identifiable {
 /// One child. Profiles belong to the parent account (README section 6).
 /// All data here is the minimised set from README section 9 — name, avatar,
 /// progress. No last names, birthdays, photos or free text.
-struct Kid: Identifiable {
-    let id = UUID()
+struct Kid: Identifiable, Equatable {
+    let id: UUID
     var name: String
     var avatarKind: AvatarKind
     var avatarColorIndex: Int
 
-    // Progress / rewards (README section 3).
-    var starsByLevel: [Int: Int] = [:]   // level id -> stars earned (0...3)
+    // Rewards (README section 3).
     var coins: Int = 0
     var currentStreak: Int = 0
     var bestStreak: Int = 0
 
-    // Parent-dashboard figures (README section 6).
+    // Parent-dashboard figures (README section 6), from the day records.
     var minutesToday: Int = 0
     var minutesThisWeek: Int = 0
 
-    /// Highest level the child has unlocked. Levels unlock in order.
+    /// Best stars per finished lesson, keyed by lesson content id.
+    var starsByLesson: [String: Int] = [:]
+    /// Star rating shown per level on the map — only set once a level is done.
+    var starsByLevel: [Int: Int] = [:]
+    /// Map state per level, derived from the content and this child's progress.
+    var levelStates: [Int: LevelLockState] = [:]
+    /// The level the child is working on now. Levels unlock in order.
     var unlockedThrough: Int = 1
 
     var avatarColor: Color {
@@ -52,73 +62,33 @@ struct Kid: Identifiable {
     /// Total stars across all levels — shown on the map header.
     var totalStars: Int { starsByLevel.values.reduce(0, +) }
 
+    /// How many lessons this child has finished at least once.
+    var lessonsFinished: Int { starsByLesson.count }
+
     func lockState(for levelID: Int) -> LevelLockState {
-        if levelID < unlockedThrough { return .completed }
-        if levelID == unlockedThrough { return .current }
-        return .locked
+        levelStates[levelID] ?? (levelID <= unlockedThrough ? .current : .locked)
     }
+
+    func hasFinished(lessonID: String) -> Bool { starsByLesson[lessonID] != nil }
 }
 
+/// How a level shows up on the map.
+///   completed  — every lesson in it finished
+///   current    — the level the child is working on
+///   open       — unlocked, but its lessons aren't written yet ("Coming soon")
+///   locked     — earlier levels come first
 enum LevelLockState {
-    case completed, current, locked
+    case completed, current, open, locked
 }
 
-// MARK: - Level map (README section 5)
+// MARK: - Grown-up settings
 
-struct MoneyLevel: Identifiable {
-    let id: Int           // 1...13, also the unlock order
-    let title: String
-    let kidSummary: String
-    let world: String
-    let iconName: String   // Fluent Emoji 3D asset name (Assets.xcassets/Icons)
-    /// Only Level 2 (Needs & Wants) is a fully playable lesson in this mock-up.
-    let isPlayable: Bool
-}
-
-enum SampleData {
-    /// The 13 levels in 4 worlds, straight from README section 5.
-    static let levels: [MoneyLevel] = [
-        // World 1 · Money Basics
-        MoneyLevel(id: 1,  title: "What Is Money?",        kidSummary: "Money is something people trade for things.",       world: "Money Basics",  iconName: "coin",               isPlayable: false),
-        MoneyLevel(id: 2,  title: "Needs & Wants",          kidSummary: "Needs keep us safe. Wants are fun extras.",         world: "Money Basics",  iconName: "coat",               isPlayable: true),
-        MoneyLevel(id: 3,  title: "Earning Money",          kidSummary: "People earn money by doing jobs and helping.",      world: "Money Basics",  iconName: "broom",              isPlayable: false),
-        // World 2 · Save & Spend
-        MoneyLevel(id: 4,  title: "Saving Up",              kidSummary: "Keep some money now to use it later.",              world: "Save & Spend", iconName: "jar",                isPlayable: false),
-        MoneyLevel(id: 5,  title: "Smart Spending",         kidSummary: "Stop, think and compare before you buy.",           world: "Save & Spend", iconName: "shopping-cart",      isPlayable: false),
-        MoneyLevel(id: 6,  title: "Making a Budget",        kidSummary: "A money plan: spend some, save some, give some.",   world: "Save & Spend", iconName: "memo",               isPlayable: false),
-        // World 3 · Money Helpers
-        MoneyLevel(id: 7,  title: "How Banks Work",         kidSummary: "A bank keeps money safe until you need it.",        world: "Money Helpers", iconName: "bank",              isPlayable: false),
-        MoneyLevel(id: 8,  title: "Interest",               kidSummary: "Saving in a bank can pay you a little extra.",      world: "Money Helpers", iconName: "sparkles",          isPlayable: false),
-        MoneyLevel(id: 9,  title: "Borrowing & Paying Back", kidSummary: "When you borrow, you promise to give it back.",    world: "Money Helpers", iconName: "handshake",         isPlayable: false),
-        // World 4 · Big Money Ideas
-        MoneyLevel(id: 10, title: "Money Safety",           kidSummary: "Keep secrets safe. Ask a grown-up before buying.",  world: "Big Money Ideas", iconName: "shield",            isPlayable: false),
-        MoneyLevel(id: 11, title: "Taxes: Money We Share",  kidSummary: "Money grown-ups share to build things for all.",    world: "Big Money Ideas", iconName: "classical-building", isPlayable: false),
-        MoneyLevel(id: 12, title: "Giving & Sharing",       kidSummary: "Money can help other people and our community.",    world: "Big Money Ideas", iconName: "heart-with-ribbon",  isPlayable: false),
-        MoneyLevel(id: 13, title: "Growing Money",          kidSummary: "Investing is like planting a money seed.",          world: "Big Money Ideas", iconName: "tree",              isPlayable: false)
-    ]
-
-    /// The four worlds, in map order.
-    static let worlds: [String] = ["Money Basics", "Save & Spend", "Money Helpers", "Big Money Ideas"]
-
-    static func levels(in world: String) -> [MoneyLevel] {
-        levels.filter { $0.world == world }
-    }
-
-    static func level(_ id: Int) -> MoneyLevel? {
-        levels.first { $0.id == id }
-    }
-
-    /// A pre-populated demo kid so the map already shows progress, a streak and
-    /// stars without forcing the reviewer through setup first.
-    static func demoKid() -> Kid {
-        var mia = Kid(name: "Mia", avatarKind: .girl, avatarColorIndex: 0)
-        mia.starsByLevel = [1: 3]      // Level 1 finished with 3 stars
-        mia.coins = 30
-        mia.currentStreak = 3
-        mia.bestStreak = 5
-        mia.minutesToday = 8
-        mia.minutesThisWeek = 42
-        mia.unlockedThrough = 2        // Needs & Wants is the current level
-        return mia
-    }
+/// Per-account parental controls (README section 6). Persisted in `SettingsRecord`.
+struct ParentSettings: Equatable {
+    var dailyLimitMinutes: Int = 20
+    var soundOn: Bool = true
+    /// How many digits the stored parent code has, so the keypad knows when to
+    /// submit. Nil when no code is set. The code itself is only ever stored as a
+    /// salted hash (README section 9).
+    var parentCodeDigits: Int?
 }

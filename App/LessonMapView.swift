@@ -1,8 +1,13 @@
 //
 //  LessonMapView.swift
-//  Screen 3: the kid's level map — the 13-level path in 4 worlds, with
+//  Screen 3: the kid's level map — the level path in its worlds, with
 //  locked / current / completed states, stars, coins and a streak.
 //  Streak icon is a COIN, not a flame (README section 2).
+//
+//  The worlds and levels come from App/Content/curriculum.json, and the states
+//  and stars come from this child's SAVED progress, so what a kid sees here is
+//  what the store holds. A level whose lessons aren't written yet shows "Coming
+//  soon" and never blocks the levels after it.
 //
 
 import SwiftUI
@@ -24,7 +29,7 @@ struct LessonMapView: View {
             header(for: kid)
             ScrollView {
                 VStack(spacing: 28) {
-                    ForEach(SampleData.worlds, id: \.self) { world in
+                    ForEach(app.library.worlds) { world in
                         worldSection(world, kid: kid)
                     }
                 }
@@ -67,34 +72,27 @@ struct LessonMapView: View {
 
     // MARK: World section
 
-    private func worldSection(_ world: String, kid: Kid) -> some View {
+    private func worldSection(_ world: WorldSpec, kid: Kid) -> some View {
         VStack(spacing: 16) {
-            Text(world.uppercased())
+            Text(world.title.uppercased())
                 .font(.caption.weight(.heavy))
                 .tracking(1.5)
                 .foregroundStyle(Palette.teal.opacity(0.8))
 
-            ForEach(SampleData.levels(in: world)) { level in
+            ForEach(world.levels) { level in
                 LevelNode(level: level,
                           state: kid.lockState(for: level.id),
                           stars: kid.starsByLevel[level.id] ?? 0) {
-                    tap(level, kid: kid)
+                    app.startLesson(inLevel: level.id)
                 }
             }
         }
-    }
-
-    private func tap(_ level: MoneyLevel, kid: Kid) {
-        let state = kid.lockState(for: level.id)
-        guard state != .locked else { return }        // locked levels don't open
-        guard level.isPlayable else { return }        // only Needs & Wants plays
-        app.route = .lesson
     }
 }
 
 /// One level "bubble" on the path.
 struct LevelNode: View {
-    let level: MoneyLevel
+    let level: LevelSpec
     let state: LevelLockState
     let stars: Int
     let action: () -> Void
@@ -107,7 +105,7 @@ struct LevelNode: View {
                         .frame(width: 66, height: 66)
                         // 4px translucent teal ring around the current level bubble.
                         .overlay(Circle().stroke(ringColor, lineWidth: Border.levelRing))
-                    FluentIcon(name: state == .locked ? "locked" : level.iconName, size: 34)
+                    FluentIcon(name: state == .locked ? "locked" : level.icon, size: 34)
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
@@ -122,9 +120,10 @@ struct LevelNode: View {
 
                     if state == .completed {
                         StarRow(earned: stars, size: 16)
-                    } else if state == .current && level.isPlayable {
+                    } else if state == .current && level.hasLessons {
                         Text("Tap to play ▶").font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
-                    } else if state == .current {
+                    } else if state == .current || state == .open {
+                        // Unlocked, but this level's lessons aren't written yet.
                         Text("Coming soon").font(.caption).foregroundStyle(Palette.textFaint)
                     }
                 }
@@ -148,7 +147,8 @@ struct LevelNode: View {
     private var bubbleColor: Color {
         switch state {
         case .completed: return Palette.copper
-        case .current:   return level.isPlayable ? Palette.teal : Palette.skyTeal
+        case .current:   return level.hasLessons ? Palette.teal : Palette.skyTeal
+        case .open:      return Palette.skyTeal
         case .locked:    return Palette.lockGrey
         }
     }
@@ -160,12 +160,16 @@ struct LevelNode: View {
     private var accessibilityHint: String {
         switch state {
         case .locked:    return "Locked. Finish earlier levels first."
-        case .current:   return level.isPlayable ? "Current level. Tap to play." : "Current level. Coming soon."
+        case .current:   return level.hasLessons ? "Current level. Tap to play." : "Current level. Coming soon."
+        case .open:      return "Unlocked. Coming soon."
         case .completed: return "Finished, \(stars) of 3 stars."
         }
     }
 }
 
+
+#if DEBUG
 #Preview {
-    LessonMapView().environmentObject(AppState())
+    LessonMapView().environmentObject(AppState.preview())
 }
+#endif

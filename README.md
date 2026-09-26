@@ -1,6 +1,6 @@
 # Money lessons with Penny the Armadillo
 
-> **Status: early prototype.** A SwiftUI mock-up lives in `App/` (welcome → grown-up setup → level map → one playable lesson → code-locked parent dashboard); it is in-memory only, with no backend, SwiftData or network yet. The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
+> **Status: early prototype.** A SwiftUI app lives in `App/` (welcome → grown-up setup → level map → lessons → code-locked parent dashboard). Two foundations are now real: **progress is saved on the device** with SwiftData (kids, the parent code as a salted hash, lessons finished, stars, play coins, streaks, unlocked levels), and **lessons are data, not screens** — a lesson engine plays every screen type in [section 3](#3-how-learning-works) from bundled JSON in `App/Content`. There is still no backend, no sync, no Sign in with Apple and no parental consent, and World 1's lessons are not written yet (one ported lesson plus one clearly marked sample). The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
 
 An iPhone and iPad app that teaches children the basics of money through short, playful, guided lessons, in the spirit of Duolingo. A friendly armadillo named **Penny** walks kids through a path of levels. Each level explores one money idea, from "What is money?" to "How can money grow?"
 
@@ -344,8 +344,8 @@ Everything a child reads or hears follows these rules.
 | Language | **Swift**, using Swift Concurrency (async/await) | Current Apple standard |
 | Devices | iPhone and iPad, one app | Families often share an iPad |
 | Parent sign-in | **Sign in with Apple** via Apple's AuthenticationServices framework | The only login method; used by the parent only |
-| Local storage | **SwiftData** for offline progress and cached content | Lessons keep working without internet and sync later |
-| Lessons | Lesson content as **data files** (for example JSON) bundled with the app | Writers can add lessons without changing app code |
+| Local storage | **SwiftData** for offline progress and cached content — **built**, on-device only (`App/Persistence/`) | Lessons keep working without internet and sync later |
+| Lessons | Lesson content as **data files** (JSON) bundled with the app — **built** (`App/Content/`, played by `App/Lessons/`) | Writers can add lessons without changing app code |
 | Animation | SwiftUI animations for pops, wobbles, bursts and the screen glow. | No heavy third-party SDKs |
 | Penny (mock-up) | Provided placeholder art: five poses cropped from a hand-designed character sheet, cut to transparency and bundled in `Assets.xcassets`, swapped per mood in `PennyView` | Lets the mock-up read correctly before the 3D model is commissioned |
 | Penny (prototype) | Pre-rendered transparent video clips (HEVC with alpha) and stills from one commissioned, rigged 3D model, played with AVFoundation | Best glossy look, no 3D engine risk while testing lessons |
@@ -447,7 +447,9 @@ Because the server stores children's names, profiles and progress, the app shoul
 
 ### Where we are
 
-**🟡 Concept stage.** The app idea, guide animal, level path, lesson flow and account model have been designed and reviewed. **No app code exists.**
+**🟢 Early prototype.** The app idea, guide animal, level path, lesson flow and account model have been designed and reviewed, and the app's foundation is built: every screen in `App/`, progress saved on the device with **SwiftData**, and a **lesson engine** that plays lessons from bundled data files (`App/Content/curriculum.json` and `App/Content/lessons/*.json`) covering all seven screen types.
+
+What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, World 1's written lessons (Level 2 has the one ported lesson plus a clearly marked sample), the rewards shop, the avatar builder and a child's own first-run, and the full accessibility pass.
 
 ### Phases
 
@@ -455,7 +457,7 @@ Because the server stores children's names, profiles and progress, the app shoul
 |---|---|---|
 | **0 · Concept** | Choose the guide animal, level path, sample lesson flow, account and parent dashboard model; write this README | ✅ Done |
 | **1 · Design** | Commission the rigged glossy 3D Penny model and animations, Fluent Emoji 3D icon set and credits screen, full lesson scripts for World 1, UI design, trademark search for the chosen app name and for Penny, privacy and legal review | ⏳ Next |
-| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | Not started |
+| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | 🔵 In progress — Level 2 plays from data files, progress saves on the device, Penny still placeholder art |
 | **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync; Penny live in RealityKit | Not started |
 | **4 · Full path** | All 13 levels, level checks, rewards shop, accessibility and localization passes | Not started |
 | **5 · Launch** | App Store submission in the Kids Category | Not started |
