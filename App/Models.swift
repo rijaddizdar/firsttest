@@ -16,7 +16,10 @@ enum AvatarKind: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     /// SF Symbol placeholder for the boy/girl avatar look (README section 6).
-    var symbolName: String { self == .boy ? "figure.child" : "figure.child.circle" }
+    /// Both are plain figures: the girl used to be `figure.child.circle`, whose
+    /// ringed stick figure reads as the iOS accessibility badge rather than a
+    /// child once it sits inside the avatar's own ring.
+    var symbolName: String { self == .boy ? "figure.child" : "figure.stand.dress" }
     var label: String { self == .boy ? "Boy" : "Girl" }
 }
 
