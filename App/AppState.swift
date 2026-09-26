@@ -79,6 +79,22 @@ final class AppState: ObservableObject {
            let route = Route(uiTestName: raw) {
             self.route = route
         }
+
+        // Companion hook: replace the seeded kids with a comma-separated list of
+        // names, e.g. `UITEST_KIDS=Mia,Jayden,Bartholomew`. Lets a screenshot run
+        // exercise "Who's learning?" with a full family and long names, which is
+        // where that grid's layout actually gets stressed.
+        if let raw = ProcessInfo.processInfo.environment["UITEST_KIDS"] {
+            let names = raw.split(separator: ",").map(String.init)
+            self.kids = names.enumerated().map { index, name in
+                var kid = Kid(name: name,
+                              avatarKind: index.isMultiple(of: 2) ? .girl : .boy,
+                              avatarColorIndex: index)
+                kid.unlockedThrough = 2
+                return kid
+            }
+            self.selectedKidID = self.kids.first?.id
+        }
     }
 
     var selectedKid: Kid? {
