@@ -98,6 +98,10 @@ blank glyphs), and layout is correct on the iPhone 17.
 | Needs & Wants — wrong answer (warm-apricot glow) | `screenshots/06-lesson-wrong.png` |
 | Parent dashboard | `screenshots/07-parent-dashboard.png` |
 
+"Who's learning?" is laid out to fit on one screen at rest, so it is checked
+against a range of family sizes and both phone widths — see
+[`screenshots/whos-learning/`](screenshots/whos-learning).
+
 ### Reproducing the screenshots
 
 The app reads two optional launch-environment hooks (harmless in normal use —
@@ -107,6 +111,9 @@ they only matter when set) so the screens can be captured deterministically:
   `whosLearning`, `lessonMap`, `lesson`, `parentDashboard`, …)
 - `UITEST_LESSON_FEEDBACK` — with `UITEST_ROUTE=lesson`, pre-seed the first
   question's `right` or `wrong` answer glow
+- `UITEST_KIDS` — replace the seeded kid with a comma-separated family, e.g.
+  `UITEST_KIDS=Mia,Jayden,Bartholomew,Olivia,Gigi,Theo`. This is what stresses
+  the "Who's learning?" grid (row counts, long names)
 
 ```sh
 xcrun simctl boot "iPhone 17"
