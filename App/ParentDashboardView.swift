@@ -105,8 +105,9 @@ struct ParentGateView: View {
         // is "1234"; a real code is always 6 digits.
         guard entry.count < codeLength else { return }
         entry.append(key)
-        // Try when we reach the stored code's length.
-        if let code = app.parentCode, entry.count == code.count {
+        // Try when we reach the stored code's length. Only the length is known:
+        // the code itself is stored as a salted hash (README section 9).
+        if let digits = app.parentCodeLength, entry.count == digits {
             submit()
         }
     }
@@ -135,7 +136,7 @@ struct ParentDashboardView: View {
 
                 // Per-kid progress cards.
                 ForEach(app.kids) { kid in
-                    KidProgressCard(kid: kid)
+                    KidProgressCard(kid: kid, levels: app.library.levels)
                 }
 
                 settingsSection
@@ -163,7 +164,9 @@ struct ParentDashboardView: View {
     private var settingsSection: some View {
         DashCard(title: "Settings", icon: "gear") {
             // Daily time limit per kid (README section 6).
-            Stepper(value: $app.settings.dailyLimitMinutes, in: 5...120, step: 5) {
+            Stepper(value: Binding(get: { app.settings.dailyLimitMinutes },
+                                   set: { app.setDailyLimit($0) }),
+                    in: 5...120, step: 5) {
                 HStack {
                     Text("Daily time limit")
                     Spacer()
@@ -174,7 +177,7 @@ struct ParentDashboardView: View {
             Divider()
             Button {
                 // Reset the code: send the grown-up back to create a new one.
-                app.parentCode = nil
+                app.clearParentCode()
                 app.route = .createParentCode
             } label: {
                 Label("Reset parent code", systemImage: "arrow.clockwise")
@@ -200,8 +203,11 @@ struct ParentDashboardView: View {
             Text("Icons: Fluent Emoji 3D by Microsoft, MIT licensed. See FLUENT-EMOJI-LICENSE.txt.")
                 .font(.caption2).foregroundStyle(Palette.textFaint)
                 .multilineTextAlignment(.center)
-            Text("Mock-up only — no real accounts, network or storage.")
+            // Honest about what exists: on-device saving works, accounts and
+            // sync do not (README section 10).
+            Text("No accounts and no network yet. Progress is saved on this device only.")
                 .font(.caption2).foregroundStyle(Palette.textFaint)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity, alignment: .center)
     }
@@ -210,6 +216,8 @@ struct ParentDashboardView: View {
 /// One child's progress summary card.
 private struct KidProgressCard: View {
     let kid: Kid
+    /// The levels from the bundled curriculum, for the per-level list.
+    let levels: [LevelSpec]
 
     var body: some View {
         DashCard(title: kid.name, icon: nil, leading: {
@@ -232,7 +240,7 @@ private struct KidProgressCard: View {
 
             Divider()
             // Per-level progress list (README section 6 "Progress per level").
-            ForEach(SampleData.levels.prefix(kid.unlockedThrough), id: \.id) { level in
+            ForEach(levels.filter { $0.id <= kid.unlockedThrough }, id: \.id) { level in
                 HStack {
                     Text("\(level.id). \(level.title)").font(.subheadline)
                     Spacer()
@@ -278,5 +286,5 @@ private struct DashCard<Content: View>: View {
     }
 }
 
-#Preview("Gate") { ParentGateView().environmentObject(AppState()) }
-#Preview("Dashboard") { ParentDashboardView().environmentObject(AppState()) }
+#Preview("Gate") { ParentGateView().environmentObject(AppState.preview()) }
+#Preview("Dashboard") { ParentDashboardView().environmentObject(AppState.preview()) }

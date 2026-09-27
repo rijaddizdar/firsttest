@@ -1,0 +1,63 @@
+{
+  "id": "needs-and-wants-1",
+  "levelID": 2,
+  "title": "Needs & Wants",
+  "estimatedMinutes": 3,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Today we'll learn about needs and wants!",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Needs and Wants",
+      "cards": [
+        {
+          "icon": "coat",
+          "badge": "NEED",
+          "tint": "teal",
+          "caption": "Something we must have to stay safe and healthy."
+        },
+        {
+          "icon": "balloon",
+          "badge": "WANT",
+          "tint": "copper",
+          "caption": "A fun extra. Nice, but we're okay without it."
+        }
+      ],
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "coat-in-the-snow",
+      "prompt": "It's snowing outside. Is a warm coat a need or a want?",
+      "pennyHint": "Look at the picture, {name}!",
+      "choices": [
+        { "label": "Need", "icon": "thumbs-up", "correct": true },
+        { "label": "Want", "icon": "balloon" }
+      ],
+      "rightMessage": "Yes, {name}! A coat keeps us warm and safe. That's a need!",
+      "wrongMessage": "Good try, {name}! See how the coat keeps her warm in the snow? That makes it a need."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "water-on-a-hot-day",
+      "prompt": "You are thirsty on a hot day. Is water a need or a want?",
+      "pennyHint": "Think about your body, {name}.",
+      "choices": [
+        { "label": "Need", "icon": "droplet", "correct": true },
+        { "label": "Want", "icon": "balloon" }
+      ],
+      "rightMessage": "That's it, {name}! Our bodies need water to stay healthy.",
+      "wrongMessage": "Good try, {name}! We can't stay healthy without water, so water is a need."
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "You kept trying, and you got it!"
+    }
+  ]
+}

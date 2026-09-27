@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "readme": "Worlds and levels for the level map (README section 5). Each level lists the ids of its lessons, in play order; the loader resolves every id to Content/lessons/<id>.json. A level with an empty 'lessons' list is not written yet: the map shows it unlocked but 'Coming soon', and it never blocks the levels after it. Writers add a lesson by dropping a file in Content/lessons and naming it here — no Swift changes, no xcodegen run (Content is a folder reference).",
+  "worlds": [
+    {
+      "id": "money-basics",
+      "title": "Money Basics",
+      "levels": [
+        {
+          "id": 1,
+          "title": "What Is Money?",
+          "kidSummary": "Money is something people trade for things.",
+          "icon": "coin",
+          "lessons": []
+        },
+        {
+          "id": 2,
+          "title": "Needs & Wants",
+          "kidSummary": "Needs keep us safe. Wants are fun extras.",
+          "icon": "coat",
+          "lessons": ["needs-and-wants-1", "sample-screen-types"]
+        },
+        {
+          "id": 3,
+          "title": "Earning Money",
+          "kidSummary": "People earn money by doing jobs and helping.",
+          "icon": "broom",
+          "lessons": []
+        }
+      ]
+    },
+    {
+      "id": "save-and-spend",
+      "title": "Save & Spend",
+      "levels": [
+        {
+          "id": 4,
+          "title": "Saving Up",
+          "kidSummary": "Keep some money now to use it later.",
+          "icon": "jar",
+          "lessons": []
+        },
+        {
+          "id": 5,
+          "title": "Smart Spending",
+          "kidSummary": "Stop, think and compare before you buy.",
+          "icon": "shopping-cart",
+          "lessons": []
+        },
+        {
+          "id": 6,
+          "title": "Making a Budget",
+          "kidSummary": "A money plan: spend some, save some, give some.",
+          "icon": "memo",
+          "lessons": []
+        }
+      ]
+    },
+    {
+      "id": "money-helpers",
+      "title": "Money Helpers",
+      "levels": [
+        {
+          "id": 7,
+          "title": "How Banks Work",
+          "kidSummary": "A bank keeps money safe until you need it.",
+          "icon": "bank",
+          "lessons": []
+        },
+        {
+          "id": 8,
+          "title": "Interest",
+          "kidSummary": "Saving in a bank can pay you a little extra.",
+          "icon": "sparkles",
+          "lessons": []
+        },
+        {
+          "id": 9,
+          "title": "Borrowing & Paying Back",
+          "kidSummary": "When you borrow, you promise to give it back.",
+          "icon": "handshake",
+          "lessons": []
+        }
+      ]
+    },
+    {
+      "id": "big-money-ideas",
+      "title": "Big Money Ideas",
+      "levels": [
+        {
+          "id": 10,
+          "title": "Money Safety",
+          "kidSummary": "Keep secrets safe. Ask a grown-up before buying.",
+          "icon": "shield",
+          "lessons": []
+        },
+        {
+          "id": 11,
+          "title": "Taxes: Money We Share",
+          "kidSummary": "Money grown-ups share to build things for all.",
+          "icon": "classical-building",
+          "lessons": []
+        },
+        {
+          "id": 12,
+          "title": "Giving & Sharing",
+          "kidSummary": "Money can help other people and our community.",
+          "icon": "heart-with-ribbon",
+          "lessons": []
+        },
+        {
+          "id": 13,
+          "title": "Growing Money",
+          "kidSummary": "Investing is like planting a money seed.",
+          "icon": "tree",
+          "lessons": []
+        }
+      ]
+    }
+  ]
+}

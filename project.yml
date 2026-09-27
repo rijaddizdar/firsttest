@@ -21,7 +21,15 @@ targets:
     platform: iOS
     deploymentTarget: "17.0"
     sources:
+      # Swift, assets and Info.plist.
       - path: App
+        excludes:
+          - "Content/**"
+      # Lesson content stays a FOLDER REFERENCE, so the bundle keeps the
+      # Content/ tree and a writer can add a lesson file without regenerating
+      # the project (see App/Content/curriculum.json).
+      - path: App/Content
+        type: folder
     info:
       path: App/Info.plist
       properties:
@@ -49,3 +57,19 @@ targets:
         ENABLE_PREVIEWS: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: ""
         CODE_SIGNING_ALLOWED: NO                   # simulator build needs no signing
+
+  # Unit tests for the parts that must not silently break: content loading and
+  # validation, the lesson engine's rules, and what the store saves.
+  MoneyPalsTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Tests
+    dependencies:
+      - target: MoneyPals
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
