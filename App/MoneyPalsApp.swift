@@ -50,6 +50,9 @@ struct RootView: View {
             case .lessonMap:        LessonMapView()
             case .levelLessons:     LevelLessonsView()
             case .lesson:           lessonPlayer
+            case .rewards:          RewardsView()
+            case .shop:             ShopView()
+            case .stickerBook:      StickerBookView()
             case .parentGate:       ParentGateView()
             case .parentDashboard:  ParentDashboardView()
             }

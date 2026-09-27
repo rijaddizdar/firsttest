@@ -166,6 +166,98 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(kid.bestStreak, 2)
     }
 
+    // MARK: Penny's scales (README section 3: a finished LEVEL, not a lesson)
+
+    func testFinishingALevelGivesPennyNewScalesOnceAndOnlyOnce() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let lessons = library.lessons(inLevel: 2)
+        XCTAssertGreaterThan(lessons.count, 1, "this test needs a level with more than one lesson")
+
+        // Part-way through the level: no scales yet.
+        store.recordCompletion(kidID: id, lessonID: lessons[0].id, levelID: 2,
+                               stars: 3, coins: 10, minutes: 3)
+        XCTAssertEqual(store.awardScalesIfLevelFinished(kidID: id, levelID: 2,
+                                                        wasCompleteBefore: false, library: library), 0)
+        XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).pennyScales, 0)
+
+        // The lesson that finishes the level earns the batch.
+        store.recordCompletion(kidID: id, lessonID: lessons[1].id, levelID: 2,
+                               stars: 3, coins: 10, minutes: 3)
+        XCTAssertEqual(store.awardScalesIfLevelFinished(kidID: id, levelID: 2,
+                                                        wasCompleteBefore: false, library: library),
+                       PennyScales.perLevel)
+        XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).pennyScales, PennyScales.perLevel)
+
+        // Replaying the finished level hands out nothing more.
+        store.recordCompletion(kidID: id, lessonID: lessons[0].id, levelID: 2,
+                               stars: 3, coins: 10, minutes: 3)
+        XCTAssertEqual(store.awardScalesIfLevelFinished(kidID: id, levelID: 2,
+                                                        wasCompleteBefore: true, library: library), 0)
+        XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).pennyScales, PennyScales.perLevel,
+                       "a replay never hands out a second batch of scales")
+    }
+
+    // MARK: Spending play coins
+
+    func testBuyingAStickerSpendsTheCoinsAndKeepsTheSticker() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 20, minutes: 3)
+
+        XCTAssertTrue(store.buy(itemID: "sticker-rainbow", price: 10, kidID: id))
+
+        // A second store over the same data is what a relaunch looks like.
+        let kid = try XCTUnwrap(ProgressStore(context: container.mainContext).kids(using: library).first)
+        XCTAssertEqual(kid.coins, 10, "the price came off the balance")
+        XCTAssertTrue(kid.owns("sticker-rainbow"), "and the sticker is still hers after a relaunch")
+    }
+
+    func testTheSameStickerCannotBeBoughtTwice() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 30, minutes: 3)
+
+        XCTAssertTrue(store.buy(itemID: "sticker-rainbow", price: 10, kidID: id))
+        XCTAssertFalse(store.buy(itemID: "sticker-rainbow", price: 10, kidID: id))
+        let kid = try XCTUnwrap(store.kids(using: library).first)
+        XCTAssertEqual(kid.coins, 20, "the second tap spent nothing")
+        XCTAssertEqual(kid.ownedItemIDs.count, 1)
+    }
+
+    /// The balance can never go negative: play coins are earned by learning, and
+    /// there is no way to get more of them (certainly not with real money).
+    func testAChildCannotSpendCoinsTheyDoNotHave() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 10, minutes: 3)
+
+        XCTAssertFalse(store.buy(itemID: "sticker-unicorn", price: 25, kidID: id))
+        let kid = try XCTUnwrap(store.kids(using: library).first)
+        XCTAssertEqual(kid.coins, 10, "nothing was spent")
+        XCTAssertFalse(kid.owns("sticker-unicorn"))
+    }
+
+    func testPennysScarfColourIsRememberedAndCanGoBack() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        XCTAssertNil(try XCTUnwrap(store.kids(using: library).first).pennyScarfItemID,
+                     "a new child gets Penny's own colour")
+
+        store.setPennyScarf(itemID: "scarf-coral", kidID: id)
+        XCTAssertEqual(try XCTUnwrap(ProgressStore(context: container.mainContext)
+            .kids(using: library).first).pennyScarfItemID, "scarf-coral")
+
+        store.setPennyScarf(itemID: "scarf-teal", kidID: id)
+        XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).pennyScarfItemID, "scarf-teal")
+    }
+
+    func testDeletingAChildTakesTheirPurchasesWithThem() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 20, minutes: 3)
+        XCTAssertTrue(store.buy(itemID: "sticker-rainbow", price: 10, kidID: id))
+
+        store.deleteKid(id)
+        XCTAssertTrue(store.kids(using: library).isEmpty)
+        let leftover = try container.mainContext.fetch(FetchDescriptor<ShopPurchaseRecord>())
+        XCTAssertTrue(leftover.isEmpty, "README section 9: deleting a child deletes their data")
+    }
+
     // MARK: The parent code
 
     func testTheParentCodeIsCheckedButNeverStored() throws {

@@ -80,12 +80,24 @@ struct LessonMapView: View {
                 .accessibilityHint("Change how you look")
             }
 
-            HStack(spacing: 10) {
-                RewardChip(icon: "star", value: "\(kid.totalStars)", tint: Palette.star)
-                RewardChip(icon: "coin", value: "\(kid.coins)", tint: Palette.copper)
-                // Streak uses a coin, never a flame (Penny Design System).
-                RewardChip(icon: "coin", value: "\(kid.currentStreak)-day", tint: Palette.teal)
+            // The whole chip row is the door to the rewards area: one big
+            // target for a small finger, with a cart to say it can be spent.
+            Button {
+                app.route = .rewards
+            } label: {
+                // The chips and the cart have to share one row on a small phone
+                // and at large Dynamic Type, so the streak label shortens before
+                // anything is allowed to run off the edge.
+                ViewThatFits(in: .horizontal) {
+                    chipRow(for: kid, streak: "\(kid.currentStreak)-day")
+                    chipRow(for: kid, streak: "\(kid.currentStreak)d")
+                }
             }
+            .buttonStyle(PressableStyle())
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Your rewards")
+            .accessibilityValue("\(kid.totalStars) stars, \(kid.coins) play coins, \(kid.currentStreak) day streak")
+            .accessibilityHint("Opens your rewards, where you can spend coins.")
         }
         .padding(.horizontal, 20)
         .padding(.top, 12)
@@ -107,6 +119,19 @@ struct LessonMapView: View {
         }
         .padding(.horizontal, 20)
         .accessibilityElement(children: .combine)
+    /// Stars, coins, the streak and the cart that says they can be spent.
+    private func chipRow(for kid: Kid, streak: String) -> some View {
+        HStack(spacing: 10) {
+            RewardChip(icon: "star", value: "\(kid.totalStars)", tint: Palette.star)
+            RewardChip(icon: "coin", value: "\(kid.coins)", tint: Palette.copper)
+            // Streak uses a coin, never a flame (Penny Design System).
+            RewardChip(icon: "coin", value: streak, tint: Palette.teal)
+            ZStack {
+                Circle().fill(Palette.teal).frame(width: 40, height: 40)
+                FluentIcon(name: "shopping-cart", size: 22)
+            }
+        }
+        .fixedSize(horizontal: true, vertical: false)
     }
 
     // MARK: World section

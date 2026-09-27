@@ -54,11 +54,28 @@ final class KidRecord {
     /// Profile order on "Who's learning?".
     var createdAt: Date
 
+    /// Penny's shiny scales — three for every level this child finishes
+    /// (README section 3). A count, not artwork: see `PennyScales`.
+    ///
+    /// New properties on this model carry a default so an existing on-device
+    /// store migrates by itself; `PersistenceController` falls back to a fresh
+    /// store if one ever can't be opened, so a child is never locked out.
+    var pennyScales: Int = 0
+
+    /// Which scarf colour Penny wears, as a shop item id (`Content/shop.json`).
+    /// Nil means her own colour. A customization choice, which is the only kind
+    /// of extra data README section 9 allows us to keep for a child.
+    var pennyScarfItemID: String?
+
     @Relationship(deleteRule: .cascade, inverse: \LessonResultRecord.kid)
     var lessonResults: [LessonResultRecord] = []
 
     @Relationship(deleteRule: .cascade, inverse: \DailyUsageRecord.kid)
     var dailyUsage: [DailyUsageRecord] = []
+
+    /// Everything this child has bought with play coins.
+    @Relationship(deleteRule: .cascade, inverse: \ShopPurchaseRecord.kid)
+    var purchases: [ShopPurchaseRecord] = []
 
     init(id: UUID = UUID(),
          name: String,
@@ -72,7 +89,9 @@ final class KidRecord {
          currentStreak: Int = 0,
          bestStreak: Int = 0,
          lastFinishedDay: Date? = nil,
-         createdAt: Date = Date()) {
+         createdAt: Date = Date(),
+         pennyScales: Int = 0,
+         pennyScarfItemID: String? = nil) {
         self.id = id
         self.name = name
         self.avatarKindRaw = avatarKindRaw
@@ -86,6 +105,27 @@ final class KidRecord {
         self.bestStreak = bestStreak
         self.lastFinishedDay = lastFinishedDay
         self.createdAt = createdAt
+        self.pennyScales = pennyScales
+        self.pennyScarfItemID = pennyScarfItemID
+    }
+}
+
+/// One thing a child bought with play coins: a sticker, or a colour for Penny's
+/// scarf. The id is the shop item's id from `App/Content/shop.json`.
+///
+/// Play coins are pretend money earned by finishing lessons. Nothing here was
+/// ever bought with real money, and no purchase path exists in the app
+/// (README section 9, "No purchases for kids").
+@Model
+final class ShopPurchaseRecord {
+    /// The shop item's content id, e.g. "sticker-rainbow".
+    var itemID: String
+    var boughtAt: Date
+    var kid: KidRecord?
+
+    init(itemID: String, boughtAt: Date = Date()) {
+        self.itemID = itemID
+        self.boughtAt = boughtAt
     }
 }
 
@@ -156,6 +196,7 @@ final class SettingsRecord {
 /// Everything the app persists, in one place for the container.
 enum PersistedSchema {
     static let models: [any PersistentModel.Type] = [
-        KidRecord.self, LessonResultRecord.self, DailyUsageRecord.self, SettingsRecord.self
+        KidRecord.self, LessonResultRecord.self, DailyUsageRecord.self,
+        ShopPurchaseRecord.self, SettingsRecord.self
     ]
 }

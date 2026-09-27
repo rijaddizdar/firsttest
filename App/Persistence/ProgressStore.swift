@@ -212,6 +212,61 @@ final class ProgressStore {
         save()
     }
 
+    /// Penny's scales, awarded the moment a LEVEL is finished rather than a
+    /// lesson (README section 3: "Finishing a level adds new shiny scales to
+    /// Penny"). Call it straight after `recordCompletion`, which is what makes
+    /// the level complete; it returns how many scales were added so the Yay!
+    /// screen can say so, and 0 on every other lesson.
+    ///
+    /// Idempotent in the way that matters: replaying a finished level does not
+    /// hand out a second batch, because the level was already complete before
+    /// the replay.
+    @discardableResult
+    func awardScalesIfLevelFinished(kidID: UUID,
+                                    levelID: Int,
+                                    wasCompleteBefore: Bool,
+                                    library: CurriculumLibrary) -> Int {
+        guard !wasCompleteBefore, let kid = record(kidID) else { return 0 }
+        var starsByLesson: [String: Int] = [:]
+        for result in kid.lessonResults {
+            starsByLesson[result.lessonID] = max(starsByLesson[result.lessonID] ?? 0, result.stars)
+        }
+        guard library.isLevelComplete(levelID, starsByLesson: starsByLesson) else { return 0 }
+        kid.pennyScales += PennyScales.perLevel
+        save()
+        return PennyScales.perLevel
+    }
+
+    // MARK: Spending play coins
+
+    /// Buy a shop item with play coins. Returns false — and spends nothing — if
+    /// the child already owns it or can't afford it, so a screen that is a moment
+    /// out of date can never overdraw a balance.
+    ///
+    /// Play coins are only ever earned by finishing lessons. There is no
+    /// in-app purchase and no real-money path anywhere in the app.
+    @discardableResult
+    func buy(itemID: String, price: Int, kidID: UUID) -> Bool {
+        guard price >= 0, let kid = record(kidID) else { return false }
+        guard !kid.purchases.contains(where: { $0.itemID == itemID }) else { return false }
+        guard kid.coins >= price else { return false }
+
+        kid.coins -= price
+        let purchase = ShopPurchaseRecord(itemID: itemID)
+        purchase.kid = kid
+        context.insert(purchase)
+        save()
+        return true
+    }
+
+    /// Choose the scarf colour Penny wears. A customization choice, which is
+    /// what README section 9 allows us to keep (`nil` = Penny's own colour).
+    func setPennyScarf(itemID: String?, kidID: UUID) {
+        guard let kid = record(kidID) else { return }
+        kid.pennyScarfItemID = itemID
+        save()
+    }
+
     /// Streaks count DAYS with at least one finished lesson. A second lesson the
     /// same day doesn't bump it, and a missed day quietly starts a new one — the
     /// app never scolds (README section 3 and section 7 rule 6).
@@ -384,6 +439,59 @@ final class ProgressStore {
         save()
     }
 
+    /// `UITEST_SEED=rewards` — the demo kid part-way through the rewards, so a
+    /// screenshot shows all three shop states at once: stickers already bought,
+    /// stickers she can afford, and stickers she can't afford yet.
+    ///
+    /// Built out of the real methods rather than by setting fields, so the
+    /// figures agree with each other: the stars, the lessons finished, the
+    /// scales and the balance are all consequences of the lessons she played
+    /// and the things she bought.
+    func seedRewardsKid(library: CurriculumLibrary) {
+        guard records().isEmpty else { return }
+        let id = addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let lessons = library.lessons(inLevel: 2)
+        guard !lessons.isEmpty else { return }
+
+        // Three days of use, a day apart, so the streak on screen is one the
+        // streak rules actually produced rather than a number written in.
+        recordCompletion(kidID: id, lessonID: lessons[0].id, levelID: lessons[0].levelID,
+                         stars: 3, coins: lessons[0].coins, minutes: 4)
+        pretendTheLastLessonWasYesterday(id)
+
+        if lessons.count > 1 {
+            recordCompletion(kidID: id, lessonID: lessons[1].id, levelID: lessons[1].levelID,
+                             stars: 2, coins: lessons[1].coins, minutes: 4)
+        }
+        awardScalesIfLevelFinished(kidID: id, levelID: lessons[0].levelID,
+                                   wasCompleteBefore: false, library: library)
+        pretendTheLastLessonWasYesterday(id)
+
+        // A replay earns coins again but never fewer stars, which is what gives
+        // her something to spend.
+        for lesson in lessons {
+            recordCompletion(kidID: id, lessonID: lesson.id, levelID: lesson.levelID,
+                             stars: 3, coins: lesson.coins, minutes: 3)
+        }
+
+        // Spend some of it, so the shop has owned, affordable and not-yet-
+        // affordable items on screen together.
+        buy(itemID: "sticker-glowing-star", price: 5, kidID: id)
+        buy(itemID: "sticker-rainbow", price: 10, kidID: id)
+        if buy(itemID: "scarf-coral", price: 15, kidID: id) {
+            setPennyScarf(itemID: "scarf-coral", kidID: id)
+        }
+        setParentCode("1234")
+        save()
+    }
+
+    /// Move a seeded child's last finished day back one day, so the next
+    /// `recordCompletion` counts as the next day of a streak. Seeds only.
+    private func pretendTheLastLessonWasYesterday(_ id: UUID) {
+        guard let record = record(id), let last = record.lastFinishedDay else { return }
+        record.lastFinishedDay = calendar.date(byAdding: .day, value: -1, to: last)
+    }
+
     /// `UITEST_KIDS=Mia,Jayden,…` — replace the store's kids with this family, to
     /// stress "Who's learning?" with row counts and long names.
     func seedKids(named names: [String]) {
@@ -447,6 +555,9 @@ final class ProgressStore {
                    coins: record.coins,
                    currentStreak: record.currentStreak,
                    bestStreak: record.bestStreak,
+                   pennyScales: record.pennyScales,
+                   ownedItemIDs: Set(record.purchases.map(\.itemID)),
+                   pennyScarfItemID: record.pennyScarfItemID,
                    minutesToday: minutesToday,
                    minutesThisWeek: minutesThisWeek,
                    dailyMinutes: dailyMinutes,

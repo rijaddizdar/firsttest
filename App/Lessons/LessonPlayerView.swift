@@ -162,6 +162,9 @@ private struct YayScreenView: View {
     @ObservedObject var runner: LessonRunner
     @EnvironmentObject private var app: AppState
     @State private var saved = false
+    /// Penny's scales earned by this lesson — non-zero only when it finished the
+    /// whole level (README section 3, "Finishing a level adds new shiny scales").
+    @State private var scalesEarned = 0
 
     var body: some View {
         VStack(spacing: 22) {
@@ -188,6 +191,17 @@ private struct YayScreenView: View {
                 .font(.title3).foregroundStyle(Palette.textMuted)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
+
+            // Finishing the level's last lesson gives Penny new scales.
+            if scalesEarned > 0 {
+                VStack(spacing: 8) {
+                    ScaleRow(scales: scalesEarned)
+                    Text(PennyScales.justEarnedLine(scales: scalesEarned, name: runner.kidName))
+                        .font(.rowTitle).foregroundStyle(Palette.textBody)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                }
+            }
             Spacer()
             Button("Back to the map") { app.leaveLesson() }
                 .buttonStyle(BigButtonStyle(fill: Palette.teal))
@@ -205,10 +219,10 @@ private struct YayScreenView: View {
         saved = true
         Haptics.success()
         LessonAudio.play(.celebrate)
-        app.completeLesson(lessonID: runner.lesson.id,
-                           stars: runner.stars,
-                           coins: runner.coins,
-                           minutes: runner.minutesSpent)
+        scalesEarned = app.completeLesson(lessonID: runner.lesson.id,
+                                          stars: runner.stars,
+                                          coins: runner.coins,
+                                          minutes: runner.minutesSpent)
     }
 }
 

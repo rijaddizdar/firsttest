@@ -25,6 +25,9 @@ enum Route: Equatable {
     case lessonMap          // 3. The 13-level path for the selected kid
     case levelLessons       // 3b. One level's lessons + its friendly check
     case lesson             // 4. A lesson, played by the engine
+    case rewards            // 4a. Stars, coins, the streak and Penny's scales
+    case shop               // 4b. Spend play coins on stickers and scarf colours
+    case stickerBook        // 4c. The stickers this child has bought
     case parentGate         // 5a. Enter parent code to unlock the dashboard
     case parentDashboard    // 5b. Code-locked parent dashboard
 }
@@ -43,6 +46,9 @@ extension Route {
         case "lessonMap":        self = .lessonMap
         case "levelLessons":     self = .levelLessons
         case "lesson":           self = .lesson
+        case "rewards":          self = .rewards
+        case "shop":             self = .shop
+        case "stickerBook":      self = .stickerBook
         case "parentGate":       self = .parentGate
         case "parentDashboard":  self = .parentDashboard
         default:                 return nil
@@ -67,6 +73,8 @@ final class AppState: ObservableObject {
 
     /// The bundled worlds, levels and lessons.
     let library: CurriculumLibrary
+    /// The bundled play-coin shop (Content/shop.json).
+    let shop: ShopLibrary
     private let store: ProgressStore
 
     // MARK: Parent-gate lockout (README section 6: wrong codes -> short lockout)
@@ -79,8 +87,10 @@ final class AppState: ObservableObject {
 
     init(container: ModelContainer,
          library: CurriculumLibrary = CurriculumLibrary.loadOrEmpty(),
+         shop: ShopLibrary = ShopLibrary.loadOrEmpty(),
          environment: [String: String] = ProcessInfo.processInfo.environment) {
         self.library = library
+        self.shop = shop
         self.store = ProgressStore(context: container.mainContext)
 
         applyUITestSeeds(environment)
@@ -231,14 +241,55 @@ final class AppState: ObservableObject {
 
     /// Save the result of a finished lesson: stars for that lesson, play coins,
     /// the streak day and the minutes it took. The map reads the saved figures.
-    func completeLesson(lessonID: String, stars: Int, coins: Int, minutes: Int) {
-        guard let kidID = selectedKidID, let lesson = library.lesson(lessonID) else { return }
+    ///
+    /// Returns how many of Penny's scales this lesson earned — three when it was
+    /// the lesson that finished the whole level, 0 otherwise (README section 3).
+    @discardableResult
+    func completeLesson(lessonID: String, stars: Int, coins: Int, minutes: Int) -> Int {
+        guard let kidID = selectedKidID, let lesson = library.lesson(lessonID) else { return 0 }
+        // Ask before writing: the write is what completes the level.
+        let wasComplete = library.isLevelComplete(lesson.levelID,
+                                                 starsByLesson: selectedKid?.starsByLesson ?? [:])
         store.recordCompletion(kidID: kidID,
                                lessonID: lessonID,
                                levelID: lesson.levelID,
                                stars: stars,
                                coins: coins,
                                minutes: minutes)
+        let scales = store.awardScalesIfLevelFinished(kidID: kidID,
+                                                      levelID: lesson.levelID,
+                                                      wasCompleteBefore: wasComplete,
+                                                      library: library)
+        reload()
+        return scales
+    }
+
+    // MARK: - Rewards and the play-coin shop
+
+    /// Spend play coins on a shop item. Returns false and spends nothing when
+    /// the child already owns it or can't afford it yet — the screen then tells
+    /// them kindly how many more coins they need.
+    ///
+    /// Play coins are earned by learning and by nothing else. There is no
+    /// in-app purchase anywhere in the app (README section 9).
+    @discardableResult
+    func buy(_ item: ShopItem, kind: ShopItemKind) -> Bool {
+        guard let kid = selectedKid, shop.canBuy(item, kind: kind, for: kid) else { return false }
+        // A free item is Penny's own colour: nothing to spend, just wear it.
+        let bought = item.isFree ? true : store.buy(itemID: item.id, price: item.price, kidID: kid.id)
+        guard bought else { return false }
+        if kind.isWorn { wear(item, kind: kind) } else { reload() }
+        return true
+    }
+
+    /// Use an item the child already owns — today that means the colour of
+    /// Penny's scarf (README section 6 customization).
+    func wear(_ item: ShopItem, kind: ShopItemKind) {
+        guard let kidID = selectedKidID, kind.isWorn else { return }
+        switch kind {
+        case .pennyScarf: store.setPennyScarf(itemID: item.id, kidID: kidID)
+        case .sticker:    break
+        }
         reload()
     }
 
@@ -323,6 +374,8 @@ final class AppState: ObservableObject {
             store.seedDemoKid(library: library)
         } else if environment["UITEST_SEED"] == "dashboard" {
             store.seedDashboardFamily(library: library)
+        } else if environment["UITEST_SEED"] == "rewards" {
+            store.seedRewardsKid(library: library)
         }
         // A screenshot run can pin the daily limit, e.g. UITEST_DAILY_LIMIT=0
         // for "no limit" or a small number to photograph the wrap-up on the map.
