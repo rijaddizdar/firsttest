@@ -230,6 +230,7 @@ extension Lesson: Decodable {
         levelID = try c.decode(Int.self, forKey: .levelID)
         title = try c.decode(String.self, forKey: .title)
         isSample = try c.decodeIfPresent(Bool.self, forKey: .sample) ?? false
+        isLevelCheck = false   // checks are built, never written as a file
         estimatedMinutes = try c.decodeIfPresent(Int.self, forKey: .estimatedMinutes) ?? 3
         coins = try c.decodeIfPresent(Int.self, forKey: .coins) ?? 10
 
@@ -325,8 +326,10 @@ extension LessonScreen {
         case .sortIt(let s):
             if s.groups.count < 2 { problems.append("\(place) needs at least 2 groups to sort into.") }
             if s.items.count < 2 { problems.append("\(place) needs at least 2 pictures to sort.") }
-            if s.items.count > 6 {
-                problems.append("\(place) has \(s.items.count) pictures; keep it to 6 so the tray fits on a phone.")
+            // The tray is one row of chips (SortItScreenView), so more than 4
+            // runs off the side of a phone.
+            if s.items.count > SortItScreen.maxItems {
+                problems.append("\(place) has \(s.items.count) pictures; keep it to \(SortItScreen.maxItems) so the tray fits on one row on a phone.")
             }
             let groupIDs = Set(s.groups.map(\.id))
             for item in s.items where !groupIDs.contains(item.groupID) {
@@ -348,9 +351,11 @@ extension LessonScreen {
             if s.target > s.available {
                 problems.append("\(place) asks for \(s.target) coins but only \(s.available) are available.")
             }
-            // README section 7 rule 8: kid-sized numbers, whole coins.
-            if s.available > 20 {
-                problems.append("\(place) offers \(s.available) coins; keep counting screens to 20 or fewer (README section 7 rule 8).")
+            // README section 7 rule 8: kid-sized numbers, whole coins — and the
+            // pile is one row of coins (CountItScreenView), so more than 8 runs
+            // off the side of a phone.
+            if s.available > CountItScreen.maxAvailable {
+                problems.append("\(place) offers \(s.available) coins; keep it to \(CountItScreen.maxAvailable) so the pile fits on one row on a phone (README section 7 rule 8).")
             }
         case .yay(let s):
             if s.title.isEmpty { problems.append("\(place) has an empty \"title\".") }

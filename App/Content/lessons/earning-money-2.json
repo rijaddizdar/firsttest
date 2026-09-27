@@ -1,0 +1,111 @@
+{
+  "id": "earning-money-2",
+  "levelID": 3,
+  "title": "Helping at Home",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! You can earn coins by helping at home.",
+      "pose": "wave",
+      "continueLabel": "Show me how"
+    },
+    {
+      "type": "learn",
+      "title": "Jobs you can do",
+      "cards": [
+        {
+          "icon": "broom",
+          "badge": "SWEEP",
+          "tint": "teal",
+          "caption": "Sweeping the floor helps everyone at home."
+        },
+        {
+          "icon": "potted-plant",
+          "badge": "WATER",
+          "tint": "skyTeal",
+          "caption": "Watering the plants is a small, kind job."
+        }
+      ],
+      "penny": "Small jobs count too, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "sortIt",
+      "id": "helps-at-home",
+      "prompt": "Which of these help at home?",
+      "pennyHint": "Does it make things better for everyone, {name}?",
+      "groups": [
+        { "id": "helps", "title": "Helps at home", "icon": "thumbs-up", "tint": "teal" },
+        { "id": "not", "title": "Not a job", "icon": "balloon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "sweep", "label": "Sweeping", "icon": "broom", "groupID": "helps" },
+        { "id": "washing", "label": "Washing up", "icon": "soap", "groupID": "helps" },
+        { "id": "games", "label": "Games", "icon": "video-game", "groupID": "not" },
+        { "id": "icecream", "label": "Ice cream", "icon": "ice-cream", "groupID": "not" }
+      ],
+      "rightMessage": "Yes, {name}! That one belongs there.",
+      "wrongMessage": "Good try, {name}! A job helps somebody else, not just you.",
+      "doneMessage": "All sorted, {name}! Small jobs at home help a lot.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "jayden-walks-the-dog",
+      "story": "Jayden's dad pays 2 coins for each dog walk. Jayden walks the dog twice.",
+      "storyIcon": "dog",
+      "prompt": "How many coins did Jayden earn?",
+      "pennyHint": "2 coins, and then 2 coins more, {name}.",
+      "options": [
+        {
+          "label": "4 coins",
+          "icon": "coin",
+          "correct": true,
+          "outcome": "2 and 2 makes 4. Jayden earned 4 coins for two walks."
+        },
+        {
+          "label": "2 coins",
+          "icon": "jar",
+          "outcome": "That is one walk. Jayden did two walks, so he earned more."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Two walks at 2 coins each makes 4 coins.",
+      "wrongMessage": "Good try, {name}! Count both walks: 2 coins and 2 more is 4.",
+      "retryIntro": "Let's count Jayden's walks again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "jaydens-jar",
+      "prompt": "Tap 4 coins to put Jayden's earnings in his jar.",
+      "pennyHint": "Count with me, {name}: 1, 2, 3, 4.",
+      "available": 8,
+      "target": 4,
+      "jarIcon": "jar",
+      "jarLabel": "Jayden's jar",
+      "checkLabel": "Check my jar",
+      "rightMessage": "4 coins, {name}! That's exactly what Jayden earned.",
+      "wrongMessage": "Good try, {name}! Jayden earned 4 coins. Count them again.",
+      "retryIntro": "Let's fill Jayden's jar again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "agree-the-job-first",
+      "prompt": "Before you start a job for coins, what do you do?",
+      "pennyHint": "A job works best when everyone agrees, {name}.",
+      "choices": [
+        { "label": "Agree with a grown-up first", "icon": "handshake", "correct": true },
+        { "label": "Ask for coins afterwards", "icon": "shopping-cart" }
+      ],
+      "rightMessage": "Yes, {name}! Agree the job and the coins first. No surprises.",
+      "wrongMessage": "Good try, {name}! Agreeing first is fair to you and to them.",
+      "retryIntro": "One more look, {name}. What comes first?"
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "Helping at home is real work. Real work can earn coins."
+    }
+  ]
+}

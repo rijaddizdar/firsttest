@@ -59,6 +59,10 @@ struct Lesson: Identifiable, Hashable {
     /// Sample/scaffold content rather than real teaching material. The player
     /// labels it so nobody mistakes it for a written World 1 lesson.
     let isSample: Bool
+    /// True for the friendly end-of-level check (README section 3), which is
+    /// built from the level's own questions rather than written as a file — see
+    /// `CurriculumLibrary.levelCheck(forLevel:)`.
+    var isLevelCheck: Bool = false
     let estimatedMinutes: Int
     /// Play coins awarded for finishing (README section 3 rewards table).
     let coins: Int
@@ -110,6 +114,43 @@ enum LessonScreen: Identifiable, Hashable {
         case .sortIt(let s):      return s.retryIntro
         case .storyChoice(let s): return s.retryIntro
         case .countIt(let s):     return s.retryIntro
+        default:                  return nil
+        }
+    }
+
+    /// Every line of this screen a child reads or hears. Used to hold the copy
+    /// to the README section 7 tone rules in one place, in tests and in review.
+    var kidFacingText: [String] {
+        switch self {
+        case .hello(let s):
+            return [s.penny, s.continueLabel]
+        case .learn(let s):
+            return [s.title, s.continueLabel] + s.cards.map(\.caption) + s.cards.map(\.badge)
+                + [s.penny].compactMap { $0 }
+        case .tapToChoose(let s):
+            return [s.prompt, s.pennyHint, s.rightMessage, s.wrongMessage]
+                + s.choices.map(\.label) + [s.retryIntro].compactMap { $0 }
+        case .sortIt(let s):
+            return [s.prompt, s.pennyHint, s.rightMessage, s.wrongMessage, s.doneMessage]
+                + s.groups.map(\.title) + s.items.map(\.label) + [s.retryIntro].compactMap { $0 }
+        case .storyChoice(let s):
+            return [s.story, s.prompt, s.pennyHint, s.rightMessage, s.wrongMessage]
+                + s.options.map(\.label) + s.options.map(\.outcome) + [s.retryIntro].compactMap { $0 }
+        case .countIt(let s):
+            return [s.prompt, s.pennyHint, s.jarLabel, s.checkLabel, s.rightMessage, s.wrongMessage]
+                + [s.retryIntro].compactMap { $0 }
+        case .yay(let s):
+            return [s.title, s.message]
+        }
+    }
+
+    /// The "good try" line this screen shows for a wrong answer, if it has one.
+    var wrongMessageText: String? {
+        switch self {
+        case .tapToChoose(let s): return s.wrongMessage
+        case .sortIt(let s):      return s.wrongMessage
+        case .storyChoice(let s): return s.wrongMessage
+        case .countIt(let s):     return s.wrongMessage
         default:                  return nil
         }
     }
@@ -181,6 +222,10 @@ struct TapToChooseScreen: Hashable {
 
 /// Drag pictures into groups, like "Need" and "Want".
 struct SortItScreen: Hashable {
+    /// The tray is a single row of picture chips, so this is what fits across a
+    /// phone. Enforced when content loads.
+    static let maxItems = 4
+
     var id: String
     let prompt: String
     let pennyHint: String
@@ -243,6 +288,10 @@ struct StoryChoiceScreen: Hashable {
 /// Add or split play coins using kid-sized numbers (README section 7 rule 8:
 /// whole numbers, play coins, never real prices).
 struct CountItScreen: Hashable {
+    /// The pile of coins is a single row, so this is what fits across a phone.
+    /// Enforced when content loads.
+    static let maxAvailable = 8
+
     var id: String
     let prompt: String
     let pennyHint: String

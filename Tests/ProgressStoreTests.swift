@@ -53,7 +53,7 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertNil(kid.starsByLevel[2], "the level itself is not rated until its lessons are all done")
 
         // Finishing the level's other lesson adds its stars on top.
-        store.recordCompletion(kidID: id, lessonID: "sample-screen-types", levelID: 2,
+        store.recordCompletion(kidID: id, lessonID: "needs-and-wants-2", levelID: 2,
                                stars: 2, coins: 10, minutes: 3)
         kid = try XCTUnwrap(store.kids(using: library).first)
         XCTAssertEqual(kid.totalStars, 5)

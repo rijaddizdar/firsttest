@@ -1,0 +1,115 @@
+{
+  "id": "what-is-money-3",
+  "levelID": 1,
+  "title": "Money You Cannot Hold",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Some money you can't hold in your hand.",
+      "pose": "wave",
+      "continueLabel": "Really?"
+    },
+    {
+      "type": "learn",
+      "title": "Money that hides",
+      "cards": [
+        {
+          "icon": "credit-card",
+          "badge": "CARD",
+          "tint": "teal",
+          "caption": "A card can pay. The money waits at the bank."
+        },
+        {
+          "icon": "mobile-phone",
+          "badge": "PHONE",
+          "tint": "copper",
+          "caption": "A phone can pay too. Same money, no coins."
+        }
+      ],
+      "penny": "It is still real money, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "is-card-money-real",
+      "prompt": "Kofi's mum pays with a card. Is that real money?",
+      "pennyHint": "Think about where the money is kept, {name}.",
+      "choices": [
+        { "label": "Yes, it's real money", "icon": "thumbs-up", "correct": true },
+        { "label": "No, it's pretend", "icon": "balloon" }
+      ],
+      "rightMessage": "Yes, {name}! The money sits at the bank. The card moves it.",
+      "wrongMessage": "Good try, {name}! The card moves real money out of the bank.",
+      "retryIntro": "Let's think about that card again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "can-this-pay",
+      "prompt": "Which of these can pay at a shop?",
+      "pennyHint": "Ask yourself: would a shop take it, {name}?",
+      "groups": [
+        { "id": "pays", "title": "Can pay", "icon": "coin", "tint": "teal" },
+        { "id": "not", "title": "Not money", "icon": "teddy-bear", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "card", "label": "A card", "icon": "credit-card", "groupID": "pays" },
+        { "id": "phone", "label": "A phone", "icon": "mobile-phone", "groupID": "pays" },
+        { "id": "teddy", "label": "A teddy", "icon": "teddy-bear", "groupID": "not" },
+        { "id": "apple", "label": "An apple", "icon": "green-apple", "groupID": "not" }
+      ],
+      "rightMessage": "Yes, {name}! That one goes there.",
+      "wrongMessage": "Good try, {name}! A shop takes money, not the things it sells.",
+      "doneMessage": "All sorted, {name}! Coins, notes, cards and phones can all pay.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "sana-taps-the-phone",
+      "story": "Sana's dad taps his phone at the shop. The screen says PAID.",
+      "storyIcon": "mobile-phone",
+      "prompt": "Where did that money come from?",
+      "pennyHint": "Money can wait in a bank, {name}.",
+      "options": [
+        {
+          "label": "From the bank, where his money is kept",
+          "icon": "bank",
+          "correct": true,
+          "outcome": "Yes. The phone asked the bank to send the money to the shop."
+        },
+        {
+          "label": "From inside the phone",
+          "icon": "mobile-phone",
+          "outcome": "There are no coins inside a phone. It only sends a message."
+        },
+        {
+          "label": "From nowhere. It was free",
+          "icon": "sparkles",
+          "outcome": "It wasn't free. Real money left his bank."
+        }
+      ],
+      "rightMessage": "That's it, {name}! The phone asks the bank to pay.",
+      "wrongMessage": "Good try, {name}! A phone holds no coins. The money is at the bank.",
+      "retryIntro": "Let's follow that money again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "ask-a-grown-up-first",
+      "prompt": "You want a game on a tablet. What do you do first?",
+      "pennyHint": "I curl up when real money is close by, {name}.",
+      "choices": [
+        { "label": "Ask a grown-up", "icon": "handshake", "correct": true },
+        { "label": "Tap buy right away", "icon": "shopping-cart" }
+      ],
+      "rightMessage": "Yes, {name}! Card money is real money. Always ask a grown-up.",
+      "wrongMessage": "Good try, {name}! That would spend real money. Stop, and ask a grown-up.",
+      "retryIntro": "One more time, {name}. What comes first?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Cards and phones move real money. Now you know."
+    }
+  ]
+}

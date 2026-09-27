@@ -82,8 +82,12 @@ struct LessonMapView: View {
             ForEach(world.levels) { level in
                 LevelNode(level: level,
                           state: kid.lockState(for: level.id),
-                          stars: kid.starsByLevel[level.id] ?? 0) {
-                    app.startLesson(inLevel: level.id)
+                          stars: kid.starsByLevel[level.id] ?? 0,
+                          progress: app.library.stepsFinished(inLevel: level.id,
+                                                              starsByLesson: kid.starsByLesson)) {
+                    // A level holds about five lessons plus its check, so it
+                    // opens a lesson list rather than launching one lesson.
+                    app.openLevel(level.id)
                 }
             }
         }
@@ -95,6 +99,9 @@ struct LevelNode: View {
     let level: LevelSpec
     let state: LevelLockState
     let stars: Int
+    /// How many of the level's steps (its lessons plus the check) are done, so
+    /// a part-finished level says "2 of 6 done" instead of looking untouched.
+    var progress: (done: Int, total: Int) = (0, 0)
     let action: () -> Void
 
     var body: some View {
@@ -120,6 +127,9 @@ struct LevelNode: View {
 
                     if state == .completed {
                         StarRow(earned: stars, size: 16)
+                    } else if level.hasLessons && progress.done > 0 {
+                        Text("\(progress.done) of \(progress.total) done")
+                            .font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
                     } else if state == .current && level.hasLessons {
                         Text("Tap to play ▶").font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
                     } else if state == .current || state == .open {
@@ -160,8 +170,13 @@ struct LevelNode: View {
     private var accessibilityHint: String {
         switch state {
         case .locked:    return "Locked. Finish earlier levels first."
-        case .current:   return level.hasLessons ? "Current level. Tap to play." : "Current level. Coming soon."
-        case .open:      return "Unlocked. Coming soon."
+        case .current:
+            guard level.hasLessons else { return "Current level. Coming soon." }
+            return progress.done > 0
+                ? "Current level, \(progress.done) of \(progress.total) finished. Tap to see its lessons."
+                : "Current level. Tap to see its lessons."
+        case .open:
+            return level.hasLessons ? "Unlocked. Tap to see its lessons." : "Unlocked. Coming soon."
         case .completed: return "Finished, \(stars) of 3 stars."
         }
     }

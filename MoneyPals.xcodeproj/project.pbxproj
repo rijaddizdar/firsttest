@@ -24,11 +24,14 @@
 		55C347986DD0E060A04510F5 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F913406D798ED8F534E5B14 /* SetupView.swift */; };
 		5766A74DD1519120512C2EA5 /* FLUENT-EMOJI-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */; };
 		58E25A2DC4EA64CEA2C655AE /* LessonComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2439DC92C84BB4E983E6708F /* LessonComponents.swift */; };
+		5D3A7A9F20875D2B9D4CFACE /* LevelLessonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */; };
 		6F147A1C5F614178596F1124 /* LessonDecoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786083AAC77DB25FCEB46268 /* LessonDecoding.swift */; };
+		712F1A524BB5CD8A2E28D441 /* LevelCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263F6F06F6754A092F4D1E29 /* LevelCheck.swift */; };
 		8226381C18A2D83F82E17A6F /* CountItScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585671E92F5ADDA088A9840C /* CountItScreenView.swift */; };
 		8E4892A3B0FA6462F0DD1521 /* LessonPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E37F2A38BAEBA4979A619A /* LessonPlayerView.swift */; };
 		9A5F4309058940630E1A8E94 /* Content in Resources */ = {isa = PBXBuildFile; fileRef = F3C54E05C224CCB32102A397 /* Content */; };
 		9C14136030E7F16E2B7A8788 /* CurriculumProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38991D7E4C550F68F084510 /* CurriculumProgressTests.swift */; };
+		B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */; };
 		C867CC5B3826B00F3BB905C5 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CAB3F081ACAF5ADAB87F8F /* ProgressStore.swift */; };
 		D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F9608B7567912942FCB5C0 /* Assets.xcassets */; };
 		D117B5F1D94B3EB79DA4F635 /* LessonRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */; };
@@ -49,11 +52,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCheckTests.swift; sourceTree = "<group>"; };
 		0F913406D798ED8F534E5B14 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		159D193871901D0A02C68C89 /* SharedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUI.swift; sourceTree = "<group>"; };
 		1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "FLUENT-EMOJI-LICENSE.txt"; sourceTree = "<group>"; };
 		2439DC92C84BB4E983E6708F /* LessonComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonComponents.swift; sourceTree = "<group>"; };
 		243AB16FCE7A72608E00992A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		263F6F06F6754A092F4D1E29 /* LevelCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCheck.swift; sourceTree = "<group>"; };
 		2E2AB334CFBADD137713E105 /* PennyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PennyView.swift; sourceTree = "<group>"; };
 		390CC878402FB29FF3301AB5 /* LessonRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonRunner.swift; sourceTree = "<group>"; };
 		57ED1A9DD296622D69EA4BF7 /* SortItScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortItScreenView.swift; sourceTree = "<group>"; };
@@ -81,6 +86,7 @@
 		F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
 		F3C54E05C224CCB32102A397 /* Content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Content; path = App/Content; sourceTree = SOURCE_ROOT; };
 		F6FAE50A3137D5AB12AF29D2 /* MoneyPals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MoneyPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLessonsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -95,6 +101,7 @@
 				D4E37F2A38BAEBA4979A619A /* LessonPlayerView.swift */,
 				A82159E26B5F581C2DDE1612 /* LessonQuestionScreens.swift */,
 				390CC878402FB29FF3301AB5 /* LessonRunner.swift */,
+				263F6F06F6754A092F4D1E29 /* LevelCheck.swift */,
 				57ED1A9DD296622D69EA4BF7 /* SortItScreenView.swift */,
 			);
 			path = Lessons;
@@ -126,6 +133,7 @@
 				F3C54E05C224CCB32102A397 /* Content */,
 				B7D7C18EA4F687AA178C6EAE /* Info.plist */,
 				6A07287E0FBDE0B4B1CAD076 /* LessonMapView.swift */,
+				FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */,
 				8E943B89B772EF954F054989 /* Models.swift */,
 				A6049A412E2DF86AA06C58B5 /* MoneyPalsApp.swift */,
 				71CB42BD60B9F413CB83C4CF /* ParentDashboardView.swift */,
@@ -148,6 +156,7 @@
 				678571BD1EBC0804EC350751 /* ContentTests.swift */,
 				D38991D7E4C550F68F084510 /* CurriculumProgressTests.swift */,
 				A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */,
+				0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */,
 				F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */,
 			);
 			path = Tests;
@@ -261,6 +270,7 @@
 				231DCDEB049CDD02687D45E5 /* ContentTests.swift in Sources */,
 				9C14136030E7F16E2B7A8788 /* CurriculumProgressTests.swift in Sources */,
 				D117B5F1D94B3EB79DA4F635 /* LessonRunnerTests.swift in Sources */,
+				B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */,
 				1E3A73A321A039755E940228 /* ProgressStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +289,8 @@
 				8E4892A3B0FA6462F0DD1521 /* LessonPlayerView.swift in Sources */,
 				116247BBF162660DC88E26A8 /* LessonQuestionScreens.swift in Sources */,
 				ED68323BE47206CB163C9DE0 /* LessonRunner.swift in Sources */,
+				712F1A524BB5CD8A2E28D441 /* LevelCheck.swift in Sources */,
+				5D3A7A9F20875D2B9D4CFACE /* LevelLessonsView.swift in Sources */,
 				3E0425D38E825E074701EAC4 /* Models.swift in Sources */,
 				1B1A98401BDE2C10BBF6BDEA /* MoneyPalsApp.swift in Sources */,
 				32BCC122AD1EBF0BCF486388 /* ParentDashboardView.swift in Sources */,

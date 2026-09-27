@@ -35,38 +35,76 @@ struct CurriculumLibrary {
 
     func level(_ id: Int) -> LevelSpec? { levels.first { $0.id == id } }
 
-    func lesson(_ id: String) -> Lesson? { lessonsByID[id] }
+    /// A lesson by id. Level checks are not files, so an id like
+    /// `level-2-check` is built on demand rather than looked up.
+    func lesson(_ id: String) -> Lesson? {
+        if let lesson = lessonsByID[id] { return lesson }
+        guard let levelID = Self.levelID(fromCheckID: id) else { return nil }
+        return levelCheck(forLevel: levelID)
+    }
 
     /// The lessons of a level, in play order, skipping ids that failed to load.
+    /// The level check is NOT in here — see `lessonsAndCheck(inLevel:)`.
     func lessons(inLevel levelID: Int) -> [Lesson] {
         guard let level = level(levelID) else { return [] }
         return level.lessons.compactMap { lessonsByID[$0] }
     }
 
-    /// The lesson a child should play when they tap a level: the first one they
-    /// haven't finished, or the first one again once the level is done.
-    /// (A lesson picker belongs to the lessons PR; until then the level plays
-    /// forward on its own.)
-    func nextLesson(inLevel levelID: Int, starsByLesson: [String: Int]) -> Lesson? {
+    /// Everything a child plays in a level, in order: its lessons, then the
+    /// friendly check. This is what the per-level lesson list shows.
+    func lessonsAndCheck(inLevel levelID: Int) -> [Lesson] {
         let lessons = lessons(inLevel: levelID)
-        return lessons.first { starsByLesson[$0.id] == nil } ?? lessons.first
+        guard !lessons.isEmpty, let check = levelCheck(forLevel: levelID) else { return lessons }
+        return lessons + [check]
+    }
+
+    /// The lesson a child should play next in a level: the first step they
+    /// haven't finished, or the first lesson again once the level is done.
+    /// The check is the last step, so it only comes up once the lessons are in.
+    func nextLesson(inLevel levelID: Int, starsByLesson: [String: Int]) -> Lesson? {
+        let steps = lessonsAndCheck(inLevel: levelID)
+        return steps.first { starsByLesson[$0.id] == nil } ?? steps.first
+    }
+
+    /// Is this step playable yet? Lessons always are; the check waits until
+    /// every lesson in the level has been finished once, so it has something to
+    /// mix. Nothing else in the app is ever gated.
+    func isPlayable(_ lesson: Lesson, starsByLesson: [String: Int]) -> Bool {
+        guard lesson.isLevelCheck else { return true }
+        return lessons(inLevel: lesson.levelID).allSatisfy { starsByLesson[$0.id] != nil }
+    }
+
+    /// `level-7-check` -> 7.
+    private static func levelID(fromCheckID id: String) -> Int? {
+        let parts = id.split(separator: "-")
+        guard parts.count == 3, parts[0] == "level", parts[2] == "check" else { return nil }
+        return Int(parts[1])
     }
 
     // MARK: - Progress maths
 
-    /// Has every lesson of this level been finished at least once?
+    /// Has every lesson of this level been finished at least once, AND its
+    /// friendly check played? The check is the last step of a level, so the
+    /// level isn't done until it is — but it can't be failed, only finished.
     func isLevelComplete(_ levelID: Int, starsByLesson: [String: Int]) -> Bool {
-        let lessons = lessons(inLevel: levelID)
-        guard !lessons.isEmpty else { return false }   // nothing written yet
-        return lessons.allSatisfy { starsByLesson[$0.id] != nil }
+        let steps = lessonsAndCheck(inLevel: levelID)
+        guard !steps.isEmpty else { return false }     // nothing written yet
+        return steps.allSatisfy { starsByLesson[$0.id] != nil }
     }
 
-    /// The level's star rating on the map: the average of its lessons' best
-    /// results, rounded down, once every lesson in it is finished.
+    /// How many of a level's steps (lessons plus the check) are finished, for
+    /// the "3 of 6 done" line on the map and the lesson list.
+    func stepsFinished(inLevel levelID: Int, starsByLesson: [String: Int]) -> (done: Int, total: Int) {
+        let steps = lessonsAndCheck(inLevel: levelID)
+        return (steps.filter { starsByLesson[$0.id] != nil }.count, steps.count)
+    }
+
+    /// The level's star rating on the map: the average of its steps' best
+    /// results, rounded down, once every step in it is finished.
     func stars(forLevel levelID: Int, starsByLesson: [String: Int]) -> Int {
-        let lessons = lessons(inLevel: levelID)
-        let earned = lessons.compactMap { starsByLesson[$0.id] }
-        guard !lessons.isEmpty, earned.count == lessons.count else { return 0 }
+        let steps = lessonsAndCheck(inLevel: levelID)
+        let earned = steps.compactMap { starsByLesson[$0.id] }
+        guard !steps.isEmpty, earned.count == steps.count else { return 0 }
         let average = Double(earned.reduce(0, +)) / Double(earned.count)
         return min(3, max(1, Int(average.rounded(.down))))
     }
@@ -149,6 +187,22 @@ struct CurriculumLibrary {
             let id = url.deletingPathExtension().lastPathComponent
             if !referenced.contains(id) {
                 issues.append("Content/lessons/\(id).json is in the bundle but no level in curriculum.json lists it, so it never plays.")
+            }
+        }
+
+        // The level checks are built, not written, so nobody proof-reads them.
+        // Validate each one the same way a lesson file is validated, so a level
+        // that can't produce a sane check says so at load instead of in a
+        // child's hands.
+        let library = CurriculumLibrary(worlds: curriculum.worlds, lessonsByID: lessons, issues: issues)
+        for level in curriculum.levels where !level.lessons.isEmpty {
+            guard let check = library.levelCheck(forLevel: level.id) else {
+                issues.append("level \(level.id) has lessons but no level check could be built from them.")
+                continue
+            }
+            let problems = check.validationProblems(expectedID: check.id, knownLevelIDs: knownLevelIDs)
+            if !problems.isEmpty {
+                issues.append("the level check for level \(level.id) is not playable: " + problems.joined(separator: " "))
             }
         }
 

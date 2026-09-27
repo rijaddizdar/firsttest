@@ -1,0 +1,111 @@
+{
+  "id": "needs-and-wants-4",
+  "levelID": 2,
+  "title": "Needs First, Then Wants",
+  "estimatedMinutes": 5,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's practise putting needs first.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "An order that helps",
+      "cards": [
+        {
+          "icon": "thumbs-up",
+          "badge": "FIRST",
+          "tint": "teal",
+          "caption": "Pay for needs first: food, a home, clothes."
+        },
+        {
+          "icon": "balloon",
+          "badge": "THEN",
+          "tint": "copper",
+          "caption": "Then, if coins are left, pick a want."
+        }
+      ],
+      "penny": "Needs first, then wants, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "storyChoice",
+      "id": "rafa-and-the-school-shoes",
+      "story": "Rafa has 8 coins. School shoes cost 7 coins. Sweets cost 2 coins.",
+      "storyIcon": "running-shoe",
+      "prompt": "What should Rafa buy first?",
+      "pennyHint": "Which one does Rafa need for school, {name}?",
+      "options": [
+        {
+          "label": "The school shoes",
+          "icon": "running-shoe",
+          "correct": true,
+          "outcome": "Rafa gets shoes that fit. His feet stay safe and dry."
+        },
+        {
+          "label": "The sweets",
+          "icon": "candy",
+          "outcome": "The sweets were tasty. But Rafa still has no shoes for school."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Shoes for school are a need. Needs come first.",
+      "wrongMessage": "Good try, {name}! Sweets are a fun extra. Rafa needs shoes for school.",
+      "retryIntro": "Let's help Rafa shop again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "rafas-leftover-coin",
+      "prompt": "Rafa had 8 coins and paid 7 for shoes. Tap the coins he has left.",
+      "pennyHint": "8 coins, take away 7. How many are left, {name}?",
+      "available": 8,
+      "target": 1,
+      "jarIcon": "jar",
+      "jarLabel": "Rafa's leftover coins",
+      "checkLabel": "Check my jar",
+      "rightMessage": "1 coin, {name}! Needs paid for, and a coin still left.",
+      "wrongMessage": "Good try, {name}! 8 coins take away 7 coins leaves 1 coin.",
+      "retryIntro": "Let's count Rafa's leftover coins again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "coat-or-kite-first",
+      "prompt": "Ines needs a coat and wants a kite. Which comes first?",
+      "pennyHint": "Which one keeps her warm, {name}?",
+      "choices": [
+        { "label": "The coat", "icon": "coat", "correct": true },
+        { "label": "The kite", "icon": "kite" }
+      ],
+      "rightMessage": "Yes, {name}! A coat keeps Ines warm. That's a need.",
+      "wrongMessage": "Good try, {name}! A kite is fun. The coat keeps Ines warm and safe.",
+      "retryIntro": "Here's that one again, {name}. Which comes first?"
+    },
+    {
+      "type": "sortIt",
+      "id": "pay-first-or-later",
+      "prompt": "Drag each picture: pay for it first, or later?",
+      "pennyHint": "Needs go in First, {name}.",
+      "groups": [
+        { "id": "first", "title": "First", "icon": "thumbs-up", "tint": "teal" },
+        { "id": "later", "title": "Later", "icon": "balloon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "food", "label": "Food", "icon": "green-apple", "groupID": "first" },
+        { "id": "soap", "label": "Soap", "icon": "soap", "groupID": "first" },
+        { "id": "icecream", "label": "Ice cream", "icon": "ice-cream", "groupID": "later" },
+        { "id": "teddy", "label": "A teddy", "icon": "teddy-bear", "groupID": "later" }
+      ],
+      "rightMessage": "Yes, {name}! Good spot for it.",
+      "wrongMessage": "Good try, {name}! Would you be fine without it for a week?",
+      "doneMessage": "Well sorted, {name}! Needs first. Wants can wait a little.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Needs first, then wants. That's a plan that works."
+    }
+  ]
+}

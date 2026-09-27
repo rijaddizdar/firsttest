@@ -1,0 +1,110 @@
+{
+  "id": "needs-and-wants-5",
+  "levelID": 2,
+  "title": "Sometimes It's Both",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! One thing can be a need AND a want. Let's see.",
+      "pose": "wave",
+      "continueLabel": "How?"
+    },
+    {
+      "type": "learn",
+      "title": "The same thing, two ways",
+      "cards": [
+        {
+          "icon": "droplet",
+          "badge": "NEED",
+          "tint": "teal",
+          "caption": "Water is a need. Our bodies must have it."
+        },
+        {
+          "icon": "cup-with-straw",
+          "badge": "WANT",
+          "tint": "copper",
+          "caption": "A fizzy drink is a want. Nice, but not needed."
+        }
+      ],
+      "penny": "Both are drinks, {name}. Only one is a need.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "water-or-fizzy",
+      "prompt": "You are thirsty. Which one does your body need?",
+      "pennyHint": "One of these is just water, {name}.",
+      "choices": [
+        { "label": "Water", "icon": "droplet", "correct": true },
+        { "label": "A fizzy drink", "icon": "cup-with-straw" }
+      ],
+      "rightMessage": "Yes, {name}! Water is the need. A fizzy drink is a treat.",
+      "wrongMessage": "Good try, {name}! A fizzy drink is nice. Water is what a body needs.",
+      "retryIntro": "Here's that one again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "tomas-and-the-shiny-coat",
+      "story": "Tomas already has a warm coat. In the shop he sees a shiny new one.",
+      "storyIcon": "coat",
+      "prompt": "Is the shiny new coat a need or a want?",
+      "pennyHint": "He is already warm, {name}.",
+      "options": [
+        {
+          "label": "A want. He is already warm",
+          "icon": "balloon",
+          "correct": true,
+          "outcome": "Tomas keeps his old coat. He saves the coins for later."
+        },
+        {
+          "label": "A need. Coats are always needs",
+          "icon": "coat",
+          "outcome": "A first warm coat is a need. A second one is a want."
+        }
+      ],
+      "rightMessage": "Yes, {name}! One warm coat is a need. A shinier one is a want.",
+      "wrongMessage": "Good try, {name}! Tomas is already warm. So the new coat is a want.",
+      "retryIntro": "Let's look at that coat again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "need-or-fun-extra",
+      "prompt": "One of each pair is the need. Sort them.",
+      "pennyHint": "Which one does a body really need, {name}?",
+      "groups": [
+        { "id": "need", "title": "Need", "icon": "thumbs-up", "tint": "teal" },
+        { "id": "extra", "title": "Fun extra", "icon": "balloon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "apple", "label": "An apple", "icon": "green-apple", "groupID": "need" },
+        { "id": "bag", "label": "School bag", "icon": "backpack", "groupID": "need" },
+        { "id": "sweets", "label": "Sweets", "icon": "candy", "groupID": "extra" },
+        { "id": "game", "label": "A game", "icon": "video-game", "groupID": "extra" }
+      ],
+      "rightMessage": "Nice, {name}! That one goes there.",
+      "wrongMessage": "Good try, {name}! Is it for school and staying well, or just for fun?",
+      "doneMessage": "All sorted, {name}! One shop can sell needs and wants together.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "shoes-for-school",
+      "prompt": "Sana has no shoes for school. Are shoes a need for her?",
+      "pennyHint": "She walks to school every day, {name}.",
+      "choices": [
+        { "label": "Yes, a need", "icon": "thumbs-up", "correct": true },
+        { "label": "No, a want", "icon": "balloon" }
+      ],
+      "rightMessage": "Yes, {name}! Shoes keep Sana's feet safe on the way to school.",
+      "wrongMessage": "Good try, {name}! Sana needs shoes to walk to school safely.",
+      "retryIntro": "One more look, {name}. Does Sana need shoes?"
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "One warm coat is a need. The shiny second one is a want."
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "what-is-money-5",
+  "levelID": 1,
+  "title": "Money Can't Buy Everything",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Money is useful. But it can't do everything.",
+      "pose": "wave",
+      "continueLabel": "Tell me more"
+    },
+    {
+      "type": "learn",
+      "title": "Two kinds of good things",
+      "cards": [
+        {
+          "icon": "shopping-cart",
+          "badge": "BUY",
+          "tint": "teal",
+          "caption": "Some things you can buy with money."
+        },
+        {
+          "icon": "people-hugging",
+          "badge": "FREE",
+          "tint": "copper",
+          "caption": "Some things are free. No money can buy them."
+        }
+      ],
+      "penny": "The best things are often free, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "sortIt",
+      "id": "buy-it-or-free",
+      "prompt": "Put each picture in the right basket.",
+      "pennyHint": "Ask yourself: could a shop sell it, {name}?",
+      "groups": [
+        { "id": "buy", "title": "Money can buy", "icon": "coin", "tint": "teal" },
+        { "id": "free", "title": "Money can't buy", "icon": "heart-with-ribbon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "icecream", "label": "Ice cream", "icon": "ice-cream", "groupID": "buy" },
+        { "id": "shoes", "label": "New shoes", "icon": "running-shoe", "groupID": "buy" },
+        { "id": "hug", "label": "A hug", "icon": "people-hugging", "groupID": "free" },
+        { "id": "rainbow", "label": "A rainbow", "icon": "rainbow", "groupID": "free" }
+      ],
+      "rightMessage": "Nice sorting, {name}! That's a good basket for it.",
+      "wrongMessage": "Good try, {name}! Look again. Could a shop put a price on it?",
+      "doneMessage": "All sorted, {name}! Shops sell things. They don't sell hugs.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "can-you-buy-a-friend",
+      "prompt": "Can you buy a best friend with coins?",
+      "pennyHint": "Think about how friends are made, {name}.",
+      "choices": [
+        { "label": "No. Being kind makes friends", "icon": "heart-with-ribbon", "correct": true },
+        { "label": "Yes, with enough coins", "icon": "coin" }
+      ],
+      "rightMessage": "That's right, {name}! Friends come from kindness, not coins.",
+      "wrongMessage": "Good try, {name}! No shop sells friends. Kindness makes friends.",
+      "retryIntro": "Let's think about friends again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "leo-and-a-sad-friend",
+      "story": "Priya is feeling sad today. Her friend Leo has 5 coins.",
+      "storyIcon": "people-hugging",
+      "prompt": "What would help Priya most?",
+      "pennyHint": "What does a sad friend really need, {name}?",
+      "options": [
+        {
+          "label": "Sit with her and listen",
+          "icon": "people-hugging",
+          "correct": true,
+          "outcome": "Priya feels better. Leo gave her time, not coins."
+        },
+        {
+          "label": "Buy her a sweet",
+          "icon": "candy",
+          "outcome": "A sweet is a kind thought. Priya still feels alone, though."
+        },
+        {
+          "label": "Give her all 5 coins",
+          "icon": "coin",
+          "outcome": "That is generous. But Priya wanted a friend to listen."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Time and listening cost nothing, and they help a lot.",
+      "wrongMessage": "Good try, {name}! Treats are kind. Sitting with a sad friend helps more.",
+      "retryIntro": "Let's help Priya again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "what-money-is-good-for",
+      "prompt": "So what is money good for?",
+      "pennyHint": "One more question, then we're done, {name}!",
+      "choices": [
+        { "label": "Trading for things we need and want", "icon": "shopping-cart", "correct": true },
+        { "label": "Making a person better than others", "icon": "glowing-star" }
+      ],
+      "rightMessage": "That's it, {name}! Money is a tool for trading. That's all.",
+      "wrongMessage": "Good try, {name}! Money never makes anyone better. It just buys things.",
+      "retryIntro": "One last look, {name}. What is money for?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Money buys things. Kindness does the rest."
+    }
+  ]
+}

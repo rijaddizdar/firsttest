@@ -1,0 +1,115 @@
+{
+  "id": "needs-and-wants-3",
+  "levelID": 2,
+  "title": "Wants Are Fun Extras",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Wants are the fun part. Let's talk about them.",
+      "pose": "wave",
+      "continueLabel": "Yes please!"
+    },
+    {
+      "type": "learn",
+      "title": "What a want is",
+      "cards": [
+        {
+          "icon": "teddy-bear",
+          "badge": "WANT",
+          "tint": "copper",
+          "caption": "A want is something fun. We're okay without it."
+        },
+        {
+          "icon": "thumbs-up",
+          "badge": "OKAY",
+          "tint": "teal",
+          "caption": "Wanting things is fine. We just can't have them all."
+        }
+      ],
+      "penny": "I want a shiny new scarf, {name}. I'm okay without it!",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "sortIt",
+      "id": "spot-the-wants",
+      "prompt": "Put each picture in the right basket.",
+      "pennyHint": "Fun extra, or something we must have, {name}?",
+      "groups": [
+        { "id": "want", "title": "Want", "icon": "balloon", "tint": "copper" },
+        { "id": "need", "title": "Need", "icon": "thumbs-up", "tint": "teal" }
+      ],
+      "items": [
+        { "id": "teddy", "label": "A teddy", "icon": "teddy-bear", "groupID": "want" },
+        { "id": "kite", "label": "A kite", "icon": "kite", "groupID": "want" },
+        { "id": "water", "label": "Water", "icon": "droplet", "groupID": "need" },
+        { "id": "coat", "label": "A coat", "icon": "coat", "groupID": "need" }
+      ],
+      "rightMessage": "Nice sorting, {name}!",
+      "wrongMessage": "Good try, {name}! Would you stay safe and well without it?",
+      "doneMessage": "All sorted, {name}! Wants are fun. Needs keep us going.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "is-a-treat-a-want",
+      "prompt": "You have coins for one treat. Is a treat a want or a need?",
+      "pennyHint": "A treat is a fun extra, {name}.",
+      "choices": [
+        { "label": "A want", "icon": "ice-cream", "correct": true },
+        { "label": "A need", "icon": "droplet" }
+      ],
+      "rightMessage": "Yes, {name}! A treat is a want. Fun, and we're fine without it.",
+      "wrongMessage": "Good try, {name}! We stay healthy without treats. So it's a want.",
+      "retryIntro": "Here's that one again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "ling-picks-one",
+      "story": "Ling has 6 coins. A kite costs 6 coins. A game costs 6 coins too.",
+      "storyIcon": "kite",
+      "prompt": "Ling can pick only one. What should she do?",
+      "pennyHint": "Both are fun, {name}. This is just a choice.",
+      "options": [
+        {
+          "label": "Pick the one she'll enjoy most",
+          "icon": "thumbs-up",
+          "correct": true,
+          "outcome": "Ling picks the kite. She flies it in the park all afternoon."
+        },
+        {
+          "label": "Buy both of them",
+          "icon": "shopping-cart",
+          "outcome": "Both together cost 12 coins. Ling has 6, so she can't."
+        },
+        {
+          "label": "Buy neither and feel glum",
+          "icon": "jar",
+          "outcome": "Saving is smart. But Ling is allowed a treat sometimes too."
+        }
+      ],
+      "rightMessage": "Yes, {name}! When we can't have both, we pick what we like most.",
+      "wrongMessage": "Good try, {name}! 6 coins buys one kite or one game, not both.",
+      "retryIntro": "Let's help Ling choose again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "is-wanting-okay",
+      "prompt": "Is it okay to want things?",
+      "pennyHint": "One more question, then we're done, {name}!",
+      "choices": [
+        { "label": "Yes. We just can't have them all", "icon": "thumbs-up", "correct": true },
+        { "label": "No. Wanting is bad", "icon": "light-bulb" }
+      ],
+      "rightMessage": "That's right, {name}! Wanting is normal. We choose what matters most.",
+      "wrongMessage": "Good try, {name}! Wanting things is fine. We just choose carefully.",
+      "retryIntro": "One last look, {name}. Is wanting okay?"
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "Wants are fun extras. Choosing one is part of the fun."
+    }
+  ]
+}
