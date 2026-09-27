@@ -39,6 +39,39 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(kid.currentStreak, 1)
     }
 
+    /// The map header counts stars the moment they are won. Finishing the first
+    /// lesson of a two-lesson level earns 3 stars, even though the LEVEL is not
+    /// rated until its second lesson is done — a child who just earned three
+    /// stars must never be shown 0.
+    func testStarsShowOnTheHeaderAsSoonAsALessonIsFinished() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
+                               stars: 3, coins: 10, minutes: 3)
+
+        var kid = try XCTUnwrap(ProgressStore(context: container.mainContext).kids(using: library).first)
+        XCTAssertEqual(kid.totalStars, 3, "the header counts earned stars, not rated levels")
+        XCTAssertNil(kid.starsByLevel[2], "the level itself is not rated until its lessons are all done")
+
+        // Finishing the level's other lesson adds its stars on top.
+        store.recordCompletion(kidID: id, lessonID: "sample-screen-types", levelID: 2,
+                               stars: 2, coins: 10, minutes: 3)
+        kid = try XCTUnwrap(store.kids(using: library).first)
+        XCTAssertEqual(kid.totalStars, 5)
+        XCTAssertEqual(kid.starsByLevel[2], 2, "the level row still shows the average of its lessons")
+    }
+
+    func testAReplayThatEarnsMoreStarsRaisesTheTotalOnlyByTheDifference() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
+                               stars: 1, coins: 10, minutes: 3)
+        XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).totalStars, 1)
+
+        store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
+                               stars: 3, coins: 10, minutes: 3)
+        XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).totalStars, 3,
+                       "a better replay raises the total; it never stacks a second time")
+    }
+
     func testReplayingALessonKeepsTheBestStars() throws {
         let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,

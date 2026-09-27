@@ -59,8 +59,14 @@ struct Kid: Identifiable, Equatable {
         Palette.avatarChoices[avatarColorIndex % Palette.avatarChoices.count]
     }
 
-    /// Total stars across all levels — shown on the map header.
-    var totalStars: Int { starsByLevel.values.reduce(0, +) }
+    /// Every star the child has actually earned — the count on the map header
+    /// and in the grown-up area. It is the sum of their best result per finished
+    /// LESSON, so a star shows up the moment it is won.
+    ///
+    /// `starsByLevel` is a different number on purpose: a level is only rated
+    /// once every lesson in it is finished, so summing that would show 0 to a
+    /// child who just earned three stars in the first lesson of a level.
+    var totalStars: Int { starsByLesson.values.reduce(0, +) }
 
     /// How many lessons this child has finished at least once.
     var lessonsFinished: Int { starsByLesson.count }

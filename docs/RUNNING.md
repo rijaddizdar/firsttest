@@ -155,6 +155,7 @@ This version's screens are in
 | Count it — right | `foundation/12-count-it-right.png` |
 | Yay! (the port) | `foundation/13-yay-needs-and-wants.png` |
 | Yay! (the sample lesson) | `foundation/14-yay-sample.png` |
+| The map after one of the level's two lessons, quit and relaunched (stars count as soon as they are earned) | `foundation/17-map-after-one-lesson.png` |
 | The map after quitting and relaunching | `foundation/15-map-after-relaunch.png` |
 | The dashboard after relaunching | `foundation/16-dashboard-after-relaunch.png` |
 | iPad — map, the three new screen types, the celebration, and the map after relaunching | `foundation/ipad-*.png` |
