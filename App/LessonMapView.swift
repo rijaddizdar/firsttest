@@ -53,8 +53,28 @@ struct LessonMapView: View {
                         .foregroundStyle(Palette.teal)
                 }
                 Spacer()
-                AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 44)
-                Text(kid.name).font(.headline).foregroundStyle(Palette.ink)
+                // The child's own face, and the way back into "Make it yours!"
+                // — README section 6: they can change their look at any time.
+                Button {
+                    app.route = .editAvatar
+                } label: {
+                    HStack(spacing: 8) {
+                        AvatarBadge(avatar: kid.avatar, size: 44)
+                            .overlay(alignment: .bottomTrailing) {
+                                ZStack {
+                                    Circle().fill(.white)
+                                    Circle().stroke(Palette.teal, lineWidth: Border.hairline)
+                                    FluentIcon(name: "sparkles", size: 11)
+                                }
+                                .frame(width: 18, height: 18)
+                                .offset(x: 2, y: 2)
+                            }
+                        Text(kid.name).font(.headline).foregroundStyle(Palette.ink)
+                    }
+                }
+                .buttonStyle(PressableStyle())
+                .accessibilityLabel(kid.name)
+                .accessibilityHint("Change how you look")
             }
 
             HStack(spacing: 10) {

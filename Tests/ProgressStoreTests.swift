@@ -37,7 +37,7 @@ final class ProgressStoreTests: XCTestCase {
     // MARK: Kids and progress
 
     func testAKidAndTheirProgressAreSaved() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
                                stars: 3, coins: 10, minutes: 4)
 
@@ -56,7 +56,7 @@ final class ProgressStoreTests: XCTestCase {
     /// every step in it is done — a child who just earned three stars must never
     /// be shown 0.
     func testStarsShowOnTheHeaderAsSoonAsALessonIsFinished() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
                                stars: 3, coins: 10, minutes: 3)
 
@@ -78,7 +78,7 @@ final class ProgressStoreTests: XCTestCase {
     }
 
     func testAReplayThatEarnsMoreStarsRaisesTheTotalOnlyByTheDifference() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
                                stars: 1, coins: 10, minutes: 3)
         XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).totalStars, 1)
@@ -90,7 +90,7 @@ final class ProgressStoreTests: XCTestCase {
     }
 
     func testReplayingALessonKeepsTheBestStars() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
                                stars: 3, coins: 10, minutes: 3)
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
@@ -101,7 +101,7 @@ final class ProgressStoreTests: XCTestCase {
     }
 
     func testFinishingALevelUnlocksTheNextOneAndRatesIt() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         var kid = try XCTUnwrap(store.kids(using: library).first)
         XCTAssertEqual(kid.lockState(for: 1), .current)
         XCTAssertEqual(kid.lockState(for: 2), .locked)
@@ -136,14 +136,14 @@ final class ProgressStoreTests: XCTestCase {
     // MARK: Streaks (README section 3: days with at least one finished lesson)
 
     func testASecondLessonTheSameDayDoesNotBumpTheStreak() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 10, minutes: 3)
         store.recordCompletion(kidID: id, lessonID: "b", levelID: 2, stars: 3, coins: 10, minutes: 3)
         XCTAssertEqual(try XCTUnwrap(store.kids(using: library).first).currentStreak, 1)
     }
 
     func testComingBackTomorrowExtendsTheStreak() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 10, minutes: 3)
         try backdateLastFinishedDay(of: id, byDays: 1)
         store.recordCompletion(kidID: id, lessonID: "b", levelID: 2, stars: 3, coins: 10, minutes: 3)
@@ -154,7 +154,7 @@ final class ProgressStoreTests: XCTestCase {
     }
 
     func testAMissedDayQuietlyStartsANewStreakAndKeepsTheBest() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: Avatar())
         store.recordCompletion(kidID: id, lessonID: "a", levelID: 2, stars: 3, coins: 10, minutes: 3)
         try backdateLastFinishedDay(of: id, byDays: 1)
         store.recordCompletion(kidID: id, lessonID: "b", levelID: 2, stars: 3, coins: 10, minutes: 3)

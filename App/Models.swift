@@ -16,17 +16,8 @@ import SwiftUI
 
 // MARK: - Kid profile
 
-enum AvatarKind: String, CaseIterable, Identifiable {
-    case boy, girl
-    var id: String { rawValue }
-
-    /// SF Symbol placeholder for the boy/girl avatar look (README section 6).
-    /// Both are plain figures: the girl used to be `figure.child.circle`, whose
-    /// ringed stick figure reads as the iOS accessibility badge rather than a
-    /// child once it sits inside the avatar's own ring.
-    var symbolName: String { self == .boy ? "figure.child" : "figure.stand.dress" }
-    var label: String { self == .boy ? "Boy" : "Girl" }
-}
+// The avatar itself — boy/girl, hairstyle, skin tone, hair colour, outfit
+// colour — lives in Avatar/Avatar.swift, and is drawn by Avatar/AvatarArtwork.swift.
 
 /// One child. Profiles belong to the parent account (README section 6).
 /// All data here is the minimised set from README section 9 — name, avatar,
@@ -34,8 +25,11 @@ enum AvatarKind: String, CaseIterable, Identifiable {
 struct Kid: Identifiable, Equatable {
     let id: UUID
     var name: String
-    var avatarKind: AvatarKind
-    var avatarColorIndex: Int
+    var avatar: Avatar
+    /// False until the child has done their own first time — name, "Make it
+    /// yours!", meet Penny (README section 6). Tapping their face on
+    /// "Who's learning?" runs that flow instead of opening the map.
+    var hasFinishedFirstRun: Bool = true
 
     // Rewards (README section 3).
     var coins: Int = 0
@@ -55,9 +49,9 @@ struct Kid: Identifiable, Equatable {
     /// The level the child is working on now. Levels unlock in order.
     var unlockedThrough: Int = 1
 
-    var avatarColor: Color {
-        Palette.avatarChoices[avatarColorIndex % Palette.avatarChoices.count]
-    }
+    /// The child's outfit colour, which the rest of the UI tints their badge
+    /// and chips with.
+    var avatarColor: Color { avatar.outfitColor }
 
     /// Every star the child has actually earned — the count on the map header
     /// and in the grown-up area. It is the sum of their best result per finished

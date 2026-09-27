@@ -117,15 +117,18 @@ struct WhosLearningView: View {
         case .kid(let id):
             if let kid = app.kids.first(where: { $0.id == id }) {
                 Button {
-                    app.selectedKidID = kid.id
-                    app.route = .lessonMap
+                    // A brand-new profile gets its own first time — name,
+                    // "Make it yours!", meet Penny — before the map.
+                    app.openKid(kid.id)
                 } label: {
                     AvatarTile(name: kid.name, tint: Palette.textBody) {
-                        AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: avatar)
+                        AvatarBadge(avatar: kid.avatar, size: avatar)
                     }
                     .frame(width: cellWidth)
                 }
                 .buttonStyle(PressableStyle())
+                .accessibilityLabel(kid.name)
+                .accessibilityHint(kid.hasFinishedFirstRun ? "Opens your map" : "Set up your profile")
             }
 
         case .addKid:

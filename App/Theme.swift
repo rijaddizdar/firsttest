@@ -43,6 +43,55 @@ enum Palette {
         Color(hex: 0x4C9F70)  // leaf
     ]
 
+    /// Spoken names for the outfit swatches (VoiceOver), in the same order.
+    static let avatarColorNames = ["teal", "copper", "sky blue", "coral", "purple", "green"]
+
+    // The rest of the avatar palette (README section 6 "Customization"). These
+    // extend the design system rather than transcribe it: the system fixes the
+    // outfit six above, and leaves skin and hair to the avatar builder. They are
+    // kept here so every avatar colour lives in one place.
+
+    /// Six skin tones, lightest to deepest. Numbered rather than named, in the
+    /// swatches and in VoiceOver, so no child's skin is given a label.
+    static let avatarSkinTones: [Color] = [
+        Color(hex: 0xF7DCC5),
+        Color(hex: 0xEFC4A2),
+        Color(hex: 0xDCA57C),
+        Color(hex: 0xB87B50),
+        Color(hex: 0x8D5A35),
+        Color(hex: 0x5D3B22)
+    ]
+
+    /// Six hair colours, in the same order as the swatch row.
+    static let avatarHairColors: [Color] = [
+        Color(hex: 0x2B2320), // black
+        Color(hex: 0x4E3524), // dark brown
+        Color(hex: 0x7B5232), // brown
+        Color(hex: 0xA9743F), // light brown
+        Color(hex: 0xE0B46A), // blonde
+        Color(hex: 0xC4552C)  // red
+    ]
+
+    static let avatarHairColorNames = ["black", "dark brown", "brown", "light brown", "blonde", "red"]
+
+    /// A headscarf wears the brand six instead of a hair colour, so the scarf
+    /// always belongs to the palette the rest of the app is drawn in.
+    static let avatarScarfColors: [Color] = avatarChoices
+    static let avatarScarfColorNames = avatarColorNames
+
+    /// A slightly deeper version of each skin tone, for the neck shadow and the
+    /// cheeks — the touch of depth that keeps a face readable at 40pt. Written
+    /// out rather than mixed at runtime: `Color.mix` is iOS 18, and this app
+    /// runs on iOS 17.
+    static let avatarSkinShades: [Color] = [
+        Color(hex: 0xE8BFA1),
+        Color(hex: 0xDCA57F),
+        Color(hex: 0xC2825C),
+        Color(hex: 0x9C6238),
+        Color(hex: 0x714526),
+        Color(hex: 0x472C18)
+    ]
+
     // Semantic aliases (tokens/colors.css "Semantic aliases").
     static let pageBg         = cream
     static let surfaceCard    = Color.white
