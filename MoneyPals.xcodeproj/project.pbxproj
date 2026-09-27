@@ -44,6 +44,7 @@
 		E1D5B5772A0D45EA0788E682 /* SortItScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED1A9DD296622D69EA4BF7 /* SortItScreenView.swift */; };
 		E33C56B91E695BBDE4608B49 /* Records.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF01A6AEB9CB0597841B976C /* Records.swift */; };
 		ED68323BE47206CB163C9DE0 /* LessonRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390CC878402FB29FF3301AB5 /* LessonRunner.swift */; };
+		FC690762F6F293E29BC42E1D /* ParentDashboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		0F913406D798ED8F534E5B14 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		159D193871901D0A02C68C89 /* SharedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUI.swift; sourceTree = "<group>"; };
 		1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "FLUENT-EMOJI-LICENSE.txt"; sourceTree = "<group>"; };
+		1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentDashboardTests.swift; sourceTree = "<group>"; };
 		2439DC92C84BB4E983E6708F /* LessonComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonComponents.swift; sourceTree = "<group>"; };
 		243AB16FCE7A72608E00992A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		263F6F06F6754A092F4D1E29 /* LevelCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCheck.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				D38991D7E4C550F68F084510 /* CurriculumProgressTests.swift */,
 				A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */,
 				0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */,
+				1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */,
 				F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */,
 			);
 			path = Tests;
@@ -295,6 +298,7 @@
 				9C14136030E7F16E2B7A8788 /* CurriculumProgressTests.swift in Sources */,
 				D117B5F1D94B3EB79DA4F635 /* LessonRunnerTests.swift in Sources */,
 				B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */,
+				FC690762F6F293E29BC42E1D /* ParentDashboardTests.swift in Sources */,
 				1E3A73A321A039755E940228 /* ProgressStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

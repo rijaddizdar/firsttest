@@ -84,7 +84,9 @@ final class ProgressStore {
     private static let log = Logger(subsystem: "app.persistence", category: "store")
 
     /// README section 9: time-per-day is kept on a rolling window, then deleted.
-    private let usageRetentionDays = 90
+    /// The dashboard says this number out loud, so it isn't private.
+    static let usageRetentionDays = 90
+    private var usageRetentionDays: Int { Self.usageRetentionDays }
 
     init(context: ModelContext) {
         self.context = context
@@ -154,9 +156,30 @@ final class ProgressStore {
         save()
     }
 
+    /// Delete one child and everything attached to them. The lesson results and
+    /// day records go with them (`.cascade` on the relationships in
+    /// Records.swift), so nothing about that child is left behind.
     func deleteKid(_ id: UUID) {
         guard let record = record(id) else { return }
         context.delete(record)
+        save()
+    }
+
+    /// Delete everything the app has saved: every child, their progress and
+    /// their day records, plus the grown-up settings and the parent code hash.
+    /// README section 6 promises this from inside the app, and afterwards the
+    /// store is exactly as empty as it is on a fresh install — which is what
+    /// sends the app back to first launch.
+    func deleteAllData() {
+        records().forEach(context.delete)
+        do {
+            try context.fetch(FetchDescriptor<SettingsRecord>()).forEach(context.delete)
+            // Belt and braces: anything orphaned by an earlier crash goes too.
+            try context.fetch(FetchDescriptor<LessonResultRecord>()).forEach(context.delete)
+            try context.fetch(FetchDescriptor<DailyUsageRecord>()).forEach(context.delete)
+        } catch {
+            Self.log.error("deleting all data failed: \(error.localizedDescription, privacy: .public)")
+        }
         save()
     }
 
@@ -309,6 +332,58 @@ final class ProgressStore {
         save()
     }
 
+    /// `UITEST_SEED=dashboard` — a family with enough history to photograph the
+    /// parent dashboard: two kids, finished lessons, and minutes spread over the
+    /// last two weeks. Never used on a real launch, and (like every seed) it runs
+    /// against a throwaway store by default.
+    func seedDashboardFamily(library: CurriculumLibrary) {
+        guard records().isEmpty else { return }
+        let today = calendar.startOfDay(for: Date())
+
+        func addUsage(_ minutes: [Int], to kid: KidRecord) {
+            for (back, minutes) in minutes.enumerated() where minutes > 0 {
+                guard let day = calendar.date(byAdding: .day, value: -back, to: today) else { continue }
+                let usage = DailyUsageRecord(day: day, minutes: minutes)
+                usage.kid = kid
+                context.insert(usage)
+            }
+        }
+
+        func finish(_ lessons: [Lesson], stars: Int, for kid: KidRecord) {
+            for lesson in lessons {
+                let result = LessonResultRecord(lessonID: lesson.id, levelID: lesson.levelID, stars: stars)
+                result.kid = kid
+                context.insert(result)
+            }
+        }
+
+        let miaID = addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0),
+                            hasFinishedFirstRun: true)
+        if let mia = record(miaID) {
+            mia.coins = 60
+            mia.currentStreak = 4
+            mia.bestStreak = 6
+            mia.lastFinishedDay = today
+            finish(library.lessons(inLevel: 1), stars: 3, for: mia)
+            finish(Array(library.lessons(inLevel: 2).prefix(1)), stars: 2, for: mia)
+            addUsage([12, 9, 14, 7, 0, 0, 11, 8, 0, 6, 15, 0, 4, 10], to: mia)
+        }
+
+        let jaydenID = addKid(name: "Jayden", avatar: .defaultLook(kind: .boy, outfitColorIndex: 3),
+                               hasFinishedFirstRun: true)
+        if let jayden = record(jaydenID) {
+            jayden.coins = 20
+            jayden.currentStreak = 1
+            jayden.bestStreak = 2
+            jayden.lastFinishedDay = today
+            finish(Array(library.lessons(inLevel: 1).prefix(1)), stars: 3, for: jayden)
+            addUsage([5, 0, 0, 8, 0, 0, 0, 3], to: jayden)
+        }
+
+        setParentCode("123456")
+        save()
+    }
+
     /// `UITEST_KIDS=Mia,Jayden,…` — replace the store's kids with this family, to
     /// stress "Who's learning?" with row counts and long names.
     func seedKids(named names: [String]) {
@@ -353,6 +428,11 @@ final class ProgressStore {
         let minutesThisWeek = record.dailyUsage
             .filter { $0.day >= weekStart }
             .reduce(0) { $0 + $1.minutes }
+        // Every day still inside the retention window, oldest first — the
+        // dashboard's "minutes per day" (README section 6).
+        let dailyMinutes = record.dailyUsage
+            .sorted { $0.day < $1.day }
+            .map { DayMinutes(day: calendar.startOfDay(for: $0.day), minutes: $0.minutes) }
 
         var starsByLevel: [Int: Int] = [:]
         for level in library.levels {
@@ -369,6 +449,7 @@ final class ProgressStore {
                    bestStreak: record.bestStreak,
                    minutesToday: minutesToday,
                    minutesThisWeek: minutesThisWeek,
+                   dailyMinutes: dailyMinutes,
                    starsByLesson: starsByLesson,
                    starsByLevel: starsByLevel,
                    levelStates: library.levelStates(starsByLesson: starsByLesson),
