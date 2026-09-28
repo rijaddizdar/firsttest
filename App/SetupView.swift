@@ -199,16 +199,16 @@ struct AddKidView: View {
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                VStack(spacing: 22) {
+                VStack(spacing: 14) {
                     Text("Add a kid")
                         .font(.screenTitle)
                         .foregroundStyle(Palette.textHeading)
 
                     // Name — first name / nickname only (README section 6).
-                    // No last names.
+                    // No last names. The placeholder is the label: a separate
+                    // caption above it said the same thing twice and cost a
+                    // row of the builder on a small phone.
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("What should we call them?")
-                            .font(.subheadline).foregroundStyle(Palette.textSoft)
                         TextField("First name or nickname", text: $name)
                             .font(.title3)
                             .padding(16)
@@ -222,18 +222,22 @@ struct AddKidView: View {
                     }
                     .padding(.horizontal, 24)
 
-                    // The avatar builder itself (README section 6).
-                    AvatarBuilderView(avatar: $avatar, previewSize: 96)
-
-                    Text("Your child can change all of this the first time they tap their own face.")
+                    // Said here, next to the name, rather than after the
+                    // builder, where it would sit under the fold.
+                    Text("Your child can change all of this later.")
                         .font(.footnote)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(Palette.textFaint)
                         .padding(.horizontal, 30)
+
+                    // The avatar builder itself (README section 6). A smaller
+                    // preview than the child's own screen, because this one
+                    // carries the name field above it too.
+                    AvatarBuilderView(avatar: $avatar, previewSize: 62)
                 }
                 // Sits a little below the top of the screen rather than centred.
-                .padding(.top, 24)
-                .padding(.bottom, 24)
+                .padding(.top, 12)
+                .padding(.bottom, 12)
             }
 
             Button("Start learning") {

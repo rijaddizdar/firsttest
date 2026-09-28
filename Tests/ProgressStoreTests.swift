@@ -116,7 +116,7 @@ final class ProgressStoreTests: XCTestCase {
     /// A level's lessons alone do not finish it: the friendly level check is the
     /// last step, so the next level stays shut until the check is played.
     func testTheLevelCheckIsTheLastStepOfALevel() throws {
-        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = store.addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
         for lesson in library.lessons(inLevel: 1) {
             store.recordCompletion(kidID: id, lessonID: lesson.id, levelID: 1,
                                    stars: 3, coins: lesson.coins, minutes: 3)

@@ -6,10 +6,14 @@
 //  grown-up's "Add a kid" uses it, and "Make it yours!" from the map header
 //  uses it, so what is made really is what is shown everywhere.
 //
-//  Pictures first, words second (README section 7 rule 3): the hairstyle row is
+//  Pictures first, words second (README section 7 rule 3): the hairstyles are
 //  seven small drawings of THIS child wearing each style, in the colours they
 //  have already picked, and every colour row is swatches. Every control still
 //  carries a spoken label, because a picture alone says nothing to VoiceOver.
+//
+//  Nothing here scrolls sideways. A horizontal strip put the last styles off
+//  the right edge, which a child reads as "that's all of them" — so the styles
+//  WRAP instead, and every choice is on screen at rest on the smallest phone.
 //
 
 import SwiftUI
@@ -18,18 +22,19 @@ struct AvatarBuilderView: View {
     @Binding var avatar: Avatar
     /// How big the live preview is. Smaller inside the grown-up's Add-a-kid
     /// screen, which has a name field and a button to fit as well.
-    var previewSize: CGFloat = 112
+    var previewSize: CGFloat = 80
 
     var body: some View {
-        // Tight spacing on purpose: all five groups of choices have to be
-        // reachable without the last one hiding behind the button.
-        VStack(spacing: 16) {
+        // Tight spacing on purpose: all five groups of choices, including both
+        // rows of hairstyles, have to be on screen at rest on the smallest
+        // phone, with the button still fully visible under them.
+        VStack(spacing: 12) {
             AvatarBadge(avatar: avatar, size: previewSize)
                 .accessibilityLabel("Your look: \(avatar.spokenDescription)")
                 .animation(.easeInOut(duration: Motion.press), value: avatar)
 
             kindPicker
-            hairstyleRow
+            hairstyleChoices
             swatchRow(title: "Skin",
                       colors: Palette.avatarSkinTones,
                       names: (1...Palette.avatarSkinTones.count).map { "Skin tone \($0)" },
@@ -63,19 +68,35 @@ struct AvatarBuilderView: View {
 
     // MARK: Hairstyle
 
-    private var hairstyleRow: some View {
-        VStack(spacing: 8) {
+    private var hairstyleChoices: some View {
+        let styles = Hairstyle.choices(for: avatar.kind)
+        return VStack(spacing: 6) {
             rowTitle("Hair")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(Hairstyle.choices(for: avatar.kind)) { style in
-                        hairstyleButton(style)
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 4)   // room for the selected ring
+            // Widest layout that fits: one row where there is room for it (a
+            // tablet), otherwise four to a row. Never a sideways scroll.
+            ViewThatFits(in: .horizontal) {
+                hairstyleGrid(styles, columns: styles.count)
+                hairstyleGrid(styles, columns: 4)
+                hairstyleGrid(styles, columns: 3)
             }
         }
+    }
+
+    private func hairstyleGrid(_ styles: [Hairstyle], columns: Int) -> some View {
+        let rows = stride(from: 0, to: styles.count, by: columns).map { start in
+            Array(styles[start..<min(start + columns, styles.count)])
+        }
+        // A plain Grid, not a LazyVGrid: the tiles are few, and `.top` keeps a
+        // shorter last row lined up under the first.
+        return Grid(alignment: .top, horizontalSpacing: 10, verticalSpacing: 8) {
+            ForEach(rows.indices, id: \.self) { row in
+                GridRow {
+                    ForEach(rows[row]) { style in hairstyleButton(style) }
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 4)   // room for the selected ring
     }
 
     private func hairstyleButton(_ style: Hairstyle) -> some View {
@@ -87,21 +108,23 @@ struct AvatarBuilderView: View {
         return Button {
             avatar.hairstyle = style
         } label: {
-            VStack(spacing: 6) {
+            VStack(spacing: 4) {
                 ZStack {
                     Circle().fill(.white)
                     AvatarFigure(avatar: preview)
                         .frame(width: 100, height: 100)
-                        .scaleEffect(0.58)
-                        .frame(width: 58, height: 58)
+                        .scaleEffect(0.48)
+                        .frame(width: 48, height: 48)
                         .clipShape(Circle())
                     Circle().stroke(isSelected ? Palette.teal : Palette.borderField,
                                     lineWidth: isSelected ? Border.choice : Border.field)
                 }
-                .frame(width: 58, height: 58)
+                .frame(width: 48, height: 48)
 
                 Text(style.label)
-                    .font(.caption.weight(isSelected ? .bold : .regular))
+                    .font(.caption2.weight(isSelected ? .bold : .regular))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                     .foregroundStyle(isSelected ? Palette.teal : Palette.textSoft)
             }
         }
@@ -117,14 +140,14 @@ struct AvatarBuilderView: View {
                            names: [String],
                            selection: Int,
                            onPick: @escaping (Int) -> Void) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             rowTitle(title)
-            HStack(spacing: 12) {
+            HStack(spacing: 10) {
                 ForEach(colors.indices, id: \.self) { index in
                     Button { onPick(index) } label: {
                         Circle()
                             .fill(colors[index])
-                            .frame(width: 40, height: 40)
+                            .frame(width: 34, height: 34)
                             // A hairline on every swatch, so the palest skin
                             // tone is still a circle against the cream page.
                             .overlay(Circle().stroke(Palette.ink.opacity(0.15), lineWidth: Border.hairline))

@@ -167,7 +167,10 @@ expand fine. `xcodebuild … test` runs 48 unit tests, all passing. The app was
 then installed and driven on an **iPhone 17** and an **iPad Air 11-inch (M4)**
 simulator (both iOS 27.0): every screen type, the right and wrong answer paths,
 the avatar builder and a child's first time, and a full quit-and-relaunch to
-confirm progress really is saved.
+confirm progress really is saved. "Make it yours!" is also checked on an
+**iPhone 17e**, the smallest current phone — every hairstyle and every colour
+has to be on screen at rest there, with the button still fully visible, because
+a choice a child has to scroll to find reads as a choice that isn't there.
 
 ### Screenshots
 
@@ -234,7 +237,9 @@ This version's avatar screens are in
 | Yay! — Penny and the child celebrating together | `avatar/06-yay.png` |
 | The grown-up "Add a kid" screen, using the same builder | `avatar/07-add-kid.png` |
 | The dashboard, with each child's own face at 40pt | `avatar/08-dashboard.png` |
-| iPad — "Who's learning?", "Make it yours!" (all seven styles at once) and the map | `avatar/ipad-*.png` |
+| "Make it yours!" on an iPhone 17e — the smallest phone, everything at rest | `avatar/09-make-it-yours-iphone-17e.png` |
+| "Add a kid" on an iPhone 17e | `avatar/10-add-kid-iphone-17e.png` |
+| iPad — "Who's learning?", "Make it yours!" (all seven styles in one row) and the map | `avatar/ipad-*.png` |
 
 ### Reproducing the screenshots
 

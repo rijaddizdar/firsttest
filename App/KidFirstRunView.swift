@@ -108,13 +108,13 @@ struct KidFirstRunView: View {
     private var lookStep: some View {
         VStack(spacing: 0) {
             ScrollView {
-                VStack(spacing: 22) {
+                VStack(spacing: 14) {
                     Text("Make it yours!")
                         .font(.screenTitle)
                         .foregroundStyle(Palette.textHeading)
                         .multilineTextAlignment(.center)
 
-                    Text("Pick a look you like. You can change it any time.")
+                    Text("You can change it any time.")
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(Palette.textMuted)
@@ -122,8 +122,11 @@ struct KidFirstRunView: View {
 
                     AvatarBuilderView(avatar: $avatar)
                 }
-                .padding(.top, 24)
-                .padding(.bottom, 24)
+                // Tighter than the other screens': this one has to hold the
+                // whole builder above the button without scrolling, down to
+                // the smallest phone.
+                .padding(.top, 12)
+                .padding(.bottom, 12)
             }
 
             Button("I like it!") {
