@@ -36,6 +36,11 @@ struct SortItScreenView: View {
 
     private let boardSpace = "sortBoard"
 
+    /// How much width one tray chip gets. Four of these plus the spacing and the
+    /// page margins fit across the narrowest iPhone the app supports (375pt):
+    /// 4 x 76 + 3 x 10 spacing = 334, inside 375 - 40 of page margin.
+    private static let trayChipWidth: CGFloat = 76
+
     var body: some View {
         VStack(spacing: 16) {
             LessonPennyHeader(mood: runner.pennyMood, line: runner.pennyLine, pennySize: 88)
@@ -111,13 +116,22 @@ struct SortItScreenView: View {
     // MARK: Tray
 
     /// The pictures still waiting to be sorted.
+    ///
+    /// One row, so the chips SHARE the width rather than taking their natural
+    /// size: four pictures with words like "Ice cream" on them are wider than a
+    /// phone, and an over-wide row here used to stretch the whole lesson (the
+    /// close button ended up off the left edge). The row is also capped to the
+    /// width the remaining chips actually need, so the last picture left in the
+    /// tray doesn't stretch across the screen on its own.
     private var tray: some View {
         let remaining = screen.items.filter { placed[$0.id] == nil }
-        return HStack(spacing: 12) {
+        return HStack(spacing: 10) {
             ForEach(remaining) { item in
                 chip(item)
             }
         }
+        .frame(maxWidth: CGFloat(max(remaining.count, 1)) * Self.trayChipWidth)
+        .frame(maxWidth: .infinity)
         .frame(minHeight: 96)
         .padding(.horizontal, 20)
         .animation(reduceMotion ? .easeInOut(duration: Motion.glow) : .spring(duration: Motion.step),
@@ -126,17 +140,20 @@ struct SortItScreenView: View {
 
     private func chip(_ item: SortItScreen.Item) -> some View {
         VStack(spacing: 6) {
-            FluentIcon(name: item.icon, size: 46)
+            FluentIcon(name: item.icon, size: 42)
             Text(item.label)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Palette.textBody)
-                // One line, shrunk if it must be: a hyphenated "Bal-loon" is
-                // not something a six-year-old should have to read.
-                .lineLimit(1)
+                .multilineTextAlignment(.center)
+                // Two lines, shrunk if they must be. Wrapping happens BETWEEN
+                // words, so "Washing up" becomes two short words rather than a
+                // hyphenated "Wash-ing" — and a single long word still shrinks
+                // instead of breaking, which is what a six-year-old needs.
+                .lineLimit(2)
                 .minimumScaleFactor(0.7)
         }
-        .frame(minWidth: 72)
-        .padding(.vertical, 10).padding(.horizontal, 12)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10).padding(.horizontal, 8)
         .background(chipFill(item), in: RoundedRectangle(cornerRadius: Radius.field, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: Radius.field, style: .continuous)

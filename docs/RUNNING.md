@@ -188,6 +188,27 @@ This version's screens are in
 | The dashboard after relaunching | `foundation/16-dashboard-after-relaunch.png` |
 | iPad — map, the three new screen types, the celebration, and the map after relaunching | `foundation/ipad-*.png` |
 
+World 1's lessons, the per-level lesson list and the level check are in
+[`screenshots/world1/`](screenshots/world1):
+
+| Screen | File |
+|---|---|
+| The map, with World 1 playable | `world1/01-map.png` |
+| A level's lesson list | `world1/02-level-lessons.png` |
+| Hello | `world1/03-hello.png` |
+| Learn | `world1/04-learn.png` |
+| Tap to choose — right | `world1/05-tap-right.png` |
+| Tap to choose — try again | `world1/06-tap-wrong.png` |
+| Story choice | `world1/07-story-choice.png` |
+| Count it | `world1/08-count-it.png` |
+| Sort it | `world1/09-sort-it.png` |
+| Sort it, with the longest labels in World 1 | `world1/09b-sort-it-longest-labels.png` |
+| Sort it — a wrong drop | `world1/10-sort-it-wrong.png` |
+| The level check — Penny's opening | `world1/10-level-check-hello.png` |
+| The level check — a borrowed question | `world1/11-level-check-question.png` |
+| Yay! | `world1/12-yay.png` |
+| iPad — map, lesson list (with the check waiting), Sort it, Count it and the level check | `world1/ipad-*.png` |
+
 ### Reproducing the screenshots
 
 The app reads optional launch-environment hooks (absent in normal use, so they
