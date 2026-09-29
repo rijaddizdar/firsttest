@@ -54,8 +54,11 @@ adding a file there and regenerating is all it takes.
 - `Models.swift` — the value types the screens render
 - `Theme.swift`, `SharedUI.swift`, `PennyView.swift` — palette + reusable UI
 - `WelcomeView.swift`, `SetupView.swift`, `WhosLearningView.swift`,
-  `LessonMapView.swift`, `LevelLessonsView.swift`, `ParentDashboardView.swift` —
-  the screens
+  `KidFirstRunView.swift`, `LessonMapView.swift`, `LevelLessonsView.swift`,
+  `ParentDashboardView.swift` — the screens
+- `Avatar/` — the child's profile picture: the five choices (`Avatar.swift`),
+  the layered drawing (`AvatarArtwork.swift`) and the "Make it yours!" builder
+  (`AvatarBuilderView.swift`)
 - `Persistence/` — the SwiftData models (`Records.swift`) and the only code that
   reads or writes them (`ProgressStore.swift`)
 - `Lessons/` — the lesson engine: the content schema and its validation, the
@@ -111,7 +114,13 @@ check.
 
 - **First launch** starts empty, as a real install does: **Welcome** → *A
   grown-up sets this up* → **press-and-hold** 3s gate → **create a 6-digit
-  parent code** → **add a kid** (name + boy/girl + colour).
+  parent code** → **add a kid** (first name + the avatar builder).
+- **Who's learning?** → tap the new child's face. Because nobody has used that
+  profile yet, their **own first time** runs: *"What should I call you?"* →
+  *"Make it yours!"* → **meet Penny** → the map. Tap their face again
+  afterwards and it goes straight to the map.
+- On the map, tap the **face in the header** to open *"Make it yours!"* again —
+  a child can change their look whenever they like.
 - **Who's learning?** → tap an avatar → the **13-level map** (locked / current /
   completed / "Coming soon", stars, coins, a coin-based streak).
 - Tap a level to see its **lesson list**: its five lessons in order with the
@@ -143,19 +152,25 @@ xcodebuild -project MoneyPals.xcodeproj -scheme MoneyPals \
 
 `Tests/` covers the parts that must not silently break: the bundled content
 loads and validates (and a broken lesson produces a readable error), the lesson
-engine's rules (a missed question coming back, stars, question numbering), and
-what the store saves (progress, streak days, best-stars-on-replay, and that the
-parent code is never stored in plain text).
+engine's rules (a missed question coming back, stars, question numbering), what
+the store saves (progress, streak days, best-stars-on-replay, and that the
+parent code is never stored in plain text), and the avatar rules (every
+combination is valid, the headscarf stays off the boy look, a look survives a
+relaunch, and a profile saved before the builder existed still loads).
 
 ## Build & run status
 
 **Built, tested and run.** Compiles clean for the iOS Simulator SDK
 (`iphonesimulator27.0`, Xcode 27) with the `xcodebuild … build` command above —
 `** BUILD SUCCEEDED **`, no warnings from the app code, and `#Preview` macros
-expand fine. `xcodebuild … test` runs 33 unit tests, all passing. The app was
+expand fine. `xcodebuild … test` runs 48 unit tests, all passing. The app was
 then installed and driven on an **iPhone 17** and an **iPad Air 11-inch (M4)**
 simulator (both iOS 27.0): every screen type, the right and wrong answer paths,
-and a full quit-and-relaunch to confirm progress really is saved.
+the avatar builder and a child's first time, and a full quit-and-relaunch to
+confirm progress really is saved. "Make it yours!" is also checked on an
+**iPhone 17e**, the smallest current phone — every hairstyle and every colour
+has to be on screen at rest there, with the button still fully visible, because
+a choice a child has to scroll to find reads as a choice that isn't there.
 
 ### Screenshots
 
@@ -209,6 +224,23 @@ World 1's lessons, the per-level lesson list and the level check are in
 | Yay! | `world1/12-yay.png` |
 | iPad — map, lesson list (with the check waiting), Sort it, Count it and the level check | `world1/ipad-*.png` |
 
+This version's avatar screens are in
+[`screenshots/avatar/`](screenshots/avatar):
+
+| Screen | File |
+|---|---|
+| "Who's learning?" — a family showing all seven hairstyles | `avatar/01-whos-learning.png` |
+| A child's first time: "What should I call you?" | `avatar/02-first-time-name.png` |
+| A child's first time: "Make it yours!" | `avatar/03-first-time-look.png` |
+| A child's first time: meet Penny | `avatar/04-first-time-penny.png` |
+| The map header, with the way back into "Make it yours!" | `avatar/05-map-header.png` |
+| Yay! — Penny and the child celebrating together | `avatar/06-yay.png` |
+| The grown-up "Add a kid" screen, using the same builder | `avatar/07-add-kid.png` |
+| The dashboard, with each child's own face at 40pt | `avatar/08-dashboard.png` |
+| "Make it yours!" on an iPhone 17e — the smallest phone, everything at rest | `avatar/09-make-it-yours-iphone-17e.png` |
+| "Add a kid" on an iPhone 17e | `avatar/10-add-kid-iphone-17e.png` |
+| iPad — "Who's learning?", "Make it yours!" (all seven styles in one row) and the map | `avatar/ipad-*.png` |
+
 ### Reproducing the screenshots
 
 The app reads optional launch-environment hooks (absent in normal use, so they
@@ -222,6 +254,11 @@ only matter when set) so screens can be captured deterministically:
 | `UITEST_ROUTE` | Jump to a screen (`welcome`, `createParentCode`, `whosLearning`, `lessonMap`, `levelLessons`, `lesson`, `parentDashboard`, …) |
 | `UITEST_LEVEL` | Which level's lesson list to open, e.g. `2` (pair with `UITEST_ROUTE=levelLessons`) |
 | `UITEST_LESSON` | Play a lesson by content id, e.g. `what-is-money-1`, or a level check id such as `level-2-check` |
+
+| `UITEST_KIDS` | Replace the kids with a comma-separated family, e.g. `Mia,Jayden,Bartholomew` — this is what stresses the "Who's learning?" grid. The seeded family walks through the avatar builder's choices, so eight names show every hairstyle |
+| `UITEST_ROUTE` | Jump to a screen (`welcome`, `createParentCode`, `addKid`, `whosLearning`, `kidFirstRun`, `editAvatar`, `lessonMap`, `lesson`, `parentDashboard`, …) |
+| `UITEST_FIRSTRUN_STEP` | Which step of the child's first time to open on: `name`, `look` or `penny` (only read on the `kidFirstRun` route) |
+| `UITEST_LESSON` | Play a lesson by content id, e.g. `sample-screen-types` |
 | `UITEST_LESSON_SCREEN` | Open a given screen of it — a screen id from the JSON, or a 1-based number |
 | `UITEST_LESSON_FEEDBACK` | `right` / `wrong` plays that answer on the current question (and holds the state so a capture can't miss it); `complete` jumps to the Yay! screen, which saves progress |
 

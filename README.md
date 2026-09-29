@@ -262,7 +262,7 @@ After setup, the app opens to **"Who's learning?"** and each child just taps the
 Children can change all of this at any time:
 
 - Name or nickname
-- Avatar built from ready-made parts: **boy or girl**; **hairstyle** (short, spiky, curly, long, puffs, braids, or a headscarf for girls); **skin tone** (6); **hair color** (6, or a scarf color with the headscarf); **outfit color** (6); accessories later.
+- Avatar built from ready-made parts: **boy or girl**; **hairstyle** (short, spiky, curly, long, puffs, braids, or a headscarf for girls); **skin tone** (6); **hair color** (6, or a scarf color with the headscarf); **outfit color** (6); accessories later. *(Built — the avatar is drawn from layered SwiftUI shapes in `App/Avatar/`, so there is no photo to upload and nothing to fetch.)*
 - Favorite color theme
 - Penny's scarf color
 - Sounds, music, voice and calm mode on or off
@@ -452,7 +452,9 @@ Because the server stores children's names, profiles and progress, the app shoul
 
 **World 1 · Money Basics is written**: 15 lessons (5 per level) across *What Is Money?*, *Needs & Wants* and *Earning Money*, 104 screens and 59 questions using the full mix of screen types, plus a friendly level check per level. The scripts are in [`docs/world-1-lesson-scripts.md`](docs/world-1-lesson-scripts.md).
 
-What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, Worlds 2–4's lessons, the rewards shop, the avatar builder and a child's own first-run, and the full accessibility pass.
+The **avatar builder** and a **child's own first time** are built too: an avatar drawn from layered parts (boy or girl, seven hairstyles, six skin tones, six hair or scarf colours, six outfit colours — see [Customization](#customization)), saved with the profile and shown on "Who's learning?", the map header, the lesson celebration and the grown-up dashboard; and the three-step first run — *"What should I call you?"*, *"Make it yours!"*, meet Penny — that a child gets the first time they tap their own face.
+
+What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, Worlds 2–4's lessons, the rewards shop, and the full accessibility pass.
 
 ### Phases
 
@@ -460,7 +462,7 @@ What is NOT built yet: the backend and sync, Sign in with Apple, verifiable pare
 |---|---|---|
 | **0 · Concept** | Choose the guide animal, level path, sample lesson flow, account and parent dashboard model; write this README | ✅ Done |
 | **1 · Design** | Commission the rigged glossy 3D Penny model and animations, Fluent Emoji 3D icon set and credits screen, full lesson scripts for World 1, UI design, trademark search for the chosen app name and for Penny, privacy and legal review | 🔵 In progress — **World 1's lesson scripts are written**, Fluent Emoji 3D icons are in and credited; the 3D Penny, the trademark search and the legal review are open |
-| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | 🔵 In progress — all of **World 1** plays from data files with a level check each, progress saves on the device, Penny still placeholder art |
+| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | 🔵 In progress — all of **World 1** plays from data files with a level check each, progress saves on the device, each child builds their own avatar, Penny still placeholder art |
 | **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync; Penny live in RealityKit | Not started |
 | **4 · Full path** | All 13 levels, rewards shop, accessibility and localization passes | Not started — level checks are built and working for World 1 |
 | **5 · Launch** | App Store submission in the Kids Category | Not started |

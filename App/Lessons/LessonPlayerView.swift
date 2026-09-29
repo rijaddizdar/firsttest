@@ -166,7 +166,15 @@ private struct YayScreenView: View {
     var body: some View {
         VStack(spacing: 22) {
             Spacer()
-            PennyView(mood: .celebrate, size: 180)
+            // Penny and the child, cheering together. The child's own avatar is
+            // here because this is the moment worth seeing yourself in.
+            HStack(spacing: 4) {
+                PennyView(mood: .celebrate, size: 170)
+                if let kid = app.selectedKid {
+                    AvatarBadge(avatar: kid.avatar, size: 84, spokenName: kid.name)
+                        .padding(.bottom, 12)
+                }
+            }
             Text(runner.fill(screen.title))
                 .font(.screenTitle).foregroundStyle(Palette.textHeading)
                 .multilineTextAlignment(.center)

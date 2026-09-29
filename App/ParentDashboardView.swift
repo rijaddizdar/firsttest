@@ -221,7 +221,7 @@ private struct KidProgressCard: View {
 
     var body: some View {
         DashCard(title: kid.name, icon: nil, leading: {
-            AnyView(AvatarBadge(kind: kid.avatarKind, color: kid.avatarColor, size: 40))
+            AnyView(AvatarBadge(avatar: kid.avatar, size: 40))
         }) {
             HStack(spacing: 10) {
                 stat("Stars", "\(kid.totalStars)", "star")

@@ -45,6 +45,8 @@ struct RootView: View {
             case .createParentCode: CreateParentCodeView()
             case .addKid:           AddKidView()
             case .whosLearning:     WhosLearningView()
+            case .kidFirstRun:      KidFirstRunView()
+            case .editAvatar:       EditAvatarView()
             case .lessonMap:        LessonMapView()
             case .levelLessons:     LevelLessonsView()
             case .lesson:           lessonPlayer

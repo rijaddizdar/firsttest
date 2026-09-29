@@ -112,14 +112,46 @@ final class ProgressStore {
         records().first { $0.id == id }
     }
 
+    /// Add a profile. `hasFinishedFirstRun` is false for a profile a grown-up
+    /// just made, so the child's own first time — name, "Make it yours!", meet
+    /// Penny — still runs the first time they tap their own face.
     @discardableResult
-    func addKid(name: String, kind: AvatarKind, colorIndex: Int) -> UUID {
+    func addKid(name: String, avatar: Avatar, hasFinishedFirstRun: Bool = false) -> UUID {
         let record = KidRecord(name: name.isEmpty ? "Friend" : name,
-                               avatarKindRaw: kind.rawValue,
-                               avatarColorIndex: colorIndex)
+                               avatarKindRaw: avatar.kind.rawValue,
+                               avatarColorIndex: avatar.outfitColorIndex,
+                               avatarHairstyleRaw: avatar.hairstyle.rawValue,
+                               avatarSkinToneIndex: avatar.skinToneIndex,
+                               avatarHairColorIndex: avatar.hairColorIndex,
+                               hasFinishedFirstRun: hasFinishedFirstRun)
         context.insert(record)
         save()
         return record.id
+    }
+
+    /// Save a change a child (or a grown-up) made to their name or their look.
+    /// Passing nil for either leaves it alone.
+    func updateKid(_ id: UUID, name: String? = nil, avatar: Avatar? = nil) {
+        guard let record = record(id) else { return }
+        if let name {
+            let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty { record.name = trimmed }
+        }
+        if let avatar {
+            record.avatarKindRaw = avatar.kind.rawValue
+            record.avatarColorIndex = avatar.outfitColorIndex
+            record.avatarHairstyleRaw = avatar.hairstyle.rawValue
+            record.avatarSkinToneIndex = avatar.skinToneIndex
+            record.avatarHairColorIndex = avatar.hairColorIndex
+        }
+        save()
+    }
+
+    /// The child has met Penny; from now on their face opens the map.
+    func markFirstRunFinished(_ id: UUID) {
+        guard let record = record(id) else { return }
+        record.hasFinishedFirstRun = true
+        save()
     }
 
     func deleteKid(_ id: UUID) {
@@ -263,7 +295,10 @@ final class ProgressStore {
     /// behind her. Only used by `UITEST_SEED=demo`, never on a real first launch.
     func seedDemoKid(library: CurriculumLibrary) {
         guard records().isEmpty else { return }
-        let id = addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = addKid(name: "Mia",
+                        avatar: Avatar(kind: .girl, hairstyle: .braids,
+                                       skinToneIndex: 4, hairColorIndex: 0, outfitColorIndex: 0),
+                        hasFinishedFirstRun: true)
         guard let kid = record(id) else { return }
         kid.coins = 30
         kid.bestStreak = 5
@@ -279,9 +314,22 @@ final class ProgressStore {
     func seedKids(named names: [String]) {
         records().forEach(context.delete)
         for (index, name) in names.enumerated() {
+            // Walk through the builder's choices so a seeded family shows a
+            // range of looks rather than eight of the same child.
+            let kind: AvatarKind = index.isMultiple(of: 2) ? .girl : .boy
+            let styles = Hairstyle.choices(for: kind)
+            let avatar = Avatar(kind: kind,
+                                hairstyle: styles[index % styles.count],
+                                skinToneIndex: (index * 2) % Palette.avatarSkinTones.count,
+                                hairColorIndex: (index * 3) % Palette.avatarHairColors.count,
+                                outfitColorIndex: index)
             let record = KidRecord(name: name,
-                                   avatarKindRaw: index.isMultiple(of: 2) ? AvatarKind.girl.rawValue : AvatarKind.boy.rawValue,
-                                   avatarColorIndex: index,
+                                   avatarKindRaw: avatar.kind.rawValue,
+                                   avatarColorIndex: avatar.outfitColorIndex,
+                                   avatarHairstyleRaw: avatar.hairstyle.rawValue,
+                                   avatarSkinToneIndex: avatar.skinToneIndex,
+                                   avatarHairColorIndex: avatar.hairColorIndex,
+                                   hasFinishedFirstRun: true,
                                    createdAt: Date().addingTimeInterval(Double(index)))
             context.insert(record)
         }
@@ -314,8 +362,8 @@ final class ProgressStore {
 
         return Kid(id: record.id,
                    name: record.name,
-                   avatarKind: AvatarKind(rawValue: record.avatarKindRaw) ?? .girl,
-                   avatarColorIndex: record.avatarColorIndex,
+                   avatar: Self.avatar(from: record),
+                   hasFinishedFirstRun: record.hasFinishedFirstRun ?? true,
                    coins: record.coins,
                    currentStreak: record.currentStreak,
                    bestStreak: record.bestStreak,
@@ -325,6 +373,22 @@ final class ProgressStore {
                    starsByLevel: starsByLevel,
                    levelStates: library.levelStates(starsByLesson: starsByLesson),
                    unlockedThrough: library.unlockedThrough(starsByLesson: starsByLesson))
+    }
+
+    /// Read a saved look back. A profile written before the avatar builder
+    /// existed has no hairstyle on it; it keeps the boy/girl look and outfit
+    /// colour it chose and takes the builder's default for the rest, so it
+    /// still loads and still looks like somebody.
+    static func avatar(from record: KidRecord) -> Avatar {
+        let kind = AvatarKind(rawValue: record.avatarKindRaw) ?? .girl
+        guard let raw = record.avatarHairstyleRaw, let hairstyle = Hairstyle(rawValue: raw) else {
+            return Avatar.defaultLook(kind: kind, outfitColorIndex: record.avatarColorIndex)
+        }
+        return Avatar(kind: kind,
+                      hairstyle: hairstyle,
+                      skinToneIndex: record.avatarSkinToneIndex ?? 2,
+                      hairColorIndex: record.avatarHairColorIndex ?? 0,
+                      outfitColorIndex: record.avatarColorIndex)
     }
 
     // MARK: Saving

@@ -20,6 +20,8 @@ enum Route: Equatable {
     case createParentCode   // 2b. Create the 6-digit parent code (PIN)
     case addKid             // 2c. Add a kid profile
     case whosLearning       // "Who's learning?" avatar picker
+    case kidFirstRun        // 2d. The child's own first time: name, look, Penny
+    case editAvatar         // "Make it yours!" again, from the map header
     case lessonMap          // 3. The 13-level path for the selected kid
     case levelLessons       // 3b. One level's lessons + its friendly check
     case lesson             // 4. A lesson, played by the engine
@@ -36,6 +38,8 @@ extension Route {
         case "createParentCode": self = .createParentCode
         case "addKid":           self = .addKid
         case "whosLearning":     self = .whosLearning
+        case "kidFirstRun":      self = .kidFirstRun
+        case "editAvatar":       self = .editAvatar
         case "lessonMap":        self = .lessonMap
         case "levelLessons":     self = .levelLessons
         case "lesson":           self = .lesson
@@ -107,10 +111,36 @@ final class AppState: ObservableObject {
 
     // MARK: - Kid mutations
 
-    func addKid(name: String, kind: AvatarKind, colorIndex: Int) {
-        let id = store.addKid(name: name, kind: kind, colorIndex: colorIndex)
+    /// Add a profile from the grown-up flow. The child still gets their own
+    /// first time — name, "Make it yours!", meet Penny — when they first tap
+    /// their face (README section 6).
+    @discardableResult
+    func addKid(name: String, avatar: Avatar) -> Kid.ID {
+        let id = store.addKid(name: name, avatar: avatar)
         reload()
         selectedKidID = id
+        return id
+    }
+
+    /// Save a change to a child's name or look. Used by the first-time flow and
+    /// by "Make it yours!" reached from the map.
+    func updateKid(_ id: Kid.ID, name: String? = nil, avatar: Avatar? = nil) {
+        store.updateKid(id, name: name, avatar: avatar)
+        reload()
+    }
+
+    /// The child has met Penny. Their face opens the map from now on.
+    func finishKidFirstRun(_ id: Kid.ID) {
+        store.markFirstRunFinished(id)
+        reload()
+    }
+
+    /// What tapping a face on "Who's learning?" does: the map for a child who
+    /// has been here before, their own first time for a brand-new profile.
+    func openKid(_ id: Kid.ID) {
+        selectedKidID = id
+        let started = kids.first { $0.id == id }?.hasFinishedFirstRun ?? true
+        route = started ? .lessonMap : .kidFirstRun
     }
 
     // MARK: - Lessons
@@ -270,6 +300,10 @@ final class AppState: ObservableObject {
     /// Which screen of the active lesson to open on, and in what answer state —
     /// `UITEST_LESSON_SCREEN` (a screen id or 1-based number) and
     /// `UITEST_LESSON_FEEDBACK` (`right`, `wrong` or `complete`).
+    /// Which step of the child's first time to open on — `name`, `look` or
+    /// `penny`. Only read when the route is already `kidFirstRun`.
+    var uiTestFirstRunStep: String? { ProcessInfo.processInfo.environment["UITEST_FIRSTRUN_STEP"] }
+
     var uiTestLessonScreen: String? { ProcessInfo.processInfo.environment["UITEST_LESSON_SCREEN"] }
     var uiTestLessonFeedback: String? { ProcessInfo.processInfo.environment["UITEST_LESSON_FEEDBACK"] }
 }

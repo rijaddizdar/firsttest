@@ -3,7 +3,7 @@
 //  Screen 2: the grown-up setup flow, in three steps:
 //    2a. Grown-up check — press and hold for 3 seconds (README section 6).
 //    2b. Create parent code — a 6-digit PIN that locks the dashboard.
-//    2c. Add a kid — name + boy/girl + avatar colour.
+//    2c. Add a kid — first name plus the avatar builder (Avatar/).
 //
 
 import SwiftUI
@@ -184,62 +184,64 @@ struct CreateParentCodeView: View {
 
 // MARK: - 2c. Add a kid
 
+/// The grown-up's quick path: type the child's first name and make a first
+/// look with the SAME builder the child uses, so what is made here is exactly
+/// what the child sees on "Who's learning?".
+///
+/// The child still gets their own first time (`KidFirstRunView`) when they
+/// first tap their face — it opens with whatever was chosen here, so they can
+/// keep all of it with one tap.
 struct AddKidView: View {
     @EnvironmentObject private var app: AppState
     @State private var name = ""
-    @State private var kind: AvatarKind = .girl
-    @State private var colorIndex = 0
+    @State private var avatar = Avatar()
 
     var body: some View {
-        VStack(spacing: 22) {
-            Spacer()
-            // Live preview of the chosen avatar.
-            AvatarBadge(kind: kind, color: Palette.avatarChoices[colorIndex], size: 110)
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 14) {
+                    Text("Add a kid")
+                        .font(.screenTitle)
+                        .foregroundStyle(Palette.textHeading)
 
-            Text("Add a kid")
-                .font(.screenTitle)
-                .foregroundStyle(Palette.textHeading)
-
-            // Name — first name / nickname only (README section 6). No last names.
-            VStack(alignment: .leading, spacing: 6) {
-                Text("What should we call them?")
-                    .font(.subheadline).foregroundStyle(Palette.textSoft)
-                TextField("First name or nickname", text: $name)
-                    .font(.title3)
-                    .padding(16)
-                    .background(.white, in: RoundedRectangle(cornerRadius: Radius.field))
-                    .overlay(RoundedRectangle(cornerRadius: Radius.field).stroke(Palette.borderField, lineWidth: Border.field))
-            }
-            .padding(.horizontal, 24)
-
-            // Boy / girl look (README section 6).
-            Picker("Avatar", selection: $kind) {
-                ForEach(AvatarKind.allCases) { k in Text(k.label).tag(k) }
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, 24)
-
-            // Avatar colour pick.
-            VStack(spacing: 8) {
-                Text("Pick a colour").font(.subheadline).foregroundStyle(Palette.textSoft)
-                HStack(spacing: 12) {
-                    ForEach(Palette.avatarChoices.indices, id: \.self) { i in
-                        Circle()
-                            .fill(Palette.avatarChoices[i])
-                            .frame(width: 40, height: 40)
-                            .overlay(
-                                Circle().stroke(Palette.ink, lineWidth: colorIndex == i ? Border.avatar : 0)
-                            )
-                            .onTapGesture { colorIndex = i }
-                            .accessibilityLabel("Colour \(i + 1)")
+                    // Name — first name / nickname only (README section 6).
+                    // No last names. The placeholder is the label: a separate
+                    // caption above it said the same thing twice and cost a
+                    // row of the builder on a small phone.
+                    VStack(alignment: .leading, spacing: 6) {
+                        TextField("First name or nickname", text: $name)
+                            .font(.title3)
+                            .padding(16)
+                            .background(.white, in: RoundedRectangle(cornerRadius: Radius.field))
+                            .overlay(RoundedRectangle(cornerRadius: Radius.field)
+                                .stroke(Palette.borderField, lineWidth: Border.field))
+                            .autocorrectionDisabled()
+                            .onChange(of: name) { _, new in
+                                name = KidFirstRunView.trimToNameLength(new)
+                            }
                     }
-                }
-            }
+                    .padding(.horizontal, 24)
 
-            Spacer()
+                    // Said here, next to the name, rather than after the
+                    // builder, where it would sit under the fold.
+                    Text("Your child can change all of this later.")
+                        .font(.footnote)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(Palette.textFaint)
+                        .padding(.horizontal, 30)
+
+                    // The avatar builder itself (README section 6). A smaller
+                    // preview than the child's own screen, because this one
+                    // carries the name field above it too.
+                    AvatarBuilderView(avatar: $avatar, previewSize: 62)
+                }
+                // Sits a little below the top of the screen rather than centred.
+                .padding(.top, 12)
+                .padding(.bottom, 12)
+            }
 
             Button("Start learning") {
-                app.addKid(name: name, kind: kind, colorIndex: colorIndex)
+                app.addKid(name: name, avatar: avatar)
                 app.route = .whosLearning
             }
             .buttonStyle(BigButtonStyle(fill: Palette.teal))
@@ -247,25 +249,8 @@ struct AddKidView: View {
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .lessonContentWidth()
         .kidPageBackground()
-    }
-}
-
-/// A round avatar badge built from an SF Symbol placeholder + colour.
-struct AvatarBadge: View {
-    let kind: AvatarKind
-    let color: Color
-    var size: CGFloat = 64
-
-    var body: some View {
-        ZStack {
-            Circle().fill(color.opacity(0.25))
-            Circle().stroke(color, lineWidth: Border.avatar)
-            Image(systemName: kind.symbolName)
-                .font(.system(size: size * 0.5))
-                .foregroundStyle(color)
-        }
-        .frame(width: size, height: size)
     }
 }
 

@@ -25,7 +25,26 @@ final class KidRecord {
     var name: String
     /// `AvatarKind.rawValue` ("boy" / "girl").
     var avatarKindRaw: String
+    /// The outfit colour — an index into `Palette.avatarChoices`.
     var avatarColorIndex: Int
+
+    // The rest of the avatar builder's choices (README section 6
+    // "Customization"). OPTIONAL on purpose: they were added after the first
+    // version shipped its store, and an optional attribute is what SwiftData
+    // migrates without a migration plan. A profile saved before the builder
+    // existed reads back as nil here and is shown with `Avatar.defaultLook`,
+    // keeping the boy/girl look and outfit colour it already had.
+    /// `Hairstyle.rawValue`.
+    var avatarHairstyleRaw: String?
+    /// Index into `Palette.avatarSkinTones`.
+    var avatarSkinToneIndex: Int?
+    /// Index into `Palette.avatarHairColors` (or the scarf colours).
+    var avatarHairColorIndex: Int?
+    /// Whether the child has done their own first time — name, "Make it
+    /// yours!", meet Penny. Nil means a profile from before that flow existed,
+    /// which is treated as done: nobody who is already learning gets sent back
+    /// to a welcome screen.
+    var hasFinishedFirstRun: Bool?
 
     var coins: Int
     var currentStreak: Int
@@ -45,6 +64,10 @@ final class KidRecord {
          name: String,
          avatarKindRaw: String,
          avatarColorIndex: Int,
+         avatarHairstyleRaw: String? = nil,
+         avatarSkinToneIndex: Int? = nil,
+         avatarHairColorIndex: Int? = nil,
+         hasFinishedFirstRun: Bool? = nil,
          coins: Int = 0,
          currentStreak: Int = 0,
          bestStreak: Int = 0,
@@ -54,6 +77,10 @@ final class KidRecord {
         self.name = name
         self.avatarKindRaw = avatarKindRaw
         self.avatarColorIndex = avatarColorIndex
+        self.avatarHairstyleRaw = avatarHairstyleRaw
+        self.avatarSkinToneIndex = avatarSkinToneIndex
+        self.avatarHairColorIndex = avatarHairColorIndex
+        self.hasFinishedFirstRun = hasFinishedFirstRun
         self.coins = coins
         self.currentStreak = currentStreak
         self.bestStreak = bestStreak
