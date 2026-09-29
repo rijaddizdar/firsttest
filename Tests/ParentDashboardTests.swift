@@ -155,7 +155,11 @@ final class ParentDashboardTests: XCTestCase {
         XCTAssertFalse(app.hasReachedDailyLimit(kid))
         XCTAssertEqual(app.minutesLeftToday(kid), 20)
 
-        app.startLesson(inLevel: 2)
+        // Both ways into a lesson are open: the level's list, and a lesson in it.
+        app.openLevel(1)
+        XCTAssertEqual(app.route, .levelLessons)
+        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 1))
+        app.startLesson(id: lesson.id)
         XCTAssertEqual(app.route, .lesson)
     }
 
@@ -163,7 +167,7 @@ final class ParentDashboardTests: XCTestCase {
         let app = AppState(container: container, library: library, environment: [:])
         app.addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
         app.setDailyLimit(10)
-        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 2))
+        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 1))
         // Finishing this one writes the minutes — and a finished lesson is never
         // interrupted, so the limit only bites the next time around.
         app.completeLesson(lessonID: lesson.id, stars: 3, coins: 10, minutes: 12)
@@ -173,15 +177,19 @@ final class ParentDashboardTests: XCTestCase {
         XCTAssertTrue(app.hasReachedDailyLimit(kid))
         XCTAssertEqual(app.minutesLeftToday(kid), 0)
 
-        app.startLesson(inLevel: 2)
-        XCTAssertEqual(app.route, .lessonMap, "the map stays put instead of opening another lesson")
+        // Neither door opens: not the level's lesson list, and not a lesson in it.
+        app.openLevel(1)
+        XCTAssertEqual(app.route, .lessonMap, "the map stays put instead of opening the lesson list")
+        let next = try XCTUnwrap(app.nextLesson(inLevel: 1))
+        app.startLesson(id: next.id)
+        XCTAssertEqual(app.route, .lessonMap, "and no lesson starts either")
     }
 
     func testNoLimitNeverStopsAChild() throws {
         let app = AppState(container: container, library: library, environment: [:])
         app.addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
         app.setDailyLimit(ParentSettings.noDailyLimit)
-        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 2))
+        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 1))
         app.completeLesson(lessonID: lesson.id, stars: 3, coins: 10, minutes: 300)
 
         let kid = try XCTUnwrap(app.selectedKid)
@@ -214,7 +222,7 @@ final class ParentDashboardTests: XCTestCase {
         app.setDailyLimit(15)
 
         app.selectedKidID = mia
-        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 2))
+        let lesson = try XCTUnwrap(app.nextLesson(inLevel: 1))
         app.completeLesson(lessonID: lesson.id, stars: 3, coins: 10, minutes: 20)
 
         let kids = Dictionary(uniqueKeysWithValues: app.kids.map { ($0.name, $0) })
