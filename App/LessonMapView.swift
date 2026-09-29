@@ -29,6 +29,9 @@ struct LessonMapView: View {
             header(for: kid)
             ScrollView {
                 VStack(spacing: 28) {
+                    if app.hasReachedDailyLimit(kid) {
+                        timeIsUp(for: kid)
+                    }
                     ForEach(app.library.worlds) { world in
                         worldSection(world, kid: kid)
                     }
@@ -90,6 +93,22 @@ struct LessonMapView: View {
         .background(Palette.peach.opacity(0.5))
     }
 
+    // MARK: Time's up for today
+
+    /// The grown-up's daily time limit, said the way Penny says it: a kind
+    /// wrap-up and nothing else. No countdown, no "hurry", no guilt, and never a
+    /// lock icon over the levels (README sections 6 and 7).
+    private func timeIsUp(for kid: Kid) -> some View {
+        VStack(spacing: 14) {
+            PennyView(mood: .wave, size: 110)
+            SpeechBubble(text: app.dailyLimitMessage(for: kid))
+            Text("Come back tomorrow for more.")
+                .font(.rowSub).foregroundStyle(Palette.textSoft)
+        }
+        .padding(.horizontal, 20)
+        .accessibilityElement(children: .combine)
+    }
+
     // MARK: World section
 
     private func worldSection(_ world: WorldSpec, kid: Kid) -> some View {
@@ -104,7 +123,8 @@ struct LessonMapView: View {
                           state: kid.lockState(for: level.id),
                           stars: kid.starsByLevel[level.id] ?? 0,
                           progress: app.library.stepsFinished(inLevel: level.id,
-                                                              starsByLesson: kid.starsByLesson)) {
+                                                              starsByLesson: kid.starsByLesson),
+                          timeIsUp: app.hasReachedDailyLimit(kid)) {
                     // A level holds about five lessons plus its check, so it
                     // opens a lesson list rather than launching one lesson.
                     app.openLevel(level.id)
@@ -122,6 +142,9 @@ struct LevelNode: View {
     /// How many of the level's steps (its lessons plus the check) are done, so
     /// a part-finished level says "2 of 6 done" instead of looking untouched.
     var progress: (done: Int, total: Int) = (0, 0)
+    /// The grown-up's daily time limit is used up for today. The level still
+    /// looks exactly as it did — it just waits until tomorrow.
+    var timeIsUp = false
     let action: () -> Void
 
     var body: some View {
@@ -151,7 +174,9 @@ struct LevelNode: View {
                         Text("\(progress.done) of \(progress.total) done")
                             .font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
                     } else if state == .current && level.hasLessons {
-                        Text("Tap to play ▶").font(.subheadline.weight(.bold)).foregroundStyle(Palette.teal)
+                        Text(timeIsUp ? "More tomorrow" : "Tap to play ▶")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(timeIsUp ? Palette.textSoft : Palette.teal)
                     } else if state == .current || state == .open {
                         // Unlocked, but this level's lessons aren't written yet.
                         Text("Coming soon").font(.caption).foregroundStyle(Palette.textFaint)
@@ -170,7 +195,7 @@ struct LevelNode: View {
             .padding(.horizontal, 20)
         }
         .buttonStyle(PressableStyle())
-        .disabled(state == .locked)
+        .disabled(state == .locked || timeIsUp)
         .accessibilityHint(accessibilityHint)
     }
 
@@ -188,6 +213,7 @@ struct LevelNode: View {
     }
 
     private var accessibilityHint: String {
+        if timeIsUp, state != .locked { return "That's all for today. More tomorrow." }
         switch state {
         case .locked:    return "Locked. Finish earlier levels first."
         case .current:

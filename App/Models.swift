@@ -39,6 +39,10 @@ struct Kid: Identifiable, Equatable {
     // Parent-dashboard figures (README section 6), from the day records.
     var minutesToday: Int = 0
     var minutesThisWeek: Int = 0
+    /// Minutes per day for every day still kept, newest day last. README
+    /// section 9 keeps this on a rolling window only, so this is at most the
+    /// last `ProgressStore.usageRetentionDays` days.
+    var dailyMinutes: [DayMinutes] = []
 
     /// Best stars per finished lesson, keyed by lesson content id.
     var starsByLesson: [String: Int] = [:]
@@ -70,6 +74,29 @@ struct Kid: Identifiable, Equatable {
     }
 
     func hasFinished(lessonID: String) -> Bool { starsByLesson[lessonID] != nil }
+
+    /// Minutes per day for the last `days` days, oldest first, with zero-minute
+    /// days filled in — the shape the dashboard's day bars want. Days outside
+    /// the retention window simply come back as zero.
+    func minutesPerDay(lastDays days: Int, endingOn today: Date = Date(),
+                       calendar: Calendar = .current) -> [DayMinutes] {
+        let end = calendar.startOfDay(for: today)
+        var byDay: [Date: Int] = [:]
+        for entry in dailyMinutes { byDay[calendar.startOfDay(for: entry.day), default: 0] += entry.minutes }
+        return (0..<max(1, days)).reversed().compactMap { back in
+            guard let day = calendar.date(byAdding: .day, value: -back, to: end) else { return nil }
+            return DayMinutes(day: day, minutes: byDay[day] ?? 0)
+        }
+    }
+}
+
+/// Minutes a child spent on one day. The parent dashboard's "time spent"
+/// (README section 6) and the daily limit both read these.
+struct DayMinutes: Identifiable, Equatable {
+    /// Midnight of the day.
+    let day: Date
+    let minutes: Int
+    var id: Date { day }
 }
 
 /// How a level shows up on the map.
@@ -85,8 +112,24 @@ enum LevelLockState {
 
 /// Per-account parental controls (README section 6). Persisted in `SettingsRecord`.
 struct ParentSettings: Equatable {
+    /// How long a child may learn each day, or `ParentSettings.noDailyLimit`
+    /// (0) for no limit at all. One setting for the whole family for now: the
+    /// store holds a single value (README section 6 wants it per child — that
+    /// needs a field on `KidRecord`).
     var dailyLimitMinutes: Int = 20
     var soundOn: Bool = true
+
+    /// The value that means "no limit". Grown-ups who don't want a cap pick it.
+    static let noDailyLimit = 0
+    /// The choices the dashboard offers, in minutes; `noDailyLimit` first.
+    static let dailyLimitChoices = [noDailyLimit, 10, 15, 20, 30, 45, 60, 90]
+
+    var hasDailyLimit: Bool { dailyLimitMinutes > 0 }
+
+    /// How the limit reads in the grown-up area.
+    var dailyLimitLabel: String {
+        hasDailyLimit ? "\(dailyLimitMinutes) min" : "No limit"
+    }
     /// How many digits the stored parent code has, so the keypad knows when to
     /// submit. Nil when no code is set. The code itself is only ever stored as a
     /// salted hash (README section 9).

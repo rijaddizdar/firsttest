@@ -1,6 +1,6 @@
 # Money lessons with Penny the Armadillo
 
-> **Status: early prototype.** A SwiftUI app lives in `App/` (welcome → grown-up setup → level map → level lesson list → lessons → code-locked parent dashboard). Three foundations are now real: **progress is saved on the device** with SwiftData (kids, the parent code as a salted hash, lessons finished, stars, play coins, streaks, unlocked levels); **lessons are data, not screens** — a lesson engine plays every screen type in [section 3](#3-how-learning-works) from bundled JSON in `App/Content`; and **all of World 1 is written** — 15 lessons across its three levels, plus a friendly [level check](#3-how-learning-works) built from each level's own questions. Every word of it is reviewable as writing in [`docs/world-1-lesson-scripts.md`](docs/world-1-lesson-scripts.md). There is still no backend, no sync, no Sign in with Apple and no parental consent, and Worlds 2–4 are not written. The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
+> **Status: early prototype.** A SwiftUI app lives in `App/` (welcome → grown-up setup → level map → level lesson list → lessons → code-locked parent dashboard). Three foundations are now real: **progress is saved on the device** with SwiftData (kids, the parent code as a salted hash, lessons finished, stars, play coins, streaks, unlocked levels); **lessons are data, not screens** — a lesson engine plays every screen type in [section 3](#3-how-learning-works) from bundled JSON in `App/Content`; and **all of World 1 is written** — 15 lessons across its three levels, plus a friendly [level check](#3-how-learning-works) built from each level's own questions. Every word of it is reviewable as writing in [`docs/world-1-lesson-scripts.md`](docs/world-1-lesson-scripts.md). The **parent dashboard** now shows that saved progress for real, keeps the daily time limit kindly, and can delete one child's data or everything on the device. There is still no backend, no sync, no Sign in with Apple and no parental consent, and Worlds 2–4 are not written. The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
 
 An iPhone and iPad app that teaches children the basics of money through short, playful, guided lessons, in the spirit of Duolingo. A friendly armadillo named **Penny** walks kids through a path of levels. Each level explores one money idea, from "What is money?" to "How can money grow?"
 
@@ -277,17 +277,24 @@ The dashboard opens **only after the parent code is entered**. A child cannot re
 - Several wrong codes in a row trigger a short lockout, so a child can't guess their way in.
 - A forgotten code is reset by signing in with Apple again.
 
-| Area | What the parent sees or controls |
-|---|---|
-| **Progress per level** | For each child: lessons finished, stars and level checks, level by level |
-| **Time spent** | Minutes per day and per week, for each child |
-| **Streaks** | Current streak and best streak |
-| **Settings** | Daily time limit per child, reset parent code |
-| **Profiles** | Add, rename or remove kid profiles |
-| **Data** | Delete one child's data, or delete the whole account |
-| **Links and legal** | The privacy policy and any link that leaves the app |
+| Area | What the parent sees or controls | In the app |
+|---|---|---|
+| **Progress per level** | For each child: lessons finished, stars and level checks, level by level | ✅ Built (level checks aren't written yet) |
+| **Time spent** | Minutes per day and per week, for each child | ✅ Built |
+| **Streaks** | Current streak and best streak | ✅ Built |
+| **Settings** | Daily time limit per child, reset parent code | ✅ Built, plus a sounds switch — the limit is one setting for the whole family so far, because the store holds one value |
+| **Profiles** | Add, rename or remove kid profiles | Removing is built here; adding is in first-time setup only, and renaming is not built |
+| **Data** | Delete one child's data, or delete the whole account | ✅ Built, on this device |
+| **Links and legal** | The privacy policy and any link that leaves the app | Not built — there is no privacy policy to link yet |
 
-When a child reaches the daily time limit, Penny wraps up kindly: *"That's all for today, Mia! Let's learn more tomorrow."* The current lesson finishes first, so progress is never lost mid-lesson.
+Everything on that screen is read from what is actually saved; nothing on it is
+a placeholder figure. Deleting is real and immediate: deleting one child takes
+their profile, progress and day records with them, and deleting everything
+empties the store — including the parent code — so the app opens at first launch
+again. Both ask first and spell out what goes, because there is no backend and
+therefore no copy of it anywhere.
+
+When a child reaches the daily time limit, Penny wraps up kindly: *"That's all for today, Mia! Let's learn more tomorrow."* The current lesson finishes first, so progress is never lost mid-lesson. The limit is checked when a lesson **starts**, so a child is never interrupted; minutes only count while a lesson is being played.
 
 ### Known limitations
 
@@ -448,13 +455,15 @@ Because the server stores children's names, profiles and progress, the app shoul
 
 ### Where we are
 
-**🟢 Early prototype.** The app idea, guide animal, level path, lesson flow and account model have been designed and reviewed, and the app's foundation is built: every screen in `App/`, progress saved on the device with **SwiftData**, and a **lesson engine** that plays lessons from bundled data files (`App/Content/curriculum.json` and `App/Content/lessons/*.json`) covering all seven screen types.
+**🟢 Early prototype.** The app idea, guide animal, level path, lesson flow and account model have been designed and reviewed, and the app's foundation is built: every screen in `App/`, progress saved on the device with **SwiftData**, a **lesson engine** that plays lessons from bundled data files (`App/Content/curriculum.json` and `App/Content/lessons/*.json`) covering all seven screen types, and a **working parent dashboard** — real per-child progress, a daily time limit the app actually keeps, and deleting a child's data or everything on the device.
 
 **World 1 · Money Basics is written**: 15 lessons (5 per level) across *What Is Money?*, *Needs & Wants* and *Earning Money*, 104 screens and 59 questions using the full mix of screen types, plus a friendly level check per level. The scripts are in [`docs/world-1-lesson-scripts.md`](docs/world-1-lesson-scripts.md).
 
 The **avatar builder** and a **child's own first time** are built too: an avatar drawn from layered parts (boy or girl, seven hairstyles, six skin tones, six hair or scarf colours, six outfit colours — see [Customization](#customization)), saved with the profile and shown on "Who's learning?", the map header, the lesson celebration and the grown-up dashboard; and the three-step first run — *"What should I call you?"*, *"Make it yours!"*, meet Penny — that a child gets the first time they tap their own face.
 
-What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, Worlds 2–4's lessons, the rewards shop, and the full accessibility pass.
+The **parent dashboard** is real too: per-child saved progress, an enforced daily time limit, and deleting a child's data or everything on the device.
+
+What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, Worlds 2–4's lessons, the rewards shop, renaming a profile, a per-child time limit, the privacy-policy link, and the full accessibility pass.
 
 ### Phases
 
@@ -463,7 +472,7 @@ What is NOT built yet: the backend and sync, Sign in with Apple, verifiable pare
 | **0 · Concept** | Choose the guide animal, level path, sample lesson flow, account and parent dashboard model; write this README | ✅ Done |
 | **1 · Design** | Commission the rigged glossy 3D Penny model and animations, Fluent Emoji 3D icon set and credits screen, full lesson scripts for World 1, UI design, trademark search for the chosen app name and for Penny, privacy and legal review | 🔵 In progress — **World 1's lesson scripts are written**, Fluent Emoji 3D icons are in and credited; the 3D Penny, the trademark search and the legal review are open |
 | **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | 🔵 In progress — all of **World 1** plays from data files with a level check each, progress saves on the device, each child builds their own avatar, Penny still placeholder art |
-| **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync; Penny live in RealityKit | Not started |
+| **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync; Penny live in RealityKit | Started — the parent code and the on-device parent dashboard are built; sign-in, consent, backend and sync are not |
 | **4 · Full path** | All 13 levels, rewards shop, accessibility and localization passes | Not started — level checks are built and working for World 1 |
 | **5 · Launch** | App Store submission in the Kids Category | Not started |
 

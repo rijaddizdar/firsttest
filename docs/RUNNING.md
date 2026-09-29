@@ -139,7 +139,14 @@ check.
   version.
 - From "Who's learning?", tap **Grown-ups** → enter the code to open the
   **parent dashboard**. Enter it wrong several times to see the short
-  **lockout**.
+  **lockout**. Inside: each child's real stars, coins, streak, minutes per day
+  and level-by-level progress; the **daily time limit**, the **sounds** switch
+  and **changing the code**; and **deleting** one child's data or everything.
+- Set the daily limit to 10 minutes, finish a lesson, and go back to the map:
+  Penny wraps up for the day and the levels wait until tomorrow. A lesson
+  already open is never interrupted.
+- **Delete everything** from Data & privacy and the app returns to Welcome, as
+  empty as a fresh install — that is the only undo, so it asks first.
 - Turn on **Settings → Accessibility → Reduce Motion** to confirm the fade-only
   behaviour (nothing bounces or wobbles).
 
@@ -171,6 +178,12 @@ confirm progress really is saved. "Make it yours!" is also checked on an
 **iPhone 17e**, the smallest current phone — every hairstyle and every colour
 has to be on screen at rest there, with the button still fully visible, because
 a choice a child has to scroll to find reads as a choice that isn't there.
+expand fine. `xcodebuild … test` runs 50 unit tests, all passing. The app was
+then installed and driven on an **iPhone 17** and an **iPad Air 11-inch (M4)**
+simulator (both iOS 27.0): every screen type, the right and wrong answer paths,
+a full quit-and-relaunch to confirm progress really is saved, and the grown-up
+area — the dashboard's saved figures, changing the code, both deletions, and the
+map once the day's time limit is used up.
 
 ### Screenshots
 
@@ -240,6 +253,20 @@ This version's avatar screens are in
 | "Make it yours!" on an iPhone 17e — the smallest phone, everything at rest | `avatar/09-make-it-yours-iphone-17e.png` |
 | "Add a kid" on an iPhone 17e | `avatar/10-add-kid-iphone-17e.png` |
 | iPad — "Who's learning?", "Make it yours!" (all seven styles in one row) and the map | `avatar/ipad-*.png` |
+The parent dashboard's screens are in
+[`screenshots/parent-dashboard/`](screenshots/parent-dashboard), captured on an
+iPhone 17 (`iphone-*.png`) and an iPad Air 11-inch (M4) (`ipad-*.png`), both
+iOS 27:
+
+| Screen | File |
+|---|---|
+| The dashboard: real stars, coins, streaks, minutes per day and level-by-level progress for each child | `01-dashboard.png` |
+| The code gate | `02-gate.png` |
+| Changing the parent code | `03-change-code.png` |
+| Deleting one child's data | `04-delete-kid.png` |
+| Deleting everything on the device | `05-delete-all.png` |
+| The map once the day's time limit is used up | `06-time-is-up.png` |
+| The same map with time left, for comparison | `07-map-normal.png` |
 
 ### Reproducing the screenshots
 
@@ -250,6 +277,7 @@ only matter when set) so screens can be captured deterministically:
 |---|---|
 | `UITEST_STORE` | `memory` (throwaway store), `reset` (wipe the on-disk store first), `disk` (the real one). A run that seeds kids defaults to `memory`, so screenshots never write into real progress. |
 | `UITEST_SEED=demo` | Seed the demo kid "Mia" (30 coins, a 3-day streak, parent code `1234`) |
+| `UITEST_SEED=dashboard` | Seed a two-kid family with finished lessons and two weeks of minutes, for the parent dashboard (parent code `123456`) |
 | `UITEST_KIDS` | Replace the kids with a comma-separated family, e.g. `Mia,Jayden,Bartholomew` — this is what stresses the "Who's learning?" grid |
 | `UITEST_ROUTE` | Jump to a screen (`welcome`, `createParentCode`, `whosLearning`, `lessonMap`, `levelLessons`, `lesson`, `parentDashboard`, …) |
 | `UITEST_LEVEL` | Which level's lesson list to open, e.g. `2` (pair with `UITEST_ROUTE=levelLessons`) |
@@ -261,6 +289,8 @@ only matter when set) so screens can be captured deterministically:
 | `UITEST_LESSON` | Play a lesson by content id, e.g. `sample-screen-types` |
 | `UITEST_LESSON_SCREEN` | Open a given screen of it — a screen id from the JSON, or a 1-based number |
 | `UITEST_LESSON_FEEDBACK` | `right` / `wrong` plays that answer on the current question (and holds the state so a capture can't miss it); `complete` jumps to the Yay! screen, which saves progress |
+| `UITEST_DAILY_LIMIT` | Pin the daily time limit in minutes; `0` means no limit. A small number photographs Penny's wrap-up on the map |
+| `UITEST_DASHBOARD` | Open a grown-up panel straight away: `changeCode`, `deleteKid` or `deleteAll` |
 
 ```sh
 xcrun simctl boot "iPhone 17"

@@ -143,6 +143,29 @@ final class AppState: ObservableObject {
         route = started ? .lessonMap : .kidFirstRun
     }
 
+    /// Delete one child and everything saved about them (README section 6,
+    /// "Data"). Their lesson results and day records go with them.
+    func deleteKid(_ id: Kid.ID) {
+        store.deleteKid(id)
+        // `reload` drops a selection that no longer exists and falls back to a
+        // child who still does, so deleting the selected one is already handled.
+        reload()
+    }
+
+    /// Delete everything: every child, all progress, and the grown-up settings
+    /// including the parent code. The store is then as empty as a fresh install,
+    /// so the app goes back to first launch — that is what "delete the whole
+    /// account" has to mean while there is no backend.
+    func deleteAllData() {
+        store.deleteAllData()
+        selectedKidID = nil
+        activeLessonID = nil
+        reload()
+        failedCodeAttempts = 0
+        lockoutUntil = nil
+        route = .welcome
+    }
+
     // MARK: - Lessons
 
     /// The step this child should play next in a level: the first lesson they
@@ -160,6 +183,7 @@ final class AppState: ObservableObject {
     /// Does nothing for a locked level or one whose lessons aren't written yet.
     func openLevel(_ levelID: Int) {
         guard let kid = selectedKid, kid.lockState(for: levelID) != .locked,
+              !hasReachedDailyLimit(kid),
               !library.lessonsAndCheck(inLevel: levelID).isEmpty else { return }
         activeLevelID = levelID
         route = .levelLessons
@@ -169,10 +193,36 @@ final class AppState: ObservableObject {
     func startLesson(id: String) {
         guard let kid = selectedKid, let lesson = library.lesson(id),
               kid.lockState(for: lesson.levelID) != .locked,
+              // The day's time is checked when a lesson STARTS, never during
+              // one, so a lesson already open always finishes (README §6).
+              !hasReachedDailyLimit(kid),
               library.isPlayable(lesson, starsByLesson: kid.starsByLesson) else { return }
         activeLevelID = lesson.levelID
         activeLessonID = lesson.id
         route = .lesson
+    }
+
+    // MARK: - The daily time limit (README section 6)
+    //
+    // The limit is checked when a lesson STARTS, never during one: "the current
+    // lesson finishes first, so progress is never lost mid-lesson". When it is
+    // reached the map simply stops opening lessons and Penny says so kindly —
+    // no countdown, no "hurry", no guilt (README section 7, rule 6).
+
+    /// True once this child has spent at least the day's allowance today.
+    func hasReachedDailyLimit(_ kid: Kid) -> Bool {
+        settings.hasDailyLimit && kid.minutesToday >= settings.dailyLimitMinutes
+    }
+
+    /// Minutes of today's allowance left, or nil when there is no limit.
+    func minutesLeftToday(_ kid: Kid) -> Int? {
+        guard settings.hasDailyLimit else { return nil }
+        return max(0, settings.dailyLimitMinutes - kid.minutesToday)
+    }
+
+    /// Penny's wrap-up when the time is up, in her own words (README section 6).
+    func dailyLimitMessage(for kid: Kid) -> String {
+        "That's all for today, \(kid.name)! Let's learn more tomorrow."
     }
 
     var activeLesson: Lesson? {
@@ -271,6 +321,13 @@ final class AppState: ObservableObject {
             store.seedKids(named: raw.split(separator: ",").map(String.init))
         } else if environment["UITEST_SEED"] == "demo" {
             store.seedDemoKid(library: library)
+        } else if environment["UITEST_SEED"] == "dashboard" {
+            store.seedDashboardFamily(library: library)
+        }
+        // A screenshot run can pin the daily limit, e.g. UITEST_DAILY_LIMIT=0
+        // for "no limit" or a small number to photograph the wrap-up on the map.
+        if let raw = environment["UITEST_DAILY_LIMIT"], let minutes = Int(raw) {
+            store.setDailyLimit(minutes)
         }
     }
 
@@ -297,6 +354,10 @@ final class AppState: ObservableObject {
         }
     }
 
+    /// Which grown-up panel the dashboard should open on: `changeCode`,
+    /// `deleteKid` or `deleteAll` (screenshots only).
+    var uiTestDashboardPanel: String? { ProcessInfo.processInfo.environment["UITEST_DASHBOARD"] }
+
     /// Which screen of the active lesson to open on, and in what answer state —
     /// `UITEST_LESSON_SCREEN` (a screen id or 1-based number) and
     /// `UITEST_LESSON_FEEDBACK` (`right`, `wrong` or `complete`).
@@ -315,6 +376,14 @@ extension AppState {
     /// real child's saved progress.
     static func preview() -> AppState {
         let environment = ["UITEST_STORE": "memory", "UITEST_SEED": "demo"]
+        return AppState(container: PersistenceController.makeContainer(environment: environment),
+                        environment: environment)
+    }
+
+    /// The same, seeded with a family that has enough history for the parent
+    /// dashboard to have something to draw.
+    static func previewDashboard() -> AppState {
+        let environment = ["UITEST_STORE": "memory", "UITEST_SEED": "dashboard"]
         return AppState(container: PersistenceController.makeContainer(environment: environment),
                         environment: environment)
     }
