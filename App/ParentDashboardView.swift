@@ -178,11 +178,18 @@ struct ParentDashboardView: View {
         .sheet(isPresented: $changingCode) { ChangeParentCodeSheet() }
         // Deleting is irreversible and there is no backup anywhere, so each one
         // spells out exactly what goes before it happens (README section 6).
+        //
+        // No `role: .destructive` on the delete buttons: that renders them red,
+        // and "no red anywhere" is a hard brand rule. The warning does the work
+        // colour would have done — the button says exactly what it deletes, the
+        // message says it can't be undone, and `.cancel` makes Keep the bold
+        // default your thumb lands on. Colour was never the only signal here
+        // anyway (README section 3).
         .alert("Delete \(kidPendingDeletion?.name ?? "")'s data?",
                isPresented: Binding(get: { kidPendingDeletion != nil },
                                     set: { if !$0 { kidPendingDeletion = nil } }),
                presenting: kidPendingDeletion) { kid in
-            Button("Delete", role: .destructive) {
+            Button("Delete \(kid.name)'s data") {
                 app.deleteKid(kid.id)
                 kidPendingDeletion = nil
             }
@@ -191,7 +198,7 @@ struct ParentDashboardView: View {
             Text(deleteMessage(for: kid))
         }
         .alert("Delete everything?", isPresented: $confirmingDeleteAll) {
-            Button("Delete everything", role: .destructive) { app.deleteAllData() }
+            Button("Delete everything") { app.deleteAllData() }
             Button("Keep", role: .cancel) { }
         } message: {
             Text("""
