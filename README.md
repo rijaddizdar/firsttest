@@ -1,6 +1,6 @@
 # Money lessons with Penny the Armadillo
 
-> **Status: early prototype.** A SwiftUI app lives in `App/` (welcome → grown-up setup → level map → lessons → code-locked parent dashboard). Two foundations are now real: **progress is saved on the device** with SwiftData (kids, the parent code as a salted hash, lessons finished, stars, play coins, streaks, unlocked levels), and **lessons are data, not screens** — a lesson engine plays every screen type in [section 3](#3-how-learning-works) from bundled JSON in `App/Content`. There is still no backend, no sync, no Sign in with Apple and no parental consent, and World 1's lessons are not written yet (one ported lesson plus one clearly marked sample). The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
+> **Status: early prototype.** A SwiftUI app lives in `App/` (welcome → grown-up setup → level map → level lesson list → lessons → code-locked parent dashboard). Three foundations are now real: **progress is saved on the device** with SwiftData (kids, the parent code as a salted hash, lessons finished, stars, play coins, streaks, unlocked levels); **lessons are data, not screens** — a lesson engine plays every screen type in [section 3](#3-how-learning-works) from bundled JSON in `App/Content`; and **all of World 1 is written** — 15 lessons across its three levels, plus a friendly [level check](#3-how-learning-works) built from each level's own questions. Every word of it is reviewable as writing in [`docs/world-1-lesson-scripts.md`](docs/world-1-lesson-scripts.md). There is still no backend, no sync, no Sign in with Apple and no parental consent, and Worlds 2–4 are not written. The app's visuals are governed by the **Penny Design System** (palette, type, spacing, radii, borders, motion). This README remains the product spec so design, lessons and tech can be reviewed as the app is built.
 
 An iPhone and iPad app that teaches children the basics of money through short, playful, guided lessons, in the spirit of Duolingo. A friendly armadillo named **Penny** walks kids through a path of levels. Each level explores one money idea, from "What is money?" to "How can money grow?"
 
@@ -115,7 +115,8 @@ World  →  Level  →  Lesson  →  Screens
 - **Worlds** group related levels (for example "Save & Spend").
 - **Levels** each explore one money idea and unlock in order, so every idea builds on the one before.
 - **Lessons** take 3 to 5 minutes and teach one small piece of that idea.
-- A friendly **level check** at the end of each level mixes questions from its lessons. It isn't a test anyone can fail. Kids simply retry questions until they get them.
+- A friendly **level check** at the end of each level mixes questions from its lessons. It isn't a test anyone can fail. Kids simply retry questions until they get them. The check is **built from the level's own lessons**, not written separately, so rewording a question fixes the check too (`App/Lessons/LevelCheck.swift`).
+- Tapping a level opens its **lesson list**: the level's lessons in order with the stars each earned, the check last, and one Continue button on wherever the child got to.
 
 ### Screen types inside a lesson
 
@@ -449,17 +450,19 @@ Because the server stores children's names, profiles and progress, the app shoul
 
 **🟢 Early prototype.** The app idea, guide animal, level path, lesson flow and account model have been designed and reviewed, and the app's foundation is built: every screen in `App/`, progress saved on the device with **SwiftData**, and a **lesson engine** that plays lessons from bundled data files (`App/Content/curriculum.json` and `App/Content/lessons/*.json`) covering all seven screen types.
 
-What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, World 1's written lessons (Level 2 has the one ported lesson plus a clearly marked sample), the rewards shop, the avatar builder and a child's own first-run, and the full accessibility pass.
+**World 1 · Money Basics is written**: 15 lessons (5 per level) across *What Is Money?*, *Needs & Wants* and *Earning Money*, 104 screens and 59 questions using the full mix of screen types, plus a friendly level check per level. The scripts are in [`docs/world-1-lesson-scripts.md`](docs/world-1-lesson-scripts.md).
+
+What is NOT built yet: the backend and sync, Sign in with Apple, verifiable parental consent, Worlds 2–4's lessons, the rewards shop, the avatar builder and a child's own first-run, and the full accessibility pass.
 
 ### Phases
 
 | Phase | What happens | Status |
 |---|---|---|
 | **0 · Concept** | Choose the guide animal, level path, sample lesson flow, account and parent dashboard model; write this README | ✅ Done |
-| **1 · Design** | Commission the rigged glossy 3D Penny model and animations, Fluent Emoji 3D icon set and credits screen, full lesson scripts for World 1, UI design, trademark search for the chosen app name and for Penny, privacy and legal review | ⏳ Next |
-| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | 🔵 In progress — Level 2 plays from data files, progress saves on the device, Penny still placeholder art |
+| **1 · Design** | Commission the rigged glossy 3D Penny model and animations, Fluent Emoji 3D icon set and credits screen, full lesson scripts for World 1, UI design, trademark search for the chosen app name and for Penny, privacy and legal review | 🔵 In progress — **World 1's lesson scripts are written**, Fluent Emoji 3D icons are in and credited; the 3D Penny, the trademark search and the legal review are open |
+| **2 · Prototype** | A SwiftUI prototype with Level 2 (Needs & Wants) playable on a real iPhone or iPad, to test with a few families; Penny as pre-rendered clips | 🔵 In progress — all of **World 1** plays from data files with a level check each, progress saves on the device, Penny still placeholder art |
 | **3 · MVP** | Worlds 1 and 2, parent sign-in, parental consent, parent code, parent dashboard, backend and sync; Penny live in RealityKit | Not started |
-| **4 · Full path** | All 13 levels, level checks, rewards shop, accessibility and localization passes | Not started |
+| **4 · Full path** | All 13 levels, rewards shop, accessibility and localization passes | Not started — level checks are built and working for World 1 |
 | **5 · Launch** | App Store submission in the Kids Category | Not started |
 
 ### Open questions

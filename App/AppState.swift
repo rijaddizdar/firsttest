@@ -21,6 +21,7 @@ enum Route: Equatable {
     case addKid             // 2c. Add a kid profile
     case whosLearning       // "Who's learning?" avatar picker
     case lessonMap          // 3. The 13-level path for the selected kid
+    case levelLessons       // 3b. One level's lessons + its friendly check
     case lesson             // 4. A lesson, played by the engine
     case parentGate         // 5a. Enter parent code to unlock the dashboard
     case parentDashboard    // 5b. Code-locked parent dashboard
@@ -36,6 +37,7 @@ extension Route {
         case "addKid":           self = .addKid
         case "whosLearning":     self = .whosLearning
         case "lessonMap":        self = .lessonMap
+        case "levelLessons":     self = .levelLessons
         case "lesson":           self = .lesson
         case "parentGate":       self = .parentGate
         case "parentDashboard":  self = .parentDashboard
@@ -50,6 +52,8 @@ final class AppState: ObservableObject {
     // MARK: Navigation
     @Published var route: Route = .welcome
     @Published var selectedKidID: Kid.ID?
+    /// The level whose lesson list is open, if any.
+    @Published private(set) var activeLevelID: Int?
     /// The lesson the player is showing, if any.
     @Published private(set) var activeLessonID: String?
 
@@ -111,17 +115,32 @@ final class AppState: ObservableObject {
 
     // MARK: - Lessons
 
-    /// The lesson that tapping a level should open: the first one this child
-    /// hasn't finished, else the first one again.
+    /// The step this child should play next in a level: the first lesson they
+    /// haven't finished, then the level check, else the first lesson again.
     func nextLesson(inLevel levelID: Int) -> Lesson? {
         library.nextLesson(inLevel: levelID, starsByLesson: selectedKid?.starsByLesson ?? [:])
     }
 
-    /// Open a level's next lesson. Does nothing for a locked level or one whose
-    /// lessons aren't written yet.
-    func startLesson(inLevel levelID: Int) {
+    var activeLevel: LevelSpec? {
+        activeLevelID.flatMap { library.level($0) }
+    }
+
+    /// Tapping a level on the map: show its lesson list. A level holds about
+    /// five lessons plus a check, so it opens a list rather than one lesson.
+    /// Does nothing for a locked level or one whose lessons aren't written yet.
+    func openLevel(_ levelID: Int) {
         guard let kid = selectedKid, kid.lockState(for: levelID) != .locked,
-              let lesson = nextLesson(inLevel: levelID) else { return }
+              !library.lessonsAndCheck(inLevel: levelID).isEmpty else { return }
+        activeLevelID = levelID
+        route = .levelLessons
+    }
+
+    /// Play one lesson (or a level check) by id.
+    func startLesson(id: String) {
+        guard let kid = selectedKid, let lesson = library.lesson(id),
+              kid.lockState(for: lesson.levelID) != .locked,
+              library.isPlayable(lesson, starsByLesson: kid.starsByLesson) else { return }
+        activeLevelID = lesson.levelID
         activeLessonID = lesson.id
         route = .lesson
     }
@@ -143,9 +162,17 @@ final class AppState: ObservableObject {
         reload()
     }
 
+    /// Leaving a lesson goes back to its level's list, which is where the
+    /// child came from and where the next lesson is waiting.
     func leaveLesson() {
+        let levelID = activeLesson?.levelID ?? activeLevelID
         activeLessonID = nil
-        route = .lessonMap
+        if let levelID, !library.lessonsAndCheck(inLevel: levelID).isEmpty {
+            activeLevelID = levelID
+            route = .levelLessons
+        } else {
+            route = .lessonMap
+        }
     }
 
     // MARK: - Grown-up settings
@@ -221,9 +248,17 @@ final class AppState: ObservableObject {
         if let raw = environment["UITEST_ROUTE"], let route = Route(uiTestName: raw) {
             self.route = route
         }
-        // Jump straight into a named lesson, e.g. UITEST_LESSON=sample-screen-types.
-        if let lessonID = environment["UITEST_LESSON"], library.lesson(lessonID) != nil {
+        // Open a level's lesson list, e.g. UITEST_LEVEL=2.
+        if let raw = environment["UITEST_LEVEL"], let levelID = Int(raw),
+           library.level(levelID) != nil {
+            activeLevelID = levelID
+            if route == .lessonMap { route = .levelLessons }
+        }
+        // Jump straight into a named lesson, e.g. UITEST_LESSON=what-is-money-1
+        // (a level check id such as level-2-check works too).
+        if let lessonID = environment["UITEST_LESSON"], let lesson = library.lesson(lessonID) {
             activeLessonID = lessonID
+            activeLevelID = lesson.levelID
             route = .lesson
         } else if route == .lesson {
             activeLessonID = library.lesson("needs-and-wants-1") != nil

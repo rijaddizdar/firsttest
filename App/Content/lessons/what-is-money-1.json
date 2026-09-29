@@ -1,0 +1,109 @@
+{
+  "id": "what-is-money-1",
+  "levelID": 1,
+  "title": "Money Is for Trading",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's find out what money is for.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "What money does",
+      "cards": [
+        {
+          "icon": "coin",
+          "badge": "MONEY",
+          "tint": "teal",
+          "caption": "Money is what people trade for things."
+        },
+        {
+          "icon": "shopping-cart",
+          "badge": "TRADE",
+          "tint": "copper",
+          "caption": "You give coins. You get the thing."
+        }
+      ],
+      "penny": "Money is like a swap, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "which-one-is-money",
+      "prompt": "Which one of these is money?",
+      "pennyHint": "Money is what shops trade for, {name}.",
+      "choices": [
+        { "label": "Coins", "icon": "coin", "correct": true },
+        { "label": "A teddy bear", "icon": "teddy-bear" }
+      ],
+      "rightMessage": "Yes, {name}! Coins are money. We trade money for things.",
+      "wrongMessage": "Good try, {name}! A teddy bear is a thing. Coins are the money you trade for it.",
+      "retryIntro": "Here's that one again, {name}. Which one is money?"
+    },
+    {
+      "type": "storyChoice",
+      "id": "bo-and-the-bread",
+      "story": "Bo has 3 coins. The bread costs 3 coins.",
+      "storyIcon": "bread",
+      "prompt": "What can Bo do to get the bread?",
+      "pennyHint": "Think about the swap, {name}.",
+      "options": [
+        {
+          "label": "Trade the 3 coins for the bread",
+          "icon": "handshake",
+          "correct": true,
+          "outcome": "Bo gives 3 coins. The baker gives Bo the bread. That's a trade!"
+        },
+        {
+          "label": "Keep the 3 coins in a jar",
+          "icon": "jar",
+          "outcome": "Bo still has 3 coins. But there is no bread for dinner."
+        },
+        {
+          "label": "Offer the baker his shoe",
+          "icon": "running-shoe",
+          "outcome": "The baker cannot use one shoe. Money works everywhere."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Bo trades money for bread. That is what money is for.",
+      "wrongMessage": "Good try, {name}! The bread costs 3 coins. Money is what shops trade for.",
+      "retryIntro": "Let's help Bo one more time, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "pay-the-baker",
+      "prompt": "The bread costs 3 coins. Tap 3 coins to pay the baker.",
+      "pennyHint": "Count them out with me, {name}: 1, 2, 3.",
+      "available": 6,
+      "target": 3,
+      "jarIcon": "bread",
+      "jarLabel": "The baker's basket",
+      "checkLabel": "Pay the baker",
+      "rightMessage": "3 coins, {name}! The bread is Bo's now.",
+      "wrongMessage": "Good try, {name}! Count the coins again. The bread costs 3.",
+      "retryIntro": "Let's count those coins again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "what-can-money-do",
+      "prompt": "What does money help us do?",
+      "pennyHint": "One more question, then we're done, {name}!",
+      "choices": [
+        { "label": "Trade for things we need", "icon": "shopping-cart", "correct": true },
+        { "label": "Stop the rain", "icon": "rainbow" }
+      ],
+      "rightMessage": "That's it, {name}! Money helps us trade for what we need.",
+      "wrongMessage": "Good try, {name}! Money can't change the weather. It helps us trade.",
+      "retryIntro": "One more look, {name}. What is money for?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Now you know what money is for: trading."
+    }
+  ]
+}

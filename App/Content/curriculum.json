@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "readme": "Worlds and levels for the level map (README section 5). Each level lists the ids of its lessons, in play order; the loader resolves every id to Content/lessons/<id>.json. A level with an empty 'lessons' list is not written yet: the map shows it unlocked but 'Coming soon', and it never blocks the levels after it. Writers add a lesson by dropping a file in Content/lessons and naming it here — no Swift changes, no xcodegen run (Content is a folder reference).",
+  "readme": "Worlds and levels for the level map (README section 5). Each level lists the ids of its lessons, in play order; the loader resolves every id to Content/lessons/<id>.json. A level with an empty 'lessons' list is not written yet: the map shows it unlocked but 'Coming soon', and it never blocks the levels after it. A level with lessons also gets a LEVEL CHECK, built automatically from its own questions (see CurriculumLibrary.levelCheck) — there is no file to write for it. Writers add a lesson by dropping a file in Content/lessons and naming it here — no Swift changes, no xcodegen run (Content is a folder reference).",
   "worlds": [
     {
       "id": "money-basics",
@@ -11,21 +11,39 @@
           "title": "What Is Money?",
           "kidSummary": "Money is something people trade for things.",
           "icon": "coin",
-          "lessons": []
+          "lessons": [
+            "what-is-money-1",
+            "what-is-money-2",
+            "what-is-money-3",
+            "what-is-money-4",
+            "what-is-money-5"
+          ]
         },
         {
           "id": 2,
           "title": "Needs & Wants",
           "kidSummary": "Needs keep us safe. Wants are fun extras.",
           "icon": "coat",
-          "lessons": ["needs-and-wants-1", "sample-screen-types"]
+          "lessons": [
+            "needs-and-wants-1",
+            "needs-and-wants-2",
+            "needs-and-wants-3",
+            "needs-and-wants-4",
+            "needs-and-wants-5"
+          ]
         },
         {
           "id": 3,
           "title": "Earning Money",
           "kidSummary": "People earn money by doing jobs and helping.",
           "icon": "broom",
-          "lessons": []
+          "lessons": [
+            "earning-money-1",
+            "earning-money-2",
+            "earning-money-3",
+            "earning-money-4",
+            "earning-money-5"
+          ]
         }
       ]
     },

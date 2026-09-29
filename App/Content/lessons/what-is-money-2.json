@@ -1,0 +1,100 @@
+{
+  "id": "what-is-money-2",
+  "levelID": 1,
+  "title": "Coins and Notes",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Money comes in more than one shape.",
+      "pose": "wave",
+      "continueLabel": "Show me!"
+    },
+    {
+      "type": "learn",
+      "title": "Two shapes of money",
+      "cards": [
+        {
+          "icon": "coin",
+          "badge": "COIN",
+          "tint": "copper",
+          "caption": "Coins are small, round and made of metal."
+        },
+        {
+          "icon": "dollar-banknote",
+          "badge": "NOTE",
+          "tint": "teal",
+          "caption": "Notes are paper. One note is worth many coins."
+        }
+      ],
+      "penny": "Both of these are money, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "which-one-is-a-note",
+      "prompt": "Which one is a note?",
+      "pennyHint": "Notes are made of paper, {name}.",
+      "choices": [
+        { "label": "A note", "icon": "dollar-banknote", "correct": true },
+        { "label": "A coin", "icon": "coin" }
+      ],
+      "rightMessage": "Yes, {name}! That's a note. Paper money.",
+      "wrongMessage": "Good try, {name}! Coins are round metal. The paper one is the note.",
+      "retryIntro": "Here it is again, {name}. Which one is the paper money?"
+    },
+    {
+      "type": "sortIt",
+      "id": "money-or-thing",
+      "prompt": "Put each picture in the right basket.",
+      "pennyHint": "Take your time, {name}. Drag a picture, or tap it and tap a basket.",
+      "groups": [
+        { "id": "money", "title": "Money", "icon": "coin", "tint": "teal" },
+        { "id": "thing", "title": "Things to buy", "icon": "shopping-cart", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "coin", "label": "A coin", "icon": "coin", "groupID": "money" },
+        { "id": "note", "label": "A note", "icon": "dollar-banknote", "groupID": "money" },
+        { "id": "bread", "label": "Bread", "icon": "bread", "groupID": "thing" },
+        { "id": "kite", "label": "A kite", "icon": "kite", "groupID": "thing" }
+      ],
+      "rightMessage": "Nice sorting, {name}! That one belongs there.",
+      "wrongMessage": "Good try, {name}! Ask yourself: do we pay with it, or pay for it?",
+      "doneMessage": "All sorted, {name}! Coins and notes are money. The rest we buy.",
+      "retryIntro": "Let's sort these again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "swap-a-note-for-coins",
+      "prompt": "This note is worth 5 coins. Tap 5 coins to swap for it.",
+      "pennyHint": "Count them out with me, {name}.",
+      "available": 8,
+      "target": 5,
+      "jarIcon": "dollar-banknote",
+      "jarLabel": "Coins for the note",
+      "checkLabel": "Make the swap",
+      "rightMessage": "5 coins, {name}! That's the same money as the note.",
+      "wrongMessage": "Good try, {name}! The note is worth 5 coins. Count them again.",
+      "retryIntro": "Let's count for that note again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "which-is-more-money",
+      "prompt": "Which is more money: one coin, or a full bag of coins?",
+      "pennyHint": "Look at how much is inside, {name}.",
+      "choices": [
+        { "label": "The bag of coins", "icon": "money-bag", "correct": true },
+        { "label": "One coin", "icon": "coin" }
+      ],
+      "rightMessage": "Yes, {name}! A full bag holds lots of coins. That's more money.",
+      "wrongMessage": "Good try, {name}! The bag is full of coins. One coin is only one.",
+      "retryIntro": "Look again, {name}. Which one holds more?"
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "Coins and notes are both money. You can spot them now."
+    }
+  ]
+}

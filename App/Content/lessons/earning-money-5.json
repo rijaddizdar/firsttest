@@ -1,0 +1,110 @@
+{
+  "id": "earning-money-5",
+  "levelID": 3,
+  "title": "Not Everything Is for Money",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Some helping earns coins. Some helping is just kind.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Two ways to help",
+      "cards": [
+        {
+          "icon": "coin",
+          "badge": "PAID",
+          "tint": "teal",
+          "caption": "Some jobs are paid. You agree the coins first."
+        },
+        {
+          "icon": "heart-with-ribbon",
+          "badge": "KIND",
+          "tint": "copper",
+          "caption": "Some helping is a gift. No coins needed."
+        }
+      ],
+      "penny": "Both kinds matter, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "sortIt",
+      "id": "paid-job-or-kindness",
+      "prompt": "A paid job, or just being kind?",
+      "pennyHint": "Did somebody agree to pay coins for it, {name}?",
+      "groups": [
+        { "id": "paid", "title": "A paid job", "icon": "coin", "tint": "teal" },
+        { "id": "kind", "title": "Just kind", "icon": "heart-with-ribbon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "dogwalk", "label": "Paid dog walk", "icon": "dog", "groupID": "paid" },
+        { "id": "sweeping", "label": "Paid sweeping", "icon": "broom", "groupID": "paid" },
+        { "id": "hug", "label": "A hug", "icon": "people-hugging", "groupID": "kind" },
+        { "id": "helping", "label": "Helping a pal", "icon": "handshake", "groupID": "kind" }
+      ],
+      "rightMessage": "Yes, {name}! That one belongs there.",
+      "wrongMessage": "Good try, {name}! Ask: did somebody agree to pay coins for it?",
+      "doneMessage": "All sorted, {name}! Some help earns coins. Some help is a gift.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "gran-drops-her-shopping",
+      "story": "Gran next door drops her shopping bag. Kofi sees it happen.",
+      "storyIcon": "handshake",
+      "prompt": "What should Kofi do?",
+      "pennyHint": "Some help shouldn't have a price, {name}.",
+      "options": [
+        {
+          "label": "Help her pick it up, for free",
+          "icon": "handshake",
+          "correct": true,
+          "outcome": "Kofi helps straight away. Gran smiles. That kindness cost nothing."
+        },
+        {
+          "label": "Ask for 5 coins first",
+          "icon": "coin",
+          "outcome": "Gran needs help right now. Kindness doesn't need a price."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Helping someone in trouble is a kindness, not a job.",
+      "wrongMessage": "Good try, {name}! When someone needs help right now, we just help.",
+      "retryIntro": "Let's help Gran again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "agree-before-a-big-job",
+      "prompt": "You want to be paid for a big job. What comes first?",
+      "pennyHint": "Think of a handshake, {name}.",
+      "choices": [
+        { "label": "Agree the job and the coins", "icon": "handshake", "correct": true },
+        { "label": "Ask for lots of coins after", "icon": "money-bag" }
+      ],
+      "rightMessage": "Yes, {name}! Agree first. Then nobody gets a surprise.",
+      "wrongMessage": "Good try, {name}! Agreeing first is fair to you and to them.",
+      "retryIntro": "One more look, {name}. What comes first?"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "does-kindness-cost",
+      "prompt": "Does being kind cost money?",
+      "pennyHint": "One more question, then we're done, {name}!",
+      "choices": [
+        { "label": "No. Kindness is free", "icon": "heart-with-ribbon", "correct": true },
+        { "label": "Yes. Kindness costs coins", "icon": "coin" }
+      ],
+      "rightMessage": "That's it, {name}! Kindness is free, and everybody can give it.",
+      "wrongMessage": "Good try, {name}! Kindness costs nothing at all. Anyone can be kind.",
+      "retryIntro": "One last look, {name}. Is kindness free?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Paid jobs earn coins. Kindness is free, and it counts too."
+    }
+  ]
+}

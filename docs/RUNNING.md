@@ -54,11 +54,13 @@ adding a file there and regenerating is all it takes.
 - `Models.swift` — the value types the screens render
 - `Theme.swift`, `SharedUI.swift`, `PennyView.swift` — palette + reusable UI
 - `WelcomeView.swift`, `SetupView.swift`, `WhosLearningView.swift`,
-  `LessonMapView.swift`, `ParentDashboardView.swift` — the screens
+  `LessonMapView.swift`, `LevelLessonsView.swift`, `ParentDashboardView.swift` —
+  the screens
 - `Persistence/` — the SwiftData models (`Records.swift`) and the only code that
   reads or writes them (`ProgressStore.swift`)
 - `Lessons/` — the lesson engine: the content schema and its validation, the
-  loader, the `LessonRunner` rules, and a view per screen type
+  loader, the `LessonRunner` rules, the generated level check (`LevelCheck.swift`)
+  and a view per screen type
 - `Content/` — the lesson content itself: `curriculum.json` (worlds and levels)
   and `lessons/*.json`
 - `Assets.xcassets` — Penny's poses and the Fluent Emoji 3D icons
@@ -72,10 +74,15 @@ trademark search); the product/`@main` name `MoneyPals` is a placeholder only.
 Lessons are data. To add one:
 
 1. Write `App/Content/lessons/<your-lesson-id>.json`. Start from
-   `needs-and-wants-1.json`; the screen types and every field are documented in
+   `what-is-money-1.json` (it uses six of the seven screen types); the screen
+   types and every field are documented in
    [`App/Lessons/LessonContent.swift`](../App/Lessons/LessonContent.swift).
 2. List its id under a level in `App/Content/curriculum.json`.
 3. Build and run. No Swift change, no `xcodegen generate`.
+4. Re-run `python3 docs/tools/generate_lesson_scripts.py`, which rewrites
+   [`world-1-lesson-scripts.md`](world-1-lesson-scripts.md) — the readable
+   script of every lesson, for reviewing the copy as writing rather than as
+   JSON. Never edit that page by hand.
 
 Content is validated as it loads: a missing right answer, an icon name that
 isn't in the asset catalog, a lesson that doesn't open on a `hello` screen or
@@ -84,6 +91,22 @@ naming the file and the fix. In a DEBUG build a bad file trips an assertion; in
 a release build the app logs it and carries on with an empty map rather than
 failing in a child's hands.
 
+**Two limits are about the phone, not the maths.** "Sort it" draws its pictures
+in one row and "Count it" draws its coin pile in one row, so a lesson may use at
+most **4 pictures to sort** (`SortItScreen.maxItems`) and offer at most
+**8 coins** (`CountItScreen.maxAvailable`). Going over either is a load-time
+error, not something to find later in a screenshot.
+
+### The level check
+
+Each level also gets the friendly **level check** from README section 3, and
+there is no file to write for it. `App/Lessons/LevelCheck.swift` builds it from
+the level's own question screens — one question from each lesson in turn, four
+in all — so rewording a question fixes the check in the same edit. It plays
+through the normal lesson player as `level-<n>-check`, cannot be failed, and is
+saved like any other lesson. A level whose lessons aren't written yet has no
+check.
+
 ## What to try (the full flow)
 
 - **First launch** starts empty, as a real install does: **Welcome** → *A
@@ -91,12 +114,17 @@ failing in a child's hands.
   parent code** → **add a kid** (name + boy/girl + colour).
 - **Who's learning?** → tap an avatar → the **13-level map** (locked / current /
   completed / "Coming soon", stars, coins, a coin-based streak).
-- Tap **Needs & Wants** (Level 2): Hello → Learn → tap-to-choose questions with
-  the **soft-green right** / **warm-apricot wrong** full-screen glow, Penny
-  cheering or curling up, then the **Yay!** screen with stars, coins and streak.
-  Answer one wrong on purpose: the question **comes back** before the end.
-- Finish it and tap Level 2 again for the second, clearly marked **sample**
-  lesson, which covers **Sort it**, **Story choice** and **Count it**.
+- Tap a level to see its **lesson list**: its five lessons in order with the
+  stars each has earned, the **level check** last, and one Continue button on
+  wherever the child got to.
+- Play **Money Is for Trading** (Level 1, lesson 1): Hello → Learn →
+  tap-to-choose, story choice and count-it questions with the **soft-green
+  right** / **warm-apricot wrong** full-screen glow, Penny cheering or curling
+  up, then the **Yay!** screen with stars, coins and streak. Answer one wrong on
+  purpose: the question **comes back** before the end.
+- Finish all five lessons of a level and the **level check** unlocks at the
+  bottom of the list. Get every question in it wrong a few times: nothing fails,
+  the questions simply come back, and it still ends on the celebration.
 - **Quit the app and open it again.** The kid, the stars, the coins, the streak
   and the unlocked levels are all still there — that is the point of this
   version.
@@ -160,6 +188,27 @@ This version's screens are in
 | The dashboard after relaunching | `foundation/16-dashboard-after-relaunch.png` |
 | iPad — map, the three new screen types, the celebration, and the map after relaunching | `foundation/ipad-*.png` |
 
+World 1's lessons, the per-level lesson list and the level check are in
+[`screenshots/world1/`](screenshots/world1):
+
+| Screen | File |
+|---|---|
+| The map, with World 1 playable | `world1/01-map.png` |
+| A level's lesson list | `world1/02-level-lessons.png` |
+| Hello | `world1/03-hello.png` |
+| Learn | `world1/04-learn.png` |
+| Tap to choose — right | `world1/05-tap-right.png` |
+| Tap to choose — try again | `world1/06-tap-wrong.png` |
+| Story choice | `world1/07-story-choice.png` |
+| Count it | `world1/08-count-it.png` |
+| Sort it | `world1/09-sort-it.png` |
+| Sort it, with the longest labels in World 1 | `world1/09b-sort-it-longest-labels.png` |
+| Sort it — a wrong drop | `world1/10-sort-it-wrong.png` |
+| The level check — Penny's opening | `world1/10-level-check-hello.png` |
+| The level check — a borrowed question | `world1/11-level-check-question.png` |
+| Yay! | `world1/12-yay.png` |
+| iPad — map, lesson list (with the check waiting), Sort it, Count it and the level check | `world1/ipad-*.png` |
+
 ### Reproducing the screenshots
 
 The app reads optional launch-environment hooks (absent in normal use, so they
@@ -170,8 +219,9 @@ only matter when set) so screens can be captured deterministically:
 | `UITEST_STORE` | `memory` (throwaway store), `reset` (wipe the on-disk store first), `disk` (the real one). A run that seeds kids defaults to `memory`, so screenshots never write into real progress. |
 | `UITEST_SEED=demo` | Seed the demo kid "Mia" (30 coins, a 3-day streak, parent code `1234`) |
 | `UITEST_KIDS` | Replace the kids with a comma-separated family, e.g. `Mia,Jayden,Bartholomew` — this is what stresses the "Who's learning?" grid |
-| `UITEST_ROUTE` | Jump to a screen (`welcome`, `createParentCode`, `whosLearning`, `lessonMap`, `lesson`, `parentDashboard`, …) |
-| `UITEST_LESSON` | Play a lesson by content id, e.g. `sample-screen-types` |
+| `UITEST_ROUTE` | Jump to a screen (`welcome`, `createParentCode`, `whosLearning`, `lessonMap`, `levelLessons`, `lesson`, `parentDashboard`, …) |
+| `UITEST_LEVEL` | Which level's lesson list to open, e.g. `2` (pair with `UITEST_ROUTE=levelLessons`) |
+| `UITEST_LESSON` | Play a lesson by content id, e.g. `what-is-money-1`, or a level check id such as `level-2-check` |
 | `UITEST_LESSON_SCREEN` | Open a given screen of it — a screen id from the JSON, or a 1-based number |
 | `UITEST_LESSON_FEEDBACK` | `right` / `wrong` plays that answer on the current question (and holds the state so a capture can't miss it); `complete` jumps to the Yay! screen, which saves progress |
 

@@ -1,0 +1,109 @@
+{
+  "id": "what-is-money-4",
+  "levelID": 1,
+  "title": "Prices Tell You How Many Coins",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Today we'll read prices like a pro.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "What a price is",
+      "cards": [
+        {
+          "icon": "label",
+          "badge": "PRICE",
+          "tint": "teal",
+          "caption": "A price tag says how much money a thing costs."
+        },
+        {
+          "icon": "coin",
+          "badge": "COINS",
+          "tint": "copper",
+          "caption": "A price of 4 means you give 4 coins."
+        }
+      ],
+      "penny": "The number on the tag is the price, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "read-the-tag",
+      "prompt": "A kite's tag says 6. How much does the kite cost?",
+      "pennyHint": "Look at the number on the tag, {name}.",
+      "choices": [
+        { "label": "6 coins", "icon": "label", "correct": true },
+        { "label": "All my coins", "icon": "money-bag" }
+      ],
+      "rightMessage": "Yes, {name}! A 6 on the tag means 6 coins, and no more.",
+      "wrongMessage": "Good try, {name}! The tag says 6. You only pay 6, not everything.",
+      "retryIntro": "Look at that tag again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "pay-for-the-kite",
+      "prompt": "The kite costs 6 coins. Tap 6 coins to pay.",
+      "pennyHint": "Count out loud with me, {name}.",
+      "available": 8,
+      "target": 6,
+      "jarIcon": "kite",
+      "jarLabel": "Coins for the kite",
+      "checkLabel": "Pay for the kite",
+      "rightMessage": "6 coins, {name}! The kite is yours.",
+      "wrongMessage": "Good try, {name}! The tag says 6. Count the coins again.",
+      "retryIntro": "Let's count for that kite again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "amara-and-the-teddy",
+      "story": "Amara has 4 coins. The teddy bear's tag says 7.",
+      "storyIcon": "teddy-bear",
+      "prompt": "What can Amara do?",
+      "pennyHint": "Compare 4 coins with a price of 7, {name}.",
+      "options": [
+        {
+          "label": "Save 3 more coins first",
+          "icon": "jar",
+          "correct": true,
+          "outcome": "Amara saves 3 more coins. Now she has 7, and the bear is hers."
+        },
+        {
+          "label": "Pay 4 coins and take the bear",
+          "icon": "shopping-cart",
+          "outcome": "The tag says 7. 4 coins is not enough yet."
+        },
+        {
+          "label": "Change the tag to say 4",
+          "icon": "label",
+          "outcome": "The shop set that price. Tags are not ours to change."
+        }
+      ],
+      "rightMessage": "Yes, {name}! 4 is less than 7. Three more coins gets her there.",
+      "wrongMessage": "Good try, {name}! The bear costs 7. Amara has 4, so she needs 3 more.",
+      "retryIntro": "Let's help Amara once more, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "is-ten-enough-for-eight",
+      "prompt": "You have 10 coins. A book's tag says 8. Is that enough?",
+      "pennyHint": "Is 10 more than 8, {name}?",
+      "choices": [
+        { "label": "Yes, that's enough", "icon": "thumbs-up", "correct": true },
+        { "label": "No, not yet", "icon": "books" }
+      ],
+      "rightMessage": "Yes, {name}! 10 is more than 8. You pay 8 and keep 2.",
+      "wrongMessage": "Good try, {name}! 10 coins is more than 8 coins. You have enough.",
+      "retryIntro": "One more look, {name}. Is 10 more than 8?"
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "A price is just a number of coins. You can read it now."
+    }
+  ]
+}

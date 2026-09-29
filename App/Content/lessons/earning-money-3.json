@@ -1,0 +1,109 @@
+{
+  "id": "earning-money-3",
+  "levelID": 3,
+  "title": "Nadia's Lemonade Stand",
+  "estimatedMinutes": 5,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's help Nadia run a lemonade stand.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Selling something",
+      "cards": [
+        {
+          "icon": "lemon",
+          "badge": "MAKE",
+          "tint": "teal",
+          "caption": "First you make something people would like."
+        },
+        {
+          "icon": "label",
+          "badge": "PRICE",
+          "tint": "copper",
+          "caption": "Then you pick a price. People pay it."
+        }
+      ],
+      "penny": "Make it, price it, sell it, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "pick-nadias-price",
+      "prompt": "Each cup costs Nadia 1 coin to make. What price should she pick?",
+      "pennyHint": "She wants a little extra for her work, {name}.",
+      "choices": [
+        { "label": "2 coins", "icon": "label", "correct": true },
+        { "label": "1 coin", "icon": "coin" }
+      ],
+      "rightMessage": "Yes, {name}! 2 coins pays for the lemon and for her work.",
+      "wrongMessage": "Good try, {name}! At 1 coin she only gets the lemon money back.",
+      "retryIntro": "Let's pick Nadia's price again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "a-cold-day-at-the-stand",
+      "story": "It turns cold. Nobody wants Nadia's icy lemonade today.",
+      "storyIcon": "cup-with-straw",
+      "prompt": "What could Nadia try?",
+      "pennyHint": "Think about what people want on a cold day, {name}.",
+      "options": [
+        {
+          "label": "Sell something warm instead",
+          "icon": "cup-with-straw",
+          "correct": true,
+          "outcome": "Nadia sells warm cocoa. People line up at her stand!"
+        },
+        {
+          "label": "Wait in the cold all day",
+          "icon": "snowflake",
+          "outcome": "Nadia waits and waits. Still nobody buys cold lemonade."
+        },
+        {
+          "label": "Put the price up to 20 coins",
+          "icon": "label",
+          "outcome": "That is a big price for icy lemonade. Still nobody buys."
+        }
+      ],
+      "rightMessage": "Yes, {name}! People buy what they want. Nadia listened and changed.",
+      "wrongMessage": "Good try, {name}! On a cold day people want a warm drink.",
+      "retryIntro": "Let's help Nadia again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "nadias-money-bag",
+      "prompt": "Nadia sold 3 cups at 2 coins each. Tap 6 coins for her bag.",
+      "pennyHint": "2, then 2 more, then 2 more, {name}.",
+      "available": 8,
+      "target": 6,
+      "jarIcon": "money-bag",
+      "jarLabel": "Nadia's money bag",
+      "checkLabel": "Check the bag",
+      "rightMessage": "6 coins, {name}! Three cups at 2 coins each makes 6.",
+      "wrongMessage": "Good try, {name}! Count 2 coins for each of the 3 cups.",
+      "retryIntro": "Let's fill Nadia's bag again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "who-earned-the-coins",
+      "prompt": "Nadia squeezed the lemons and sold the cups. Who earned the coins?",
+      "pennyHint": "Think about who did the work, {name}.",
+      "choices": [
+        { "label": "Nadia", "icon": "thumbs-up", "correct": true },
+        { "label": "Nobody. It was luck", "icon": "sparkles" }
+      ],
+      "rightMessage": "Yes, {name}! Nadia made it, sold it and earned it.",
+      "wrongMessage": "Good try, {name}! Nadia did the work, so Nadia earned the coins.",
+      "retryIntro": "One more look, {name}. Who did the work?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Nadia made something people wanted. That's earning."
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "needs-and-wants-2",
+  "levelID": 2,
+  "title": "Needs Keep Us Going",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's look closely at needs today.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "What a need is",
+      "cards": [
+        {
+          "icon": "green-apple",
+          "badge": "NEED",
+          "tint": "teal",
+          "caption": "Food, water, a home and clothes are needs."
+        },
+        {
+          "icon": "house",
+          "badge": "SAFE",
+          "tint": "skyTeal",
+          "caption": "Needs keep our bodies safe and healthy."
+        }
+      ],
+      "penny": "Everybody has the same needs, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "sortIt",
+      "id": "which-are-needs",
+      "prompt": "Put each picture in the right basket.",
+      "pennyHint": "Ask yourself: do we need it to stay healthy, {name}?",
+      "groups": [
+        { "id": "need", "title": "Need", "icon": "thumbs-up", "tint": "teal" },
+        { "id": "want", "title": "Want", "icon": "balloon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "food", "label": "Food", "icon": "green-apple", "groupID": "need" },
+        { "id": "home", "label": "A home", "icon": "house", "groupID": "need" },
+        { "id": "game", "label": "A game", "icon": "video-game", "groupID": "want" },
+        { "id": "sweets", "label": "Sweets", "icon": "candy", "groupID": "want" }
+      ],
+      "rightMessage": "Yes, {name}! That one belongs there.",
+      "wrongMessage": "Good try, {name}! Look again. Does a body need it to stay well?",
+      "doneMessage": "All sorted, {name}! Food and a home are needs. The rest is extra.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "soap-or-sweets",
+      "prompt": "One of these keeps you healthy. Which one?",
+      "pennyHint": "Think about washing your hands, {name}.",
+      "choices": [
+        { "label": "Soap", "icon": "soap", "correct": true },
+        { "label": "Sweets", "icon": "candy" }
+      ],
+      "rightMessage": "Yes, {name}! Soap washes germs away. Staying healthy is a need.",
+      "wrongMessage": "Good try, {name}! Sweets are a fun extra. Soap keeps you healthy.",
+      "retryIntro": "Here's that one again, {name}. Which keeps you well?"
+    },
+    {
+      "type": "storyChoice",
+      "id": "yusuf-at-the-shop",
+      "story": "Yusuf has 8 coins. Bread costs 5 coins. A game costs 8 coins.",
+      "storyIcon": "memo",
+      "prompt": "What should Yusuf buy first?",
+      "pennyHint": "Needs come first, {name}.",
+      "options": [
+        {
+          "label": "The bread",
+          "icon": "bread",
+          "correct": true,
+          "outcome": "Yusuf buys bread. His family has food tonight, and 3 coins left."
+        },
+        {
+          "label": "The game",
+          "icon": "video-game",
+          "outcome": "The game looks fun. But there is nothing for dinner."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Food is a need. Needs go before wants.",
+      "wrongMessage": "Good try, {name}! A game is a fun extra. Yusuf's family needs food.",
+      "retryIntro": "Let's help Yusuf shop again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "is-a-bed-a-need",
+      "prompt": "It's bedtime. Is a warm bed a need or a want?",
+      "pennyHint": "Our bodies need rest, {name}.",
+      "choices": [
+        { "label": "Need", "icon": "bed", "correct": true },
+        { "label": "Want", "icon": "balloon" }
+      ],
+      "rightMessage": "That's it, {name}! We all need rest to grow and feel well.",
+      "wrongMessage": "Good try, {name}! Sleep helps our bodies grow. A bed is a need.",
+      "retryIntro": "One more look, {name}. Do we need rest?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Food, water, a home, clothes and rest. Those are needs."
+    }
+  ]
+}

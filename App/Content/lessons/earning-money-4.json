@@ -1,0 +1,109 @@
+{
+  "id": "earning-money-4",
+  "levelID": 3,
+  "title": "Counting What You Earned",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's count some earnings together.",
+      "pose": "wave",
+      "continueLabel": "Let's count!"
+    },
+    {
+      "type": "learn",
+      "title": "Adding up your coins",
+      "cards": [
+        {
+          "icon": "coin",
+          "badge": "COUNT",
+          "tint": "teal",
+          "caption": "Count every coin you earned. Don't guess."
+        },
+        {
+          "icon": "memo",
+          "badge": "WRITE",
+          "tint": "copper",
+          "caption": "Writing the number down helps you remember it."
+        }
+      ],
+      "penny": "Counting means you always know, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "countIt",
+      "id": "two-jobs-added-up",
+      "prompt": "You earned 3 coins, then 4 more. Tap all the coins you earned.",
+      "pennyHint": "Count 3 coins, then 4 more, {name}.",
+      "available": 8,
+      "target": 7,
+      "jarIcon": "jar",
+      "jarLabel": "Your jar",
+      "checkLabel": "Check my jar",
+      "rightMessage": "7 coins, {name}! 3 and 4 makes 7.",
+      "wrongMessage": "Good try, {name}! Count 3 coins, then 4 more. That's 7.",
+      "retryIntro": "Let's add those up again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "who-earned-more",
+      "prompt": "Kofi earned 6 coins. Ines earned 9 coins. Who earned more?",
+      "pennyHint": "Just compare the two numbers, {name}.",
+      "choices": [
+        { "label": "Ines, with 9 coins", "icon": "money-bag", "correct": true },
+        { "label": "Kofi, with 6 coins", "icon": "coin" }
+      ],
+      "rightMessage": "Yes, {name}! 9 coins is more than 6 coins. Both worked hard.",
+      "wrongMessage": "Good try, {name}! 9 is bigger than 6, so Ines earned more this time.",
+      "retryIntro": "Compare those numbers again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "priya-and-the-book",
+      "story": "Priya earned 8 coins. A book costs 8 coins. Her jar is empty.",
+      "storyIcon": "books",
+      "prompt": "What could Priya do with her 8 coins?",
+      "pennyHint": "Look for the one that keeps the book AND the jar, {name}.",
+      "options": [
+        {
+          "label": "Save some now, buy the book soon",
+          "icon": "jar",
+          "correct": true,
+          "outcome": "Priya saves 4 coins. Next week she has 8 again and buys the book."
+        },
+        {
+          "label": "Buy the book today",
+          "icon": "books",
+          "outcome": "Priya reads her book tonight. Her jar stays empty for now."
+        },
+        {
+          "label": "Spend it all on sweets",
+          "icon": "candy",
+          "outcome": "The sweets were nice. The book will have to wait a while."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Saving a little first keeps her jar and the book.",
+      "wrongMessage": "Good try, {name}! Saving some now means the book comes soon too.",
+      "retryIntro": "Let's help Priya plan again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "why-write-it-down",
+      "prompt": "Why write down what you earn?",
+      "pennyHint": "One more question, then we're done, {name}!",
+      "choices": [
+        { "label": "So you know how much you have", "icon": "memo", "correct": true },
+        { "label": "So the coins grow by magic", "icon": "sparkles" }
+      ],
+      "rightMessage": "Yes, {name}! Writing it down means you always know your total.",
+      "wrongMessage": "Good try, {name}! Coins don't grow by magic. A note helps you remember.",
+      "retryIntro": "One last look, {name}. Why write it down?"
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "Count your coins, write them down, and you always know."
+    }
+  ]
+}

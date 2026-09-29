@@ -1,0 +1,115 @@
+{
+  "id": "earning-money-1",
+  "levelID": 3,
+  "title": "People Do Jobs",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's find out where money comes from.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Jobs and money",
+      "cards": [
+        {
+          "icon": "hammer-and-wrench",
+          "badge": "JOB",
+          "tint": "teal",
+          "caption": "A job is work people do to help other people."
+        },
+        {
+          "icon": "coin",
+          "badge": "EARN",
+          "tint": "copper",
+          "caption": "People are paid for their work. That is earning."
+        }
+      ],
+      "penny": "Money comes from work, {name}.",
+      "continueLabel": "I'm ready"
+    },
+    {
+      "type": "tapToChoose",
+      "id": "how-the-baker-earns",
+      "prompt": "The baker bakes bread. How does the baker earn money?",
+      "pennyHint": "Think about who buys the bread, {name}.",
+      "choices": [
+        { "label": "People pay for the bread", "icon": "coin", "correct": true },
+        { "label": "The money just appears", "icon": "sparkles" }
+      ],
+      "rightMessage": "Yes, {name}! People pay the baker. That's how the baker earns.",
+      "wrongMessage": "Good try, {name}! Money never just appears. People pay for the bread.",
+      "retryIntro": "Here's that one again, {name}. How does the baker earn?"
+    },
+    {
+      "type": "sortIt",
+      "id": "does-this-earn-money",
+      "prompt": "Which of these can earn money?",
+      "pennyHint": "Ask yourself: would somebody pay for this, {name}?",
+      "groups": [
+        { "id": "earns", "title": "Earns money", "icon": "coin", "tint": "teal" },
+        { "id": "fun", "title": "Just for fun", "icon": "balloon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "baking", "label": "Baking", "icon": "bread", "groupID": "earns" },
+        { "id": "sweeping", "label": "Sweeping", "icon": "broom", "groupID": "earns" },
+        { "id": "kite", "label": "Kite flying", "icon": "kite", "groupID": "fun" },
+        { "id": "games", "label": "Games", "icon": "video-game", "groupID": "fun" }
+      ],
+      "rightMessage": "Yes, {name}! That one belongs there.",
+      "wrongMessage": "Good try, {name}! A job helps somebody, and they pay for it.",
+      "doneMessage": "All sorted, {name}! Work that helps other people can earn money.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "amara-needs-ten-coins",
+      "story": "Amara wants a kite that costs 10 coins. Her jar is empty.",
+      "storyIcon": "kite",
+      "prompt": "How can Amara get the coins?",
+      "pennyHint": "Money comes from work or from a gift, {name}.",
+      "options": [
+        {
+          "label": "Do a job and earn them",
+          "icon": "broom",
+          "correct": true,
+          "outcome": "Amara walks the neighbour's dog all week. She earns 10 coins."
+        },
+        {
+          "label": "Wait and hope they appear",
+          "icon": "sparkles",
+          "outcome": "No coins came. Money comes from work or from a gift."
+        },
+        {
+          "label": "Take coins from a friend's bag",
+          "icon": "money-bag",
+          "outcome": "Those coins belong to her friend. Taking is not earning."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Doing a job earns money. Amara got her kite.",
+      "wrongMessage": "Good try, {name}! Coins come from work or a gift, never from nowhere.",
+      "retryIntro": "Let's help Amara again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "earned-or-a-gift",
+      "prompt": "Gran gives you 5 coins for your birthday. Did you earn it?",
+      "pennyHint": "Earning means doing work, {name}.",
+      "choices": [
+        { "label": "No, it's a gift", "icon": "heart-with-ribbon", "correct": true },
+        { "label": "Yes, I earned it", "icon": "hammer-and-wrench" }
+      ],
+      "rightMessage": "Yes, {name}! A gift is given with love. Earning means doing work.",
+      "wrongMessage": "Good try, {name}! You did no job for it. It's a lovely gift.",
+      "retryIntro": "One more look, {name}. Gift, or earned?"
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "People earn money by doing jobs that help others."
+    }
+  ]
+}

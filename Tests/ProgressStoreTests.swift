@@ -22,6 +22,18 @@ final class ProgressStoreTests: XCTestCase {
         library = try CurriculumLibrary.load(from: .main)
     }
 
+    /// Finish everything still to do in a level — its lessons and then the level
+    /// check — which is what "completing a level" now means. Steps this child has
+    /// already finished are left alone, so a caller can set up a partly-done
+    /// level first and not have it overwritten.
+    private func finish(level levelID: Int, kidID: UUID, stars: Int) {
+        let done = store.kids(using: library).first { $0.id == kidID }?.starsByLesson ?? [:]
+        for lesson in library.lessonsAndCheck(inLevel: levelID) where done[lesson.id] == nil {
+            store.recordCompletion(kidID: kidID, lessonID: lesson.id, levelID: levelID,
+                                   stars: stars, coins: lesson.coins, minutes: 3)
+        }
+    }
+
     // MARK: Kids and progress
 
     func testAKidAndTheirProgressAreSaved() throws {
@@ -39,10 +51,10 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(kid.currentStreak, 1)
     }
 
-    /// The map header counts stars the moment they are won. Finishing the first
-    /// lesson of a two-lesson level earns 3 stars, even though the LEVEL is not
-    /// rated until its second lesson is done — a child who just earned three
-    /// stars must never be shown 0.
+    /// The map header counts stars the moment they are won. Finishing one lesson
+    /// of a level earns its stars, even though the LEVEL is not rated until
+    /// every step in it is done — a child who just earned three stars must never
+    /// be shown 0.
     func testStarsShowOnTheHeaderAsSoonAsALessonIsFinished() throws {
         let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
         store.recordCompletion(kidID: id, lessonID: "needs-and-wants-1", levelID: 2,
@@ -50,14 +62,19 @@ final class ProgressStoreTests: XCTestCase {
 
         var kid = try XCTUnwrap(ProgressStore(context: container.mainContext).kids(using: library).first)
         XCTAssertEqual(kid.totalStars, 3, "the header counts earned stars, not rated levels")
-        XCTAssertNil(kid.starsByLevel[2], "the level itself is not rated until its lessons are all done")
+        XCTAssertNil(kid.starsByLevel[2], "the level itself is not rated until every step is done")
 
-        // Finishing the level's other lesson adds its stars on top.
-        store.recordCompletion(kidID: id, lessonID: "sample-screen-types", levelID: 2,
+        // A second lesson adds its stars on top, and the level is still not rated.
+        store.recordCompletion(kidID: id, lessonID: "needs-and-wants-2", levelID: 2,
                                stars: 2, coins: 10, minutes: 3)
         kid = try XCTUnwrap(store.kids(using: library).first)
         XCTAssertEqual(kid.totalStars, 5)
-        XCTAssertEqual(kid.starsByLevel[2], 2, "the level row still shows the average of its lessons")
+        XCTAssertNil(kid.starsByLevel[2], "three lessons and the check still to go")
+
+        // Every step, check included: now the level gets its rating.
+        finish(level: 2, kidID: id, stars: 3)
+        kid = try XCTUnwrap(store.kids(using: library).first)
+        XCTAssertEqual(kid.starsByLevel[2], 2, "the average of its steps, rounded down")
     }
 
     func testAReplayThatEarnsMoreStarsRaisesTheTotalOnlyByTheDifference() throws {
@@ -86,17 +103,34 @@ final class ProgressStoreTests: XCTestCase {
     func testFinishingALevelUnlocksTheNextOneAndRatesIt() throws {
         let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
         var kid = try XCTUnwrap(store.kids(using: library).first)
-        XCTAssertEqual(kid.lockState(for: 2), .current)
-        XCTAssertEqual(kid.lockState(for: 3), .locked)
+        XCTAssertEqual(kid.lockState(for: 1), .current)
+        XCTAssertEqual(kid.lockState(for: 2), .locked)
 
-        for lesson in library.lessons(inLevel: 2) {
-            store.recordCompletion(kidID: id, lessonID: lesson.id, levelID: 2,
+        finish(level: 1, kidID: id, stars: 3)
+        kid = try XCTUnwrap(store.kids(using: library).first)
+        XCTAssertEqual(kid.lockState(for: 1), .completed)
+        XCTAssertEqual(kid.starsByLevel[1], 3)
+        XCTAssertEqual(kid.lockState(for: 2), .current, "the next level opens")
+    }
+
+    /// A level's lessons alone do not finish it: the friendly level check is the
+    /// last step, so the next level stays shut until the check is played.
+    func testTheLevelCheckIsTheLastStepOfALevel() throws {
+        let id = store.addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        for lesson in library.lessons(inLevel: 1) {
+            store.recordCompletion(kidID: id, lessonID: lesson.id, levelID: 1,
                                    stars: 3, coins: lesson.coins, minutes: 3)
         }
+        var kid = try XCTUnwrap(store.kids(using: library).first)
+        XCTAssertNotEqual(kid.lockState(for: 1), .completed, "the check is still to play")
+        XCTAssertEqual(kid.lockState(for: 2), .locked)
+
+        let check = try XCTUnwrap(library.levelCheck(forLevel: 1))
+        store.recordCompletion(kidID: id, lessonID: check.id, levelID: 1,
+                               stars: 3, coins: check.coins, minutes: 3)
         kid = try XCTUnwrap(store.kids(using: library).first)
-        XCTAssertEqual(kid.lockState(for: 2), .completed)
-        XCTAssertEqual(kid.starsByLevel[2], 3)
-        XCTAssertEqual(kid.lockState(for: 3), .current, "the next level opens")
+        XCTAssertEqual(kid.lockState(for: 1), .completed)
+        XCTAssertEqual(kid.lockState(for: 2), .current)
     }
 
     // MARK: Streaks (README section 3: days with at least one finished lesson)

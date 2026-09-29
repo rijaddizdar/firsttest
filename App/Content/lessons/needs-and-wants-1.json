@@ -40,7 +40,8 @@
         { "label": "Want", "icon": "balloon" }
       ],
       "rightMessage": "Yes, {name}! A coat keeps us warm and safe. That's a need!",
-      "wrongMessage": "Good try, {name}! See how the coat keeps her warm in the snow? That makes it a need."
+      "wrongMessage": "Good try, {name}! See how the coat keeps her warm in the snow? That makes it a need.",
+      "retryIntro": "Here's the snowy one again, {name}."
     },
     {
       "type": "tapToChoose",
@@ -52,7 +53,28 @@
         { "label": "Want", "icon": "balloon" }
       ],
       "rightMessage": "That's it, {name}! Our bodies need water to stay healthy.",
-      "wrongMessage": "Good try, {name}! We can't stay healthy without water, so water is a need."
+      "wrongMessage": "Good try, {name}! We can't stay healthy without water, so water is a need.",
+      "retryIntro": "Let's think about water again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "sort-needs-and-wants",
+      "prompt": "Put each picture in the right basket.",
+      "pennyHint": "Take your time, {name}. Drag a picture, or tap it and tap a basket.",
+      "groups": [
+        { "id": "need", "title": "Need", "icon": "thumbs-up", "tint": "teal" },
+        { "id": "want", "title": "Want", "icon": "balloon", "tint": "copper" }
+      ],
+      "items": [
+        { "id": "water", "label": "Water", "icon": "droplet", "groupID": "need" },
+        { "id": "bed", "label": "A bed", "icon": "bed", "groupID": "need" },
+        { "id": "balloon", "label": "A balloon", "icon": "balloon", "groupID": "want" },
+        { "id": "icecream", "label": "Ice cream", "icon": "ice-cream", "groupID": "want" }
+      ],
+      "rightMessage": "Nice sorting, {name}! That one belongs there.",
+      "wrongMessage": "Good try, {name}! Look at the picture again. Do we need it to stay safe and healthy?",
+      "doneMessage": "All sorted, {name}! Needs keep us safe. Wants are fun extras.",
+      "retryIntro": "Let's sort those again, {name}."
     },
     {
       "type": "yay",
