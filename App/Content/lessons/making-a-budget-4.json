@@ -1,0 +1,98 @@
+{
+  "id": "making-a-budget-4",
+  "levelID": 6,
+  "title": "Making a Budget",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! The save jar has a job to do.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "The save jar has a goal",
+      "cards": [
+        {
+          "icon": "jar",
+          "badge": "SAVE JAR",
+          "tint": "teal",
+          "caption": "A little goes in every week."
+        },
+        {
+          "icon": "trophy",
+          "badge": "THE GOAL",
+          "tint": "copper",
+          "caption": "It adds up to the thing you're saving for."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "A save jar with a goal is easier to fill, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "why-a-goal",
+      "prompt": "Why does a save jar work better with a goal?",
+      "pennyHint": "Think about what the coins are for, {name}.",
+      "choices": [
+        {
+          "label": "You know what you're saving for",
+          "icon": "trophy",
+          "correct": true
+        },
+        {
+          "label": "The coins grow by themselves",
+          "icon": "sparkles"
+        }
+      ],
+      "rightMessage": "Yes, {name}! Knowing the goal makes it easier to keep adding.",
+      "wrongMessage": "Good try, {name}! Coins don't grow on their own. A goal keeps you adding to the jar.",
+      "retryIntro": "Let's think about the goal again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "four-weeks-of-saving",
+      "prompt": "Ivy saves 2 coins a week for 4 weeks. Count what's in her save jar.",
+      "pennyHint": "2 and 2 and 2 and 2, {name}.",
+      "available": 8,
+      "target": 8,
+      "jarIcon": "jar",
+      "jarLabel": "Ivy's save jar",
+      "checkLabel": "Check the jar",
+      "rightMessage": "That's 8 coins, {name}! Four weeks of saving adds up.",
+      "wrongMessage": "Good try, {name}! 2 four times makes 8. Let's count them all in.",
+      "retryIntro": "Let's count Ivy's jar again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "nearly-there",
+      "story": "Ivy's goal costs 10 coins. She has 8. A sweet costs 2 coins and she is hungry for it.",
+      "storyIcon": "jar",
+      "prompt": "What helps Ivy reach her goal?",
+      "pennyHint": "She is so close, {name}.",
+      "options": [
+        {
+          "label": "Keep the 8 and save 2 more",
+          "icon": "trophy",
+          "outcome": "Ivy waits one more week and reaches 10 coins. She buys her goal.",
+          "correct": true
+        },
+        {
+          "label": "Spend 2 on the sweet",
+          "icon": "candy",
+          "outcome": "Ivy enjoys the sweet. Her jar drops to 6 coins. The goal is further away."
+        }
+      ],
+      "rightMessage": "Yes, {name}! One more week and she's there.",
+      "wrongMessage": "Good try, {name}! The sweet is nice, but it takes her further from 10.",
+      "retryIntro": "Let's help Ivy again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Great work, {name}!",
+      "message": "A save jar with a goal gets filled."
+    }
+  ]
+}

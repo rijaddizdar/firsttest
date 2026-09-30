@@ -90,9 +90,18 @@ final class CurriculumProgressTests: XCTestCase {
         XCTAssertEqual(steps, levelTwoLessons + ["level-2-check"])
     }
 
+    /// The first level whose lessons are still to be written. Found rather than
+    /// hard-coded, so writing another world moves this along instead of
+    /// breaking the test.
+    private var unwrittenLevel: Int {
+        library.levels.first { !$0.hasLessons }?.id ?? -1
+    }
+
     func testAnUnwrittenLevelHasNoStepsAndNoCheck() {
-        XCTAssertTrue(library.lessonsAndCheck(inLevel: 4).isEmpty)
-        XCTAssertNil(library.levelCheck(forLevel: 4))
+        let level = unwrittenLevel
+        XCTAssertGreaterThan(level, 0, "every level is written — this test needs a new fixture")
+        XCTAssertTrue(library.lessonsAndCheck(inLevel: level).isEmpty)
+        XCTAssertNil(library.levelCheck(forLevel: level))
     }
 
     func testTheNextStepWalksTheLessonsThenTheCheck() {
@@ -103,7 +112,7 @@ final class CurriculumProgressTests: XCTestCase {
                        "level-2-check", "the check is the last step of the level")
         XCTAssertEqual(library.nextLesson(inLevel: 2, starsByLesson: levelDone(2))?.id,
                        "needs-and-wants-1", "a finished level replays from the start")
-        XCTAssertNil(library.nextLesson(inLevel: 4, starsByLesson: [:]), "nothing written there yet")
+        XCTAssertNil(library.nextLesson(inLevel: unwrittenLevel, starsByLesson: [:]), "nothing written there yet")
     }
 
     /// Lessons are always playable in any order. Only the check waits, because

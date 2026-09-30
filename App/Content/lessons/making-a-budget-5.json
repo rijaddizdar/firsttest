@@ -1,0 +1,130 @@
+{
+  "id": "making-a-budget-5",
+  "levelID": 6,
+  "title": "Making a Budget",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's look at the give jar.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "The give jar",
+      "cards": [
+        {
+          "icon": "heart-with-ribbon",
+          "badge": "GIVE",
+          "tint": "copper",
+          "caption": "Some coins can help someone else."
+        },
+        {
+          "icon": "people-hugging",
+          "badge": "SHARE",
+          "tint": "teal",
+          "caption": "Even a little helps, and it feels good."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Giving is a choice, {name}, not a rule."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "what-is-the-give-jar",
+      "prompt": "What is the give jar for?",
+      "pennyHint": "Look at the pictures, {name}.",
+      "choices": [
+        {
+          "label": "Coins to help others",
+          "icon": "people-hugging",
+          "correct": true
+        },
+        {
+          "label": "Coins you hide away",
+          "icon": "locked"
+        }
+      ],
+      "rightMessage": "Yes, {name}! The give jar helps someone else.",
+      "wrongMessage": "Good try, {name}! The give jar is for sharing with others.",
+      "retryIntro": "Let's look at the give jar again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "all-three-jars",
+      "prompt": "Put each plan in the right jar.",
+      "pennyHint": "Now you know all three, {name}.",
+      "groups": [
+        {
+          "id": "spend",
+          "title": "Spend",
+          "icon": "shopping-cart",
+          "tint": "copper"
+        },
+        {
+          "id": "save",
+          "title": "Save",
+          "icon": "jar",
+          "tint": "teal"
+        },
+        {
+          "id": "give",
+          "title": "Give",
+          "icon": "heart-with-ribbon",
+          "tint": "copper"
+        }
+      ],
+      "items": [
+        {
+          "id": "juice",
+          "label": "A drink today",
+          "icon": "cup-with-straw",
+          "groupID": "spend"
+        },
+        {
+          "id": "new-ball",
+          "label": "Towards a soccer ball",
+          "icon": "soccer-ball",
+          "groupID": "save"
+        },
+        {
+          "id": "tree-fund",
+          "label": "To plant a tree",
+          "icon": "tree",
+          "groupID": "give"
+        },
+        {
+          "id": "shelter",
+          "label": "For an animal shelter",
+          "icon": "dog",
+          "groupID": "give"
+        }
+      ],
+      "rightMessage": "Nice sorting, {name}!",
+      "wrongMessage": "Good try, {name}! Is it for now, for later, or for someone else?",
+      "doneMessage": "All sorted, {name}! That's your whole money plan.",
+      "retryIntro": "Let's sort the three jars again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "one-to-give",
+      "prompt": "Leni has 5 coins and plans to give 1. Put it in the give jar.",
+      "pennyHint": "Just 1 coin, {name}.",
+      "available": 5,
+      "target": 1,
+      "jarIcon": "heart-with-ribbon",
+      "jarLabel": "Give jar",
+      "checkLabel": "Check the jar",
+      "rightMessage": "Yes, {name}! Even 1 coin can help someone.",
+      "wrongMessage": "Good try, {name}! Her plan says 1 coin. Let's move just one.",
+      "retryIntro": "Let's fill the give jar again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "You did it, {name}!",
+      "message": "Spend some, save some, give some. That's your plan."
+    }
+  ]
+}

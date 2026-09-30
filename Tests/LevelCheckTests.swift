@@ -22,7 +22,7 @@ final class LevelCheckTests: XCTestCase {
     // MARK: Shape
 
     func testEveryWrittenLevelHasACheckAndEmptyOnesDoNot() throws {
-        for levelID in 1...3 {
+        for levelID in library.levels.filter(\.hasLessons).map(\.id) {
             let check = try XCTUnwrap(library.levelCheck(forLevel: levelID),
                                       "level \(levelID) should have a check")
             XCTAssertEqual(check.id, "level-\(levelID)-check")
@@ -30,8 +30,11 @@ final class LevelCheckTests: XCTestCase {
             XCTAssertTrue(check.isLevelCheck)
             XCTAssertFalse(check.isSample)
         }
-        for levelID in 4...13 {
-            XCTAssertNil(library.levelCheck(forLevel: levelID), "level \(levelID) has no lessons yet")
+        // A check exists exactly where lessons do — wherever the written
+        // worlds happen to end today.
+        for level in library.levels where !level.hasLessons {
+            XCTAssertNil(library.levelCheck(forLevel: level.id),
+                         "level \(level.id) has no lessons, so it must have no check")
         }
     }
 
@@ -60,7 +63,7 @@ final class LevelCheckTests: XCTestCase {
     /// "Mixes questions from its lessons" — so it must draw on more than one,
     /// and each question must really come from that level.
     func testTheCheckMixesQuestionsFromSeveralLessons() throws {
-        for levelID in 1...3 {
+        for levelID in library.levels.filter(\.hasLessons).map(\.id) {
             let check = try XCTUnwrap(library.levelCheck(forLevel: levelID))
             let sources = Set(check.questionScreens.compactMap { $0.id.split(separator: "/").first })
             XCTAssertEqual(sources.count, CurriculumLibrary.levelCheckQuestionCount,
@@ -95,7 +98,7 @@ final class LevelCheckTests: XCTestCase {
     /// Two lessons may each name a question "q1", so borrowed ids are
     /// namespaced — otherwise the retry queue would confuse them.
     func testBorrowedQuestionIdsStayUnique() throws {
-        for levelID in 1...3 {
+        for levelID in library.levels.filter(\.hasLessons).map(\.id) {
             let check = try XCTUnwrap(library.levelCheck(forLevel: levelID))
             let ids = check.screens.map(\.id)
             XCTAssertEqual(Set(ids).count, ids.count, "level \(levelID) repeats a screen id")

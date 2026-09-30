@@ -1,0 +1,98 @@
+{
+  "id": "making-a-budget-3",
+  "levelID": 6,
+  "title": "Making a Budget",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's look at the spend jar.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Spending on purpose",
+      "cards": [
+        {
+          "icon": "shopping-cart",
+          "badge": "PLANNED",
+          "tint": "teal",
+          "caption": "You decided this before you went to the shop."
+        },
+        {
+          "icon": "sparkles",
+          "badge": "SURPRISE",
+          "tint": "copper",
+          "caption": "Grabbing extra things empties the jar fast."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "The spend jar has a bottom, {name}. That's the point."
+    },
+    {
+      "type": "storyChoice",
+      "id": "at-the-shop",
+      "story": "Sofia's spend jar has 3 coins. She sees a pen for 3 coins. She sees a sticker for 2.",
+      "storyIcon": "shopping-cart",
+      "prompt": "She wants both. What can she do?",
+      "pennyHint": "She only has 3 coins, {name}.",
+      "options": [
+        {
+          "label": "Pick one this time",
+          "icon": "label",
+          "outcome": "Sofia picks the pen. The sticker is still there next week. Her jar fills up again.",
+          "correct": true
+        },
+        {
+          "label": "Take both and worry later",
+          "icon": "sparkles",
+          "outcome": "Sofia does not have enough for both. She puts one back at the till."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Picking one keeps her plan working.",
+      "wrongMessage": "Good try, {name}! Her jar holds 3 coins. She can choose one thing today.",
+      "retryIntro": "Let's help Sofia again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "what-is-left-to-spend",
+      "prompt": "Sofia had 3 coins and the pen cost 3. Put what is left in her jar.",
+      "pennyHint": "3 take away 3, {name}.",
+      "available": 3,
+      "target": 1,
+      "jarIcon": "shopping-cart",
+      "jarLabel": "Spend jar",
+      "checkLabel": "Check the jar",
+      "rightMessage": "Her jar is nearly empty, {name}, and that's fine. It fills up again.",
+      "wrongMessage": "Good try, {name}! She spent almost all of it. Let's move just 1 coin.",
+      "retryIntro": "Let's count Sofia's jar again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "empty-spend-jar",
+      "prompt": "Sofia's spend jar is empty until next week. Is that a problem?",
+      "pennyHint": "Her other jars are still full, {name}.",
+      "choices": [
+        {
+          "label": "No, it fills up again",
+          "icon": "rainbow",
+          "correct": true
+        },
+        {
+          "label": "Yes, she has no money at all",
+          "icon": "snowflake"
+        }
+      ],
+      "rightMessage": "That's right, {name}! Her save and give jars are untouched.",
+      "wrongMessage": "Good try, {name}! An empty spend jar just means she used her plan.",
+      "retryIntro": "Let's think about her jars again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "The spend jar is for choosing on purpose."
+    }
+  ]
+}

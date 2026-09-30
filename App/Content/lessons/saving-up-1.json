@@ -1,0 +1,94 @@
+{
+  "id": "saving-up-1",
+  "levelID": 4,
+  "title": "Saving Up",
+  "estimatedMinutes": 3,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Today we'll learn what saving means.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Spend or save?",
+      "cards": [
+        {
+          "icon": "ice-cream",
+          "badge": "SPEND",
+          "tint": "copper",
+          "caption": "Spend means you use your money now."
+        },
+        {
+          "icon": "jar",
+          "badge": "SAVE",
+          "tint": "teal",
+          "caption": "Save means you keep it for later."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Both are okay, {name}. Saving just means later."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "spend-or-save-jar",
+      "prompt": "Mia puts a coin in her jar to use next month. Is she spending or saving?",
+      "pennyHint": "Look where the coin is going, {name}.",
+      "choices": [
+        {
+          "label": "Saving",
+          "icon": "jar",
+          "correct": true
+        },
+        {
+          "label": "Spending",
+          "icon": "ice-cream"
+        }
+      ],
+      "rightMessage": "Yes, {name}! The coin is waiting in the jar. That's saving.",
+      "wrongMessage": "Good try, {name}! The coin is staying in the jar for later, so that's saving.",
+      "retryIntro": "Here's the jar again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "spend-or-save-snack",
+      "prompt": "Sam buys a snack with his coin today. Is he spending or saving?",
+      "pennyHint": "Is the coin staying, or going, {name}?",
+      "choices": [
+        {
+          "label": "Spending",
+          "icon": "candy",
+          "correct": true
+        },
+        {
+          "label": "Saving",
+          "icon": "jar"
+        }
+      ],
+      "rightMessage": "That's it, {name}! He used his coin now. That's spending.",
+      "wrongMessage": "Good try, {name}! The coin left his hand today, so that is spending.",
+      "retryIntro": "Let's look at the snack again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "save-three-of-five",
+      "prompt": "You have 5 coins. Put 3 in the jar to save them.",
+      "pennyHint": "Tap a coin to move it, {name}.",
+      "available": 5,
+      "target": 3,
+      "jarIcon": "jar",
+      "jarLabel": "Save jar",
+      "checkLabel": "Check my jar",
+      "rightMessage": "Nice counting, {name}! 3 coins are saved, and 2 are left to use.",
+      "wrongMessage": "Good try, {name}! Count them with me: 1, 2, 3 go in the jar.",
+      "retryIntro": "Let's count into the jar again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Saving means keeping some money for later."
+    }
+  ]
+}

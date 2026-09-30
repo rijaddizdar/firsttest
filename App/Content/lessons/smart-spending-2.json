@@ -1,0 +1,124 @@
+{
+  "id": "smart-spending-2",
+  "levelID": 5,
+  "title": "Smart Spending",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Today we compare prices.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Compare first",
+      "cards": [
+        {
+          "icon": "label",
+          "badge": "SAME THING",
+          "tint": "teal",
+          "caption": "Two shops can sell the very same thing."
+        },
+        {
+          "icon": "coin",
+          "badge": "DIFFERENT PRICE",
+          "tint": "copper",
+          "caption": "One shop can ask for fewer coins."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Looking at both is called comparing, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "which-price",
+      "prompt": "One shop asks 5 coins for a ball. Another shop asks 3. Which costs less?",
+      "pennyHint": "Which number is smaller, {name}?",
+      "choices": [
+        {
+          "label": "3 coins",
+          "icon": "coin",
+          "correct": true
+        },
+        {
+          "label": "5 coins",
+          "icon": "money-bag"
+        }
+      ],
+      "rightMessage": "Yes, {name}! 3 coins is less than 5 coins.",
+      "wrongMessage": "Good try, {name}! Let's count: 3 comes before 5, so 3 is less.",
+      "retryIntro": "Let's compare those prices again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "save-two-by-comparing",
+      "prompt": "You paid 3 coins instead of 5. Put the 2 coins you kept into your jar.",
+      "pennyHint": "5 take away 3 leaves 2, {name}.",
+      "available": 5,
+      "target": 2,
+      "jarIcon": "jar",
+      "jarLabel": "Coins you kept",
+      "checkLabel": "Check my jar",
+      "rightMessage": "Yes, {name}! Comparing kept 2 coins in your jar.",
+      "wrongMessage": "Good try, {name}! You kept 2 coins. Let's move 2 into the jar.",
+      "retryIntro": "Let's count the coins you kept again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "cheaper-or-not",
+      "prompt": "Which of these help you pay less?",
+      "pennyHint": "Take your time, {name}.",
+      "groups": [
+        {
+          "id": "helps",
+          "title": "Helps you pay less",
+          "icon": "thumbs-up",
+          "tint": "teal"
+        },
+        {
+          "id": "not",
+          "title": "Doesn't help",
+          "icon": "balloon",
+          "tint": "copper"
+        }
+      ],
+      "items": [
+        {
+          "id": "compare",
+          "label": "Check two shops",
+          "icon": "shopping-cart",
+          "groupID": "helps"
+        },
+        {
+          "id": "wait-sale",
+          "label": "Wait for a lower price",
+          "icon": "label",
+          "groupID": "helps"
+        },
+        {
+          "id": "first-one",
+          "label": "Buy the first one you see",
+          "icon": "sparkles",
+          "groupID": "not"
+        },
+        {
+          "id": "biggest-box",
+          "label": "Pick the shiniest box",
+          "icon": "glowing-star",
+          "groupID": "not"
+        }
+      ],
+      "rightMessage": "Nice sorting, {name}!",
+      "wrongMessage": "Good try, {name}! Ask: does this help me pay fewer coins?",
+      "doneMessage": "All sorted, {name}! Comparing is what keeps coins in your jar.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Great work, {name}!",
+      "message": "Comparing prices keeps coins in your jar."
+    }
+  ]
+}

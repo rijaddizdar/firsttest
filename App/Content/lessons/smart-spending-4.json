@@ -1,0 +1,104 @@
+{
+  "id": "smart-spending-4",
+  "levelID": 5,
+  "title": "Smart Spending",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's talk about adverts.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Adverts want your coins",
+      "cards": [
+        {
+          "icon": "mobile-phone",
+          "badge": "ADVERT",
+          "tint": "copper",
+          "caption": "An advert is made to make you want something."
+        },
+        {
+          "icon": "light-bulb",
+          "badge": "YOU CHOOSE",
+          "tint": "teal",
+          "caption": "You decide. An advert does not."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Adverts are not naughty, {name}. They just want your coins."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "what-is-an-advert",
+      "prompt": "What is an advert trying to do?",
+      "pennyHint": "Think about who made it, {name}.",
+      "choices": [
+        {
+          "label": "Make you want to buy",
+          "icon": "shopping-cart",
+          "correct": true
+        },
+        {
+          "label": "Tell you a secret",
+          "icon": "locked"
+        }
+      ],
+      "rightMessage": "Yes, {name}! An advert is made to make something look exciting.",
+      "wrongMessage": "Good try, {name}! An advert's job is to make you want to buy the thing.",
+      "retryIntro": "Let's think about adverts again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "best-ever",
+      "prompt": "An advert says a toy is the best thing ever. Is that always true?",
+      "pennyHint": "Who is telling you, {name}?",
+      "choices": [
+        {
+          "label": "Not always",
+          "icon": "light-bulb",
+          "correct": true
+        },
+        {
+          "label": "Always true",
+          "icon": "star"
+        }
+      ],
+      "rightMessage": "That's right, {name}! The advert wants to sell it, so we check for ourselves.",
+      "wrongMessage": "Good try, {name}! Adverts show the best bits. It's smart to check for yourself.",
+      "retryIntro": "Let's think about that advert again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "advert-on-the-tablet",
+      "story": "An advert says a toy will make Raj the happiest kid alive. It costs all his coins.",
+      "storyIcon": "mobile-phone",
+      "prompt": "What should Raj do?",
+      "pennyHint": "Remember what adverts are for, {name}.",
+      "options": [
+        {
+          "label": "Stop, think, and ask a grown-up",
+          "icon": "shield",
+          "outcome": "Raj asks his dad. Together they see it is a small plastic toy. Raj keeps his coins.",
+          "correct": true
+        },
+        {
+          "label": "Believe the advert and buy it",
+          "icon": "mobile-phone",
+          "outcome": "Raj spends every coin. The toy is much smaller than it looked on the screen."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Stop, think, and ask a grown-up.",
+      "wrongMessage": "Good try, {name}! Adverts show the very best bits. Asking a grown-up helps.",
+      "retryIntro": "Let's help Raj again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "You did it, {name}!",
+      "message": "You choose. An advert doesn't choose for you."
+    }
+  ]
+}

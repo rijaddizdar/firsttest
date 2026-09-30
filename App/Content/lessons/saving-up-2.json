@@ -1,0 +1,98 @@
+{
+  "id": "saving-up-2",
+  "levelID": 4,
+  "title": "Saving Up",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's pick something to save for.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "A saving goal",
+      "cards": [
+        {
+          "icon": "teddy-bear",
+          "badge": "GOAL",
+          "tint": "teal",
+          "caption": "A goal is the thing you are saving for."
+        },
+        {
+          "icon": "jar",
+          "badge": "PLAN",
+          "tint": "copper",
+          "caption": "You add a little at a time until you have enough."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Picking a goal makes saving easier, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "what-is-a-goal",
+      "prompt": "What is a saving goal?",
+      "pennyHint": "Think about the picture, {name}.",
+      "choices": [
+        {
+          "label": "A thing you save for",
+          "icon": "teddy-bear",
+          "correct": true
+        },
+        {
+          "label": "A coin you lose",
+          "icon": "coin"
+        }
+      ],
+      "rightMessage": "Yes, {name}! A goal is the thing you are saving for.",
+      "wrongMessage": "Good try, {name}! A goal is the thing you want, like the teddy bear.",
+      "retryIntro": "Let's think about goals again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "kite-goal",
+      "story": "Ana wants a kite. It costs 6 coins. She has 2 coins today.",
+      "storyIcon": "kite",
+      "prompt": "What can Ana do?",
+      "pennyHint": "She doesn't have enough yet, {name}.",
+      "options": [
+        {
+          "label": "Keep saving each week",
+          "icon": "jar",
+          "outcome": "Ana saves 2 more coins each week. Soon she has 6, and she buys the kite!",
+          "correct": true
+        },
+        {
+          "label": "Give up on the kite",
+          "icon": "balloon",
+          "outcome": "Ana stops saving. The kite stays in the shop. Her coins go on other things."
+        }
+      ],
+      "rightMessage": "Yes, {name}! A little at a time adds up to a goal.",
+      "wrongMessage": "Good try, {name}! Ana can still get there. She just needs a few more weeks of saving.",
+      "retryIntro": "Let's help Ana again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "six-for-the-kite",
+      "prompt": "The kite costs 6 coins. Put 6 coins in Ana's jar.",
+      "pennyHint": "Count carefully, {name}.",
+      "available": 8,
+      "target": 6,
+      "jarIcon": "jar",
+      "jarLabel": "Ana's jar",
+      "checkLabel": "Check the jar",
+      "rightMessage": "That's 6, {name}! Ana can buy her kite.",
+      "wrongMessage": "Good try, {name}! Let's count again: 1, 2, 3, 4, 5, 6.",
+      "retryIntro": "Let's count for the kite again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "You did it, {name}!",
+      "message": "A goal gives your saving a job to do."
+    }
+  ]
+}
