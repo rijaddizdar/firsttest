@@ -43,6 +43,7 @@
 		BADCE83232E9355F2CE48FEC /* KidFirstRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2808AED1C673F0466FD3DA /* KidFirstRunView.swift */; };
 		C0ACC2F5573A82DA8C04FB25 /* ShopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF093A44F3F1495AA484118 /* ShopTests.swift */; };
 		C867CC5B3826B00F3BB905C5 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CAB3F081ACAF5ADAB87F8F /* ProgressStore.swift */; };
+		CE7565848225DA275A63DFAE /* PlayableOnADeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5979E0499A67569B37131C1B /* PlayableOnADeviceTests.swift */; };
 		D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F9608B7567912942FCB5C0 /* Assets.xcassets */; };
 		D117B5F1D94B3EB79DA4F635 /* LessonRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */; };
 		D7C30CA7D980714C721AC293 /* FirstRunTutorialTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5F6E8EF012AE6D598A9E8 /* FirstRunTutorialTests.swift */; };
@@ -53,6 +54,7 @@
 		E33C56B91E695BBDE4608B49 /* Records.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF01A6AEB9CB0597841B976C /* Records.swift */; };
 		ED03EE0E66CB0BF5877530D5 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C624D2EA695575DEB615E7F /* ShopView.swift */; };
 		ED68323BE47206CB163C9DE0 /* LessonRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390CC878402FB29FF3301AB5 /* LessonRunner.swift */; };
+		F154545AC44C97EF0BA8323C /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 1013FC387BB8493BECDC390C /* Sounds */; };
 		F51931265BA46E0DC3CA09D0 /* RewardsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F996DA63873748FC16C511CF /* RewardsComponents.swift */; };
 		FC690762F6F293E29BC42E1D /* ParentDashboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */; };
 /* End PBXBuildFile section */
@@ -72,6 +74,7 @@
 		0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCheckTests.swift; sourceTree = "<group>"; };
 		0D481E2BDE4FFE849E47E46E /* AvatarArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarArtwork.swift; sourceTree = "<group>"; };
 		0F913406D798ED8F534E5B14 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		1013FC387BB8493BECDC390C /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sounds; path = App/Resources/Sounds; sourceTree = SOURCE_ROOT; };
 		159D193871901D0A02C68C89 /* SharedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUI.swift; sourceTree = "<group>"; };
 		1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "FLUENT-EMOJI-LICENSE.txt"; sourceTree = "<group>"; };
 		1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentDashboardTests.swift; sourceTree = "<group>"; };
@@ -83,6 +86,7 @@
 		3BF093A44F3F1495AA484118 /* ShopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopTests.swift; sourceTree = "<group>"; };
 		57ED1A9DD296622D69EA4BF7 /* SortItScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortItScreenView.swift; sourceTree = "<group>"; };
 		585671E92F5ADDA088A9840C /* CountItScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountItScreenView.swift; sourceTree = "<group>"; };
+		5979E0499A67569B37131C1B /* PlayableOnADeviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayableOnADeviceTests.swift; sourceTree = "<group>"; };
 		5C842D10712C0C9E33721D36 /* AvatarBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBuilderView.swift; sourceTree = "<group>"; };
 		63601D18391D8FB88CA54742 /* RewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsView.swift; sourceTree = "<group>"; };
 		678571BD1EBC0804EC350751 /* ContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTests.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 		F6FAE50A3137D5AB12AF29D2 /* MoneyPals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MoneyPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F996DA63873748FC16C511CF /* RewardsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsComponents.swift; sourceTree = "<group>"; };
 		FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLessonsView.swift; sourceTree = "<group>"; };
+		"TEMP_7B94E3A4-A59B-4C4B-AF07-C55516A62021" /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -209,6 +214,7 @@
 				A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */,
 				0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */,
 				1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */,
+				5979E0499A67569B37131C1B /* PlayableOnADeviceTests.swift */,
 				F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */,
 				00FA8B4F682C8208243EE90E /* RewardsCopyTests.swift */,
 				3BF093A44F3F1495AA484118 /* ShopTests.swift */,
@@ -229,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */,
+				1013FC387BB8493BECDC390C /* Sounds */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -241,6 +248,14 @@
 				5C842D10712C0C9E33721D36 /* AvatarBuilderView.swift */,
 			);
 			path = Avatar;
+			sourceTree = "<group>";
+		};
+		"TEMP_E893EFB6-8FAE-4CEE-9A6D-6BEE4FA537F5" /* firsttest */ = {
+			isa = PBXGroup;
+			children = (
+				"TEMP_7B94E3A4-A59B-4C4B-AF07-C55516A62021" /* Signing.xcconfig */,
+			);
+			path = firsttest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +306,10 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					88C53390E0D76289E7158E30 = {
+						DevelopmentTeam = "$(MONEYPALS_TEAM)";
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = D6A21B55B3FC00BE42BC36D1 /* Build configuration list for PBXProject "MoneyPals" */;
@@ -321,6 +340,7 @@
 				D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */,
 				9A5F4309058940630E1A8E94 /* Content in Resources */,
 				5766A74DD1519120512C2EA5 /* FLUENT-EMOJI-LICENSE.txt in Resources */,
+				F154545AC44C97EF0BA8323C /* Sounds in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +358,7 @@
 				D117B5F1D94B3EB79DA4F635 /* LessonRunnerTests.swift in Sources */,
 				B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */,
 				FC690762F6F293E29BC42E1D /* ParentDashboardTests.swift in Sources */,
+				CE7565848225DA275A63DFAE /* PlayableOnADeviceTests.swift in Sources */,
 				1E3A73A321A039755E940228 /* ProgressStoreTests.swift in Sources */,
 				64911CE7E30AF403E14300C7 /* RewardsCopyTests.swift in Sources */,
 				C0ACC2F5573A82DA8C04FB25 /* ShopTests.swift in Sources */,
@@ -399,11 +420,14 @@
 /* Begin XCBuildConfiguration section */
 		0A3D90A5E9C2F0082B9B280C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = "TEMP_7B94E3A4-A59B-4C4B-AF07-C55516A62021" /* Signing.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
-				CODE_SIGNING_ALLOWED = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = "$(MONEYPALS_SIGNING)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(MONEYPALS_TEAM)";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -413,7 +437,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.moneypals;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MONEYPALS_BUNDLE_ID)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -462,11 +486,14 @@
 		};
 		8E0978A494EDA1EA304A91F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = "TEMP_7B94E3A4-A59B-4C4B-AF07-C55516A62021" /* Signing.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
-				CODE_SIGNING_ALLOWED = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = "$(MONEYPALS_SIGNING)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(MONEYPALS_TEAM)";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -476,7 +503,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.moneypals;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MONEYPALS_BUNDLE_ID)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

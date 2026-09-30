@@ -20,6 +20,9 @@ struct MoneyPalsApp: App {
     init() {
         // Progress lives on the device only — no backend, no network.
         let container = PersistenceController.makeContainer()
+        // Penny's sounds share the device rather than taking it over: set up
+        // once here so a lesson never interrupts music already playing.
+        LessonAudio.configureSession()
         _app = StateObject(wrappedValue: AppState(container: container))
     }
 

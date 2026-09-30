@@ -22,6 +22,9 @@
 //
 
 import SwiftUI
+#if canImport(AVFoundation)
+import AVFoundation
+#endif
 
 @MainActor
 final class LessonRunner: ObservableObject {
@@ -295,14 +298,60 @@ final class LessonRunner: ObservableObject {
 enum LessonAudio {
     enum Cue { case right, wrong, celebrate }
 
-    /// Grown-ups can turn sound off (README section 3). Honoured when real
-    /// sounds arrive; nothing to silence yet.
+    /// Grown-ups can turn sound off (README section 3). `AppState` mirrors the
+    /// saved setting into this on every reload.
     static var isEnabled = true
+
+    /// Kept alive while playing — an AVAudioPlayer that goes out of scope stops
+    /// mid-sound. One per cue, so a quick right-right-right never cuts itself off
+    /// awkwardly and nothing is allocated on the tap.
+    #if canImport(AVFoundation)
+    private static var players: [String: AVAudioPlayer] = [:]
+    #endif
 
     static func play(_ cue: Cue) {
         guard isEnabled else { return }
-        // No-op until the sound assets exist.
+        #if canImport(AVFoundation)
+        let name: String
+        switch cue {
+        case .right:     name = "right"
+        case .wrong:     name = "wrong"
+        case .celebrate: name = "celebrate"
+        }
+        guard let player = player(named: name) else { return }
+        player.currentTime = 0
+        player.play()
+        #endif
     }
+
+    #if canImport(AVFoundation)
+    private static func player(named name: String) -> AVAudioPlayer? {
+        if let existing = players[name] { return existing }
+        guard let url = Bundle.main.url(forResource: name, withExtension: "wav",
+                                        subdirectory: "Sounds")
+                ?? Bundle.main.url(forResource: name, withExtension: "wav") else {
+            return nil          // no asset: stay silent rather than crash
+        }
+        let player = try? AVAudioPlayer(contentsOf: url)
+        player?.prepareToPlay()
+        // Lesson sounds are effects, not music: they must not stop whatever the
+        // family is already listening to, and they must still be heard when the
+        // ring switch is silent, like other kids' apps.
+        players[name] = player
+        return player
+    }
+
+    /// Set the audio session once, at launch. `.ambient` means Penny never
+    /// interrupts music playing in the background.
+    static func configureSession() {
+        #if os(iOS)
+        try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        #endif
+    }
+    #else
+    static func configureSession() {}
+    #endif
 }
 
 // MARK: - Small helpers
