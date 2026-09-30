@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {
+      "id": "stickers",
+      "title": "Stickers",
+      "kidSummary": "Buy one and it goes in your sticker book.",
+      "kind": "sticker",
+      "items": [
+        { "id": "sticker-glowing-star", "name": "Shiny star",  "icon": "glowing-star",      "price": 5 },
+        { "id": "sticker-balloon",      "name": "Balloon",     "icon": "balloon",           "price": 5 },
+        { "id": "sticker-rainbow",      "name": "Rainbow",     "icon": "rainbow",           "price": 10 },
+        { "id": "sticker-butterfly",    "name": "Butterfly",   "icon": "butterfly",         "price": 10 },
+        { "id": "sticker-cat",          "name": "Cat",         "icon": "cat-face",          "price": 10 },
+        { "id": "sticker-sunflower",    "name": "Sunflower",   "icon": "sunflower",         "price": 15 },
+        { "id": "sticker-soccer-ball",  "name": "Soccer ball", "icon": "soccer-ball",       "price": 15 },
+        { "id": "sticker-party",        "name": "Party popper","icon": "party-popper",      "price": 15 },
+        { "id": "sticker-heart",        "name": "Heart",       "icon": "heart-with-ribbon", "price": 20 },
+        { "id": "sticker-rocket",       "name": "Rocket",      "icon": "rocket",            "price": 20 },
+        { "id": "sticker-trophy",       "name": "Trophy",      "icon": "trophy",            "price": 25 },
+        { "id": "sticker-unicorn",      "name": "Unicorn",     "icon": "unicorn",           "price": 25 }
+      ]
+    },
+    {
+      "id": "pennys-scarf",
+      "title": "Penny's scarf",
+      "kidSummary": "Pick the colour Penny wears.",
+      "kind": "pennyScarf",
+      "items": [
+        { "id": "scarf-teal",   "name": "Teal",     "paletteIndex": 0, "price": 0 },
+        { "id": "scarf-copper", "name": "Copper",   "paletteIndex": 1, "price": 10 },
+        { "id": "scarf-sky",    "name": "Sky blue", "paletteIndex": 2, "price": 10 },
+        { "id": "scarf-coral",  "name": "Coral",    "paletteIndex": 3, "price": 15 },
+        { "id": "scarf-grape",  "name": "Grape",    "paletteIndex": 4, "price": 15 },
+        { "id": "scarf-leaf",   "name": "Leaf",     "paletteIndex": 5, "price": 20 }
+      ]
+    }
+  ]
+}

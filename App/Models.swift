@@ -35,6 +35,12 @@ struct Kid: Identifiable, Equatable {
     var coins: Int = 0
     var currentStreak: Int = 0
     var bestStreak: Int = 0
+    /// Penny's shiny scales — three per level finished (see `PennyScales`).
+    var pennyScales: Int = 0
+    /// Shop items bought with play coins, by content id (`Content/shop.json`).
+    var ownedItemIDs: Set<String> = []
+    /// The scarf colour Penny wears for this child. Nil means her own colour.
+    var pennyScarfItemID: String?
 
     // Parent-dashboard figures (README section 6), from the day records.
     var minutesToday: Int = 0
@@ -86,6 +92,22 @@ struct Kid: Identifiable, Equatable {
         return (0..<max(1, days)).reversed().compactMap { back in
             guard let day = calendar.date(byAdding: .day, value: -back, to: end) else { return nil }
             return DayMinutes(day: day, minutes: byDay[day] ?? 0)
+        }
+    }
+
+    // MARK: Rewards
+
+    /// Has this child bought this shop item?
+    func owns(_ itemID: String) -> Bool { ownedItemIDs.contains(itemID) }
+
+    /// The item id this child has chosen for a worn kind, if they have chosen
+    /// one. Nil means "whatever the shop's default is" — `ShopLibrary` resolves
+    /// that, because only it knows the catalog. Stickers are collected rather
+    /// than worn, so they always answer nil.
+    func chosenItemID(for kind: ShopItemKind) -> String? {
+        switch kind {
+        case .sticker:    return nil
+        case .pennyScarf: return pennyScarfItemID
         }
     }
 }

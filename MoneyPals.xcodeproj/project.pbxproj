@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		04B38F069EE109E490256F76 /* SharedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159D193871901D0A02C68C89 /* SharedUI.swift */; };
 		116247BBF162660DC88E26A8 /* LessonQuestionScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82159E26B5F581C2DDE1612 /* LessonQuestionScreens.swift */; };
+		146C03188BC1E44BD60797AE /* RewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63601D18391D8FB88CA54742 /* RewardsView.swift */; };
 		169778524CE256BDE89F43E2 /* AvatarBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C842D10712C0C9E33721D36 /* AvatarBuilderView.swift */; };
 		1B1A98401BDE2C10BBF6BDEA /* MoneyPalsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6049A412E2DF86AA06C58B5 /* MoneyPalsApp.swift */; };
 		1E3A73A321A039755E940228 /* ProgressStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */; };
@@ -18,15 +19,19 @@
 		235465595771F34A31A3FE8B /* PennyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2AB334CFBADD137713E105 /* PennyView.swift */; };
 		2C6F7302541BF0028E706A46 /* LessonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B035B2B5344145A79868A0 /* LessonContent.swift */; };
 		32BCC122AD1EBF0BCF486388 /* ParentDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB42BD60B9F413CB83C4CF /* ParentDashboardView.swift */; };
+		339ED2058F1F29E335C03932 /* RewardsRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F9B0F77A3AB3F3917DF75 /* RewardsRules.swift */; };
 		395D6F969555D9EBA2FC89B8 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243AB16FCE7A72608E00992A /* AppState.swift */; };
+		3BE8E0163D5C65A44FF4C1D8 /* StickerBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48126B7D90158CE2EB517FA /* StickerBookView.swift */; };
 		3E0425D38E825E074701EAC4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E943B89B772EF954F054989 /* Models.swift */; };
 		3E2C0F097CDD75C4858A2096 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05E016A5696C84F3D0AD97C /* Avatar.swift */; };
 		3EFB0A0BD5F9C9854ACCC10E /* CurriculumLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008B254D31FAB52D88D7AFD /* CurriculumLibrary.swift */; };
 		4198AF8A9B3A9D37C069C54D /* WhosLearningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D81C26B77C156D8758D707 /* WhosLearningView.swift */; };
+		4911B290F981C4536D2BF8D6 /* ShopContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7062ABA1AF7C25487FCFD3A2 /* ShopContent.swift */; };
 		55C347986DD0E060A04510F5 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F913406D798ED8F534E5B14 /* SetupView.swift */; };
 		5766A74DD1519120512C2EA5 /* FLUENT-EMOJI-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BB8401E56FFD575FA3F9616 /* FLUENT-EMOJI-LICENSE.txt */; };
 		58E25A2DC4EA64CEA2C655AE /* LessonComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2439DC92C84BB4E983E6708F /* LessonComponents.swift */; };
 		5D3A7A9F20875D2B9D4CFACE /* LevelLessonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */; };
+		64911CE7E30AF403E14300C7 /* RewardsCopyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA8B4F682C8208243EE90E /* RewardsCopyTests.swift */; };
 		6F147A1C5F614178596F1124 /* LessonDecoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786083AAC77DB25FCEB46268 /* LessonDecoding.swift */; };
 		712F1A524BB5CD8A2E28D441 /* LevelCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263F6F06F6754A092F4D1E29 /* LevelCheck.swift */; };
 		8226381C18A2D83F82E17A6F /* CountItScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585671E92F5ADDA088A9840C /* CountItScreenView.swift */; };
@@ -36,14 +41,18 @@
 		B0FEFA6A5D3E5380A728ED06 /* AvatarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEA3B7CDB71EC04F7F60CE7 /* AvatarTests.swift */; };
 		B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */; };
 		BADCE83232E9355F2CE48FEC /* KidFirstRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2808AED1C673F0466FD3DA /* KidFirstRunView.swift */; };
+		C0ACC2F5573A82DA8C04FB25 /* ShopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF093A44F3F1495AA484118 /* ShopTests.swift */; };
 		C867CC5B3826B00F3BB905C5 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CAB3F081ACAF5ADAB87F8F /* ProgressStore.swift */; };
 		D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F9608B7567912942FCB5C0 /* Assets.xcassets */; };
 		D117B5F1D94B3EB79DA4F635 /* LessonRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */; };
 		DC0A865C343526B42DC99D41 /* AvatarArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D481E2BDE4FFE849E47E46E /* AvatarArtwork.swift */; };
+		DD311D438E353D7135AB10F8 /* ShopLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78EF487F7F6E44DBC4A6BD3 /* ShopLibrary.swift */; };
 		DDFE5B096B9C6F12EE1544E9 /* LessonMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A07287E0FBDE0B4B1CAD076 /* LessonMapView.swift */; };
 		E1D5B5772A0D45EA0788E682 /* SortItScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED1A9DD296622D69EA4BF7 /* SortItScreenView.swift */; };
 		E33C56B91E695BBDE4608B49 /* Records.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF01A6AEB9CB0597841B976C /* Records.swift */; };
+		ED03EE0E66CB0BF5877530D5 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C624D2EA695575DEB615E7F /* ShopView.swift */; };
 		ED68323BE47206CB163C9DE0 /* LessonRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390CC878402FB29FF3301AB5 /* LessonRunner.swift */; };
+		F51931265BA46E0DC3CA09D0 /* RewardsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F996DA63873748FC16C511CF /* RewardsComponents.swift */; };
 		FC690762F6F293E29BC42E1D /* ParentDashboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00FA8B4F682C8208243EE90E /* RewardsCopyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCopyTests.swift; sourceTree = "<group>"; };
 		0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCheckTests.swift; sourceTree = "<group>"; };
 		0D481E2BDE4FFE849E47E46E /* AvatarArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarArtwork.swift; sourceTree = "<group>"; };
 		0F913406D798ED8F534E5B14 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
@@ -69,19 +79,25 @@
 		263F6F06F6754A092F4D1E29 /* LevelCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCheck.swift; sourceTree = "<group>"; };
 		2E2AB334CFBADD137713E105 /* PennyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PennyView.swift; sourceTree = "<group>"; };
 		390CC878402FB29FF3301AB5 /* LessonRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonRunner.swift; sourceTree = "<group>"; };
+		3BF093A44F3F1495AA484118 /* ShopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopTests.swift; sourceTree = "<group>"; };
 		57ED1A9DD296622D69EA4BF7 /* SortItScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortItScreenView.swift; sourceTree = "<group>"; };
 		585671E92F5ADDA088A9840C /* CountItScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountItScreenView.swift; sourceTree = "<group>"; };
 		5C842D10712C0C9E33721D36 /* AvatarBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBuilderView.swift; sourceTree = "<group>"; };
+		63601D18391D8FB88CA54742 /* RewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsView.swift; sourceTree = "<group>"; };
 		678571BD1EBC0804EC350751 /* ContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTests.swift; sourceTree = "<group>"; };
 		6A07287E0FBDE0B4B1CAD076 /* LessonMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonMapView.swift; sourceTree = "<group>"; };
 		6DEA3B7CDB71EC04F7F60CE7 /* AvatarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarTests.swift; sourceTree = "<group>"; };
+		7062ABA1AF7C25487FCFD3A2 /* ShopContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopContent.swift; sourceTree = "<group>"; };
 		71CB42BD60B9F413CB83C4CF /* ParentDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentDashboardView.swift; sourceTree = "<group>"; };
 		786083AAC77DB25FCEB46268 /* LessonDecoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonDecoding.swift; sourceTree = "<group>"; };
+		7C624D2EA695575DEB615E7F /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		8E943B89B772EF954F054989 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		963F9B0F77A3AB3F3917DF75 /* RewardsRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsRules.swift; sourceTree = "<group>"; };
 		9714D1B1836EF57A707856BE /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		A07851AB2E4F349498903F40 /* LessonRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonRunnerTests.swift; sourceTree = "<group>"; };
 		A6049A412E2DF86AA06C58B5 /* MoneyPalsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyPalsApp.swift; sourceTree = "<group>"; };
 		A6B035B2B5344145A79868A0 /* LessonContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonContent.swift; sourceTree = "<group>"; };
+		A78EF487F7F6E44DBC4A6BD3 /* ShopLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopLibrary.swift; sourceTree = "<group>"; };
 		A82159E26B5F581C2DDE1612 /* LessonQuestionScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonQuestionScreens.swift; sourceTree = "<group>"; };
 		B05E016A5696C84F3D0AD97C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		B7D7C18EA4F687AA178C6EAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -97,7 +113,9 @@
 		EF01A6AEB9CB0597841B976C /* Records.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Records.swift; sourceTree = "<group>"; };
 		F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
 		F3C54E05C224CCB32102A397 /* Content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Content; path = App/Content; sourceTree = SOURCE_ROOT; };
+		F48126B7D90158CE2EB517FA /* StickerBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBookView.swift; sourceTree = "<group>"; };
 		F6FAE50A3137D5AB12AF29D2 /* MoneyPals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MoneyPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F996DA63873748FC16C511CF /* RewardsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsComponents.swift; sourceTree = "<group>"; };
 		FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLessonsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,8 +178,23 @@
 				1424A30AE8F3102A2503F5FD /* Lessons */,
 				9DBAA02D36F5FE8C42004060 /* Persistence */,
 				9FB0767EFED7B9EFE4525E1F /* Resources */,
+				72C4CEDA95E17BCA43DA9DED /* Rewards */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		72C4CEDA95E17BCA43DA9DED /* Rewards */ = {
+			isa = PBXGroup;
+			children = (
+				F996DA63873748FC16C511CF /* RewardsComponents.swift */,
+				963F9B0F77A3AB3F3917DF75 /* RewardsRules.swift */,
+				63601D18391D8FB88CA54742 /* RewardsView.swift */,
+				7062ABA1AF7C25487FCFD3A2 /* ShopContent.swift */,
+				A78EF487F7F6E44DBC4A6BD3 /* ShopLibrary.swift */,
+				7C624D2EA695575DEB615E7F /* ShopView.swift */,
+				F48126B7D90158CE2EB517FA /* StickerBookView.swift */,
+			);
+			path = Rewards;
 			sourceTree = "<group>";
 		};
 		8D68A5E8CB26060B3A65A1CD /* Tests */ = {
@@ -174,6 +207,8 @@
 				0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */,
 				1DF2B4EF7032270270ACFC8E /* ParentDashboardTests.swift */,
 				F347752AFA6F77210DBACBB4 /* ProgressStoreTests.swift */,
+				00FA8B4F682C8208243EE90E /* RewardsCopyTests.swift */,
+				3BF093A44F3F1495AA484118 /* ShopTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -300,6 +335,8 @@
 				B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */,
 				FC690762F6F293E29BC42E1D /* ParentDashboardTests.swift in Sources */,
 				1E3A73A321A039755E940228 /* ProgressStoreTests.swift in Sources */,
+				64911CE7E30AF403E14300C7 /* RewardsCopyTests.swift in Sources */,
+				C0ACC2F5573A82DA8C04FB25 /* ShopTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,9 +366,16 @@
 				235465595771F34A31A3FE8B /* PennyView.swift in Sources */,
 				C867CC5B3826B00F3BB905C5 /* ProgressStore.swift in Sources */,
 				E33C56B91E695BBDE4608B49 /* Records.swift in Sources */,
+				F51931265BA46E0DC3CA09D0 /* RewardsComponents.swift in Sources */,
+				339ED2058F1F29E335C03932 /* RewardsRules.swift in Sources */,
+				146C03188BC1E44BD60797AE /* RewardsView.swift in Sources */,
 				55C347986DD0E060A04510F5 /* SetupView.swift in Sources */,
 				04B38F069EE109E490256F76 /* SharedUI.swift in Sources */,
+				4911B290F981C4536D2BF8D6 /* ShopContent.swift in Sources */,
+				DD311D438E353D7135AB10F8 /* ShopLibrary.swift in Sources */,
+				ED03EE0E66CB0BF5877530D5 /* ShopView.swift in Sources */,
 				E1D5B5772A0D45EA0788E682 /* SortItScreenView.swift in Sources */,
+				3BE8E0163D5C65A44FF4C1D8 /* StickerBookView.swift in Sources */,
 				23443D026EB15D932754E27B /* Theme.swift in Sources */,
 				20062FE3769B55E7844D40E4 /* WelcomeView.swift in Sources */,
 				4198AF8A9B3A9D37C069C54D /* WhosLearningView.swift in Sources */,
