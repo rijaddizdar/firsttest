@@ -181,7 +181,7 @@ final class ShopTests: XCTestCase {
     }
 
     private static func kid(coins: Int, owned: Set<String> = [], scarf: String? = nil) -> Kid {
-        Kid(id: UUID(), name: "Mia", avatarKind: .girl, avatarColorIndex: 0,
+        Kid(id: UUID(), name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0),
             coins: coins, ownedItemIDs: owned, pennyScarfItemID: scarf)
     }
 }

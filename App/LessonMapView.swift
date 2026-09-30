@@ -119,6 +119,8 @@ struct LessonMapView: View {
         }
         .padding(.horizontal, 20)
         .accessibilityElement(children: .combine)
+    }
+
     /// Stars, coins, the streak and the cart that says they can be spent.
     private func chipRow(for kid: Kid, streak: String) -> some View {
         HStack(spacing: 10) {

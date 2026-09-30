@@ -449,7 +449,7 @@ final class ProgressStore {
     /// and the things she bought.
     func seedRewardsKid(library: CurriculumLibrary) {
         guard records().isEmpty else { return }
-        let id = addKid(name: "Mia", kind: .girl, colorIndex: 0)
+        let id = addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
         let lessons = library.lessons(inLevel: 2)
         guard !lessons.isEmpty else { return }
 
