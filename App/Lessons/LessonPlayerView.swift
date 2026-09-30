@@ -113,11 +113,12 @@ struct LessonPlayerView: View {
                 .multilineTextAlignment(.center)
 
             HStack(alignment: .top, spacing: 16) {
-                ForEach(screen.cards) { card in
+                ForEach(Array(screen.cards.enumerated()), id: \.element.id) { index, card in
                     ConceptCard(icon: card.icon,
                                 badge: card.badge,
                                 badgeColor: card.tint.color,
                                 caption: runner.fill(card.caption))
+                        .arrives(index: index, step: 0.09)
                 }
             }
             .padding(.horizontal, 20)
@@ -181,7 +182,7 @@ private struct YayScreenView: View {
             Text(runner.fill(screen.title))
                 .font(.screenTitle).foregroundStyle(Palette.textHeading)
                 .multilineTextAlignment(.center)
-            StarRow(earned: runner.stars, size: 40)
+            StarRow(earned: runner.stars, size: 40, celebrates: true)
             HStack(spacing: 12) {
                 RewardChip(icon: "coin", value: "+\(runner.coins)", tint: Palette.copper)
                 // The streak icon is a coin, never a flame.
