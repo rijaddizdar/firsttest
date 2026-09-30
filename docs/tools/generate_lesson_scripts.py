@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate docs/world-1-lesson-scripts.md from the lesson JSON.
+"""Generate docs/world-<n>-lesson-scripts.md for every written world.
 
 The scripts doc has to be read as WRITING, not as JSON, and it must never
 drift from what the app actually plays — so it is generated from the same
@@ -14,7 +14,6 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CONTENT = os.path.join(ROOT, "App", "Content")
-OUT = os.path.join(ROOT, "docs", "world-1-lesson-scripts.md")
 
 NAME = "Mia"  # the demo child, so {name} reads as a real line
 
@@ -124,12 +123,23 @@ def screen_md(lesson_id, n, screen):
 
 def main():
     curriculum = json.load(open(os.path.join(CONTENT, "curriculum.json")))
-    world = curriculum["worlds"][0]
+    # One page per world that actually has lessons. Writing a new world adds a
+    # page here with no change to this script.
+    written = [(n, w) for n, w in enumerate(curriculum["worlds"], start=1)
+               if any(lv["lessons"] for lv in w["levels"])]
+    for number, world in written:
+        build(number, world)
+
+
+def build(number, world):
+    global LONGEST
+    LONGEST = []
+    out = os.path.join(ROOT, "docs", f"world-{number}-lesson-scripts.md")
 
     md = []
-    md.append("# World 1 lesson scripts — Money Basics")
+    md.append(f'# World {number} lesson scripts — {world["title"]}')
     md.append("")
-    md.append("Every word a child reads or hears in World 1, screen by screen, so the "
+    md.append(f'Every word a child reads or hears in World {number}, screen by screen, so the '
               "lessons can be reviewed as **writing** rather than as JSON.")
     md.append("")
     md.append("- **Generated** from `App/Content/lessons/*.json` by "
@@ -208,7 +218,7 @@ def main():
     md.append(f'| Lessons | {totals["lessons"]} (5 per level) |')
     md.append(f'| Screens | {totals["screens"]} |')
     md.append(f'| Questions a child answers | {totals["questions"]} |')
-    md.append(f'| Level checks | 3, built from the questions above |')
+    md.append(f'| Level checks | {len(world["levels"])}, built from the questions above |')
     md.append("")
     md.append("Screens by type:")
     md.append("")
@@ -232,9 +242,9 @@ def main():
             md.append(f'| {w} | `{lid}` | {s} |')
         md.append("")
 
-    with open(OUT, "w") as f:
+    with open(out, "w") as f:
         f.write("\n".join(md).rstrip() + "\n")
-    print(f"wrote {OUT}: {totals}")
+    print(f"wrote {out}: {totals}")
     print(f"sentences over 12 words: {len(over)}")
     for w, lid, s in over[:20]:
         print(f"  {w:3d} {lid}: {s}")

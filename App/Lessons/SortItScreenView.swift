@@ -72,13 +72,22 @@ struct SortItScreenView: View {
     private func basket(_ group: SortItScreen.Group) -> some View {
         let items = screen.items.filter { placed[$0.id] == group.id }
         return VStack(spacing: 10) {
+            // Three baskets fit across a phone, so the label has to survive a
+            // narrow pill: keep it on one line and let it shrink a little
+            // rather than breaking a short word like "Spend" in half.
             HStack(spacing: 6) {
-                if let icon = group.icon { FluentIcon(name: icon, size: 24) }
+                if let icon = group.icon {
+                    FluentIcon(name: icon, size: screen.groups.count > 2 ? 20 : 24)
+                }
                 Text(group.title)
                     .font(.headline.weight(.heavy))
                     .foregroundStyle(.white)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(.horizontal, 14).padding(.vertical, 6)
+            .padding(.horizontal, screen.groups.count > 2 ? 10 : 14)
+            .padding(.vertical, 6)
             .background(group.tint.color, in: Capsule())
 
             // What's already in the basket.

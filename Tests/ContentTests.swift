@@ -20,11 +20,15 @@ final class ContentTests: XCTestCase {
 
     /// World 1 is written: three levels, five lessons each, and the scaffold
     /// sample from the foundation PR is gone.
-    func testWorldOneIsFullyWritten() throws {
+    /// Every level that has been written: Worlds 1 and 2. Adding a world means
+    /// adding its levels here, and the same bar applies to them.
+    static let writtenLevels = 1...6
+
+    func testWorldsOneAndTwoAreFullyWritten() throws {
         let library = try CurriculumLibrary.load(from: .main)
         XCTAssertNil(library.lesson("sample-screen-types"), "the SAMPLE lesson was replaced")
 
-        for levelID in 1...3 {
+        for levelID in Self.writtenLevels {
             let lessons = library.lessons(inLevel: levelID)
             XCTAssertEqual(lessons.count, 5, "level \(levelID) should have 5 lessons")
             for lesson in lessons {
@@ -42,9 +46,9 @@ final class ContentTests: XCTestCase {
     /// ask for art that is not in the catalog, and every question screen must
     /// carry at least one picture of its own (a Hello or Yay! screen shows
     /// Penny, who is not an icon).
-    func testEveryWorldOneScreenHasItsPictures() throws {
+    func testEveryWrittenScreenHasItsPictures() throws {
         let library = try CurriculumLibrary.load(from: .main)
-        for levelID in 1...3 {
+        for levelID in Self.writtenLevels {
             for lesson in library.lessonsAndCheck(inLevel: levelID) {
                 for screen in lesson.screens {
                     for icon in screen.iconNames {
@@ -62,10 +66,10 @@ final class ContentTests: XCTestCase {
 
     /// Every lesson uses {name} where Penny speaks first, and no kid-facing
     /// line uses the words README section 7 rule 5 bans.
-    func testWorldOneToneRules() throws {
+    func testWrittenLessonsFollowTheToneRules() throws {
         let library = try CurriculumLibrary.load(from: .main)
         let banned = ["wrong", "fail", "bad ", "hurry", "stupid", "lost your streak"]
-        for levelID in 1...3 {
+        for levelID in Self.writtenLevels {
             for lesson in library.lessonsAndCheck(inLevel: levelID) {
                 guard case .hello(let hello) = lesson.screens.first else {
                     return XCTFail("\(lesson.id) does not open on a hello screen")
@@ -88,7 +92,7 @@ final class ContentTests: XCTestCase {
     /// A wrong answer is always encouragement plus a hint, never a bare "no".
     func testEveryQuestionHasAKindWrongAnswer() throws {
         let library = try CurriculumLibrary.load(from: .main)
-        for levelID in 1...3 {
+        for levelID in Self.writtenLevels {
             for lesson in library.lessons(inLevel: levelID) {
                 for screen in lesson.questionScreens {
                     let message = screen.wrongMessageText ?? ""
@@ -129,12 +133,34 @@ final class ContentTests: XCTestCase {
     /// screen type in README section 3 must actually appear in every level.
     func testEveryLevelUsesTheFullMixOfScreenTypes() throws {
         let library = try CurriculumLibrary.load(from: .main)
-        for levelID in 1...3 {
+        for levelID in Self.writtenLevels {
             let kinds = Set(library.lessons(inLevel: levelID).flatMap { $0.screens.map(\.kindName) })
             XCTAssertEqual(kinds,
                            ["hello", "learn", "tapToChoose", "sortIt", "storyChoice", "countIt", "yay"],
                            "level \(levelID) is missing a screen type: \(kinds.sorted())")
         }
+    }
+
+    /// README section 7, rule 1: "Short sentences. Aim for 12 words or fewer."
+    /// World 1 was written to this and World 2 matches it, so it is a rule the
+    /// content actually keeps rather than an aspiration in a doc.
+    func testEverySentenceIsShortEnoughForAChild() throws {
+        let library = try CurriculumLibrary.load(from: .main)
+        var tooLong: [String] = []
+        for levelID in Self.writtenLevels {
+            for lesson in library.lessons(inLevel: levelID) {
+                for screen in lesson.screens {
+                    for line in screen.kidFacingText {
+                        for sentence in line.split(whereSeparator: { ".!?".contains($0) }) {
+                            let words = sentence.split(separator: " ").count
+                            if words > 12 { tooLong.append("\(lesson.id): \(sentence)") }
+                        }
+                    }
+                }
+            }
+        }
+        XCTAssertTrue(tooLong.isEmpty,
+                      "sentences over 12 words:\n" + tooLong.joined(separator: "\n"))
     }
 
     // MARK: Validation

@@ -56,21 +56,39 @@
           "title": "Saving Up",
           "kidSummary": "Keep some money now to use it later.",
           "icon": "jar",
-          "lessons": []
+          "lessons": [
+            "saving-up-1",
+            "saving-up-2",
+            "saving-up-3",
+            "saving-up-4",
+            "saving-up-5"
+          ]
         },
         {
           "id": 5,
           "title": "Smart Spending",
           "kidSummary": "Stop, think and compare before you buy.",
           "icon": "shopping-cart",
-          "lessons": []
+          "lessons": [
+            "smart-spending-1",
+            "smart-spending-2",
+            "smart-spending-3",
+            "smart-spending-4",
+            "smart-spending-5"
+          ]
         },
         {
           "id": 6,
           "title": "Making a Budget",
           "kidSummary": "A money plan: spend some, save some, give some.",
           "icon": "memo",
-          "lessons": []
+          "lessons": [
+            "making-a-budget-1",
+            "making-a-budget-2",
+            "making-a-budget-3",
+            "making-a-budget-4",
+            "making-a-budget-5"
+          ]
         }
       ]
     },

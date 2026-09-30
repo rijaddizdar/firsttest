@@ -1,0 +1,136 @@
+{
+  "id": "making-a-budget-1",
+  "levelID": 6,
+  "title": "Making a Budget",
+  "estimatedMinutes": 3,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's make a money plan.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Three jars",
+      "cards": [
+        {
+          "icon": "shopping-cart",
+          "badge": "SPEND",
+          "tint": "copper",
+          "caption": "Some coins to use now."
+        },
+        {
+          "icon": "jar",
+          "badge": "SAVE",
+          "tint": "teal",
+          "caption": "Some coins to keep for later."
+        },
+        {
+          "icon": "heart-with-ribbon",
+          "badge": "GIVE",
+          "tint": "copper",
+          "caption": "Some coins to help someone else."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "A plan like this is called a budget, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "what-is-a-budget",
+      "prompt": "What is a budget?",
+      "pennyHint": "Look at the three jars, {name}.",
+      "choices": [
+        {
+          "label": "A plan for your money",
+          "icon": "memo",
+          "correct": true
+        },
+        {
+          "label": "A kind of coin",
+          "icon": "coin"
+        }
+      ],
+      "rightMessage": "Yes, {name}! A budget is a plan for your money.",
+      "wrongMessage": "Good try, {name}! A budget is the plan itself: spend some, save some, give some.",
+      "retryIntro": "Let's think about budgets again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "which-jar",
+      "prompt": "Which jar does each one go in?",
+      "pennyHint": "Take your time, {name}.",
+      "groups": [
+        {
+          "id": "spend",
+          "title": "Spend",
+          "icon": "shopping-cart",
+          "tint": "copper"
+        },
+        {
+          "id": "save",
+          "title": "Save",
+          "icon": "jar",
+          "tint": "teal"
+        },
+        {
+          "id": "give",
+          "title": "Give",
+          "icon": "heart-with-ribbon",
+          "tint": "copper"
+        }
+      ],
+      "items": [
+        {
+          "id": "snack",
+          "label": "A snack today",
+          "icon": "green-apple",
+          "groupID": "spend"
+        },
+        {
+          "id": "bike-goal",
+          "label": "Towards a kite",
+          "icon": "kite",
+          "groupID": "save"
+        },
+        {
+          "id": "food-bank",
+          "label": "For a food box",
+          "icon": "bread",
+          "groupID": "give"
+        }
+      ],
+      "rightMessage": "Nice sorting, {name}!",
+      "wrongMessage": "Good try, {name}! Ask: is it for now, for later, or for someone else?",
+      "doneMessage": "All sorted, {name}! Spend some, save some, give some.",
+      "retryIntro": "Let's sort the jars again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "do-you-need-all-three",
+      "prompt": "Does a budget mean you can never spend anything?",
+      "pennyHint": "Look at the spend jar, {name}.",
+      "choices": [
+        {
+          "label": "No, spending is part of the plan",
+          "icon": "shopping-cart",
+          "correct": true
+        },
+        {
+          "label": "Yes, you keep it all",
+          "icon": "locked"
+        }
+      ],
+      "rightMessage": "That's right, {name}! A budget includes coins to spend.",
+      "wrongMessage": "Good try, {name}! The spend jar is part of the plan too.",
+      "retryIntro": "Let's look at the spend jar again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "A budget is a plan: spend, save and give."
+    }
+  ]
+}

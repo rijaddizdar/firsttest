@@ -329,6 +329,17 @@ The child's first-run tutorial is in
 | Meet Penny (unchanged, for context) | `01-meet-penny.png` |
 | "Here's how we learn" — the new step | `02-how-it-works.png` |
 
+World 2's lessons are in [`screenshots/world2/`](screenshots/world2):
+
+| Screen | File |
+|---|---|
+| Learn — the three jars | `iphone-01-learn-jars.png` |
+| Sort it — three baskets (Spend / Save / Give) | `02-sort-three-jars.png` |
+| Story choice — comparing two pairs of shoes | `iphone-03-story-compare.png` |
+| Count it — saving for the kite | `iphone-04-count-the-kite.png` |
+| Tap to choose — right | `iphone-05-tap-right.png` |
+| Tap to choose — try again | `iphone-06-tap-try-again.png` |
+
 ### Reproducing the screenshots
 
 The app reads optional launch-environment hooks (absent in normal use, so they

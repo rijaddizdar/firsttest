@@ -1,0 +1,104 @@
+{
+  "id": "smart-spending-3",
+  "levelID": 5,
+  "title": "Smart Spending",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's ask if we really need it.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Need it, or want it now?",
+      "cards": [
+        {
+          "icon": "coat",
+          "badge": "NEED",
+          "tint": "teal",
+          "caption": "A need keeps you safe and healthy."
+        },
+        {
+          "icon": "candy",
+          "badge": "WANT",
+          "tint": "copper",
+          "caption": "A want is a fun extra. That's okay too."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Wants are fine, {name}. We just choose on purpose."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "shoes-with-holes",
+      "prompt": "Your shoes have holes and your feet get wet. Are new shoes a need?",
+      "pennyHint": "Think about staying dry and safe, {name}.",
+      "choices": [
+        {
+          "label": "Yes, that's a need",
+          "icon": "running-shoe",
+          "correct": true
+        },
+        {
+          "label": "No, it's just a want",
+          "icon": "balloon"
+        }
+      ],
+      "rightMessage": "Yes, {name}! Dry feet keep you healthy, so that's a need.",
+      "wrongMessage": "Good try, {name}! Wet feet can make you poorly. So new shoes are a need.",
+      "retryIntro": "Let's look at the shoes again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "third-teddy",
+      "prompt": "You have two teddies at home. Is a third one a need?",
+      "pennyHint": "Do you have one already, {name}?",
+      "choices": [
+        {
+          "label": "No, it's a want",
+          "icon": "teddy-bear",
+          "correct": true
+        },
+        {
+          "label": "Yes, it's a need",
+          "icon": "shield"
+        }
+      ],
+      "rightMessage": "That's it, {name}! A third teddy is a fun extra, not a need.",
+      "wrongMessage": "Good try, {name}! You already have teddies, so this one is a want.",
+      "retryIntro": "Let's think about the teddies again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "pocket-money-day",
+      "story": "Kim has 6 coins. Her school bag is torn. She also likes a new game.",
+      "storyIcon": "backpack",
+      "prompt": "What should Kim buy first?",
+      "pennyHint": "Which one does she need, {name}?",
+      "options": [
+        {
+          "label": "Mend the school bag",
+          "icon": "backpack",
+          "outcome": "Kim fixes her bag. Her books stay dry. She still has coins for the game later.",
+          "correct": true
+        },
+        {
+          "label": "Buy the game today",
+          "icon": "video-game",
+          "outcome": "Kim plays the game. Her books fall out of the torn bag on the way."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Needs come first, then the fun extras.",
+      "wrongMessage": "Good try, {name}! The game is fun. But the torn bag is what she needs.",
+      "retryIntro": "Let's help Kim again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "Needs first. Wants are still okay after."
+    }
+  ]
+}

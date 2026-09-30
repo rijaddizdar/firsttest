@@ -1,0 +1,104 @@
+{
+  "id": "saving-up-4",
+  "levelID": 4,
+  "title": "Saving Up",
+  "estimatedMinutes": 3,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Where should we keep our savings?",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "A safe place",
+      "cards": [
+        {
+          "icon": "jar",
+          "badge": "AT HOME",
+          "tint": "copper",
+          "caption": "A jar or piggy bank keeps coins in one place."
+        },
+        {
+          "icon": "bank",
+          "badge": "A BANK",
+          "tint": "teal",
+          "caption": "A bank keeps money safe until you need it."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Both keep your money in one safe place, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "safe-place",
+      "prompt": "Which is a safer place to keep your savings?",
+      "pennyHint": "Where can you find it again later, {name}?",
+      "choices": [
+        {
+          "label": "In a jar at home",
+          "icon": "jar",
+          "correct": true
+        },
+        {
+          "label": "Loose in your pocket",
+          "icon": "coat"
+        }
+      ],
+      "rightMessage": "Yes, {name}! In a jar you know exactly where it is.",
+      "wrongMessage": "Good try, {name}! Coins in a pocket can slip out. A jar keeps them together.",
+      "retryIntro": "Let's think about safe places again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "where-to-keep",
+      "story": "Leo gets 5 coins for his birthday. He is saving for a soccer ball.",
+      "storyIcon": "soccer-ball",
+      "prompt": "Where should Leo put his coins?",
+      "pennyHint": "He needs them again later, {name}.",
+      "options": [
+        {
+          "label": "In his savings jar",
+          "icon": "jar",
+          "outcome": "Leo drops them in the jar. Next month they are all still there, waiting.",
+          "correct": true
+        },
+        {
+          "label": "Loose on his desk",
+          "icon": "memo",
+          "outcome": "Some coins roll off the desk. Leo can't find them all when he goes to count."
+        }
+      ],
+      "rightMessage": "That's it, {name}! One safe place means nothing goes missing.",
+      "wrongMessage": "Good try, {name}! Loose coins are easy to lose. A jar keeps them together.",
+      "retryIntro": "Let's help Leo again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "why-a-bank",
+      "prompt": "What does a bank do with your money?",
+      "pennyHint": "Think about the picture, {name}.",
+      "choices": [
+        {
+          "label": "Keeps it safe for you",
+          "icon": "bank",
+          "correct": true
+        },
+        {
+          "label": "Spends it on toys",
+          "icon": "teddy-bear"
+        }
+      ],
+      "rightMessage": "Yes, {name}! A bank keeps it safe until you need it.",
+      "wrongMessage": "Good try, {name}! Your money stays yours. The bank just keeps it safe.",
+      "retryIntro": "Let's think about the bank again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Nice work, {name}!",
+      "message": "One safe place keeps your savings together."
+    }
+  ]
+}

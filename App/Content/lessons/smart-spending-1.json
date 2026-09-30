@@ -1,0 +1,104 @@
+{
+  "id": "smart-spending-1",
+  "levelID": 5,
+  "title": "Smart Spending",
+  "estimatedMinutes": 3,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's learn to stop and think before we buy.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Stop and think",
+      "cards": [
+        {
+          "icon": "shield",
+          "badge": "STOP",
+          "tint": "teal",
+          "caption": "Stop before you buy. Nothing runs away."
+        },
+        {
+          "icon": "light-bulb",
+          "badge": "THINK",
+          "tint": "copper",
+          "caption": "Ask yourself: do I really want this?"
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "I curl up and think when I'm not sure, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "first-step",
+      "prompt": "You see a toy you like. What is the first thing to do?",
+      "pennyHint": "Think about my shell, {name}.",
+      "choices": [
+        {
+          "label": "Stop and think",
+          "icon": "shield",
+          "correct": true
+        },
+        {
+          "label": "Buy it right away",
+          "icon": "shopping-cart"
+        }
+      ],
+      "rightMessage": "Yes, {name}! Stopping first gives your brain a moment.",
+      "wrongMessage": "Good try, {name}! It helps to stop first. The toy will still be there.",
+      "retryIntro": "Let's think about the first step again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "still-want-it",
+      "prompt": "You waited a day and you still want it. Is it okay to buy it?",
+      "pennyHint": "You thought about it first, {name}.",
+      "choices": [
+        {
+          "label": "Yes, that's a thought-out choice",
+          "icon": "thumbs-up",
+          "correct": true
+        },
+        {
+          "label": "No, buying is never okay",
+          "icon": "snowflake"
+        }
+      ],
+      "rightMessage": "That's right, {name}! Buying is fine when you've thought it through.",
+      "wrongMessage": "Good try, {name}! Spending is okay. Stopping first just makes it your choice.",
+      "retryIntro": "Let's think about waiting a day again, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "the-shiny-thing",
+      "story": "Tom sees a shiny toy at the shop. He wants it this second.",
+      "storyIcon": "sparkles",
+      "prompt": "What should Tom do first?",
+      "pennyHint": "What would I do, {name}?",
+      "options": [
+        {
+          "label": "Stop and think for a minute",
+          "icon": "shield",
+          "outcome": "Tom waits a minute. He remembers he already has one at home, and keeps his coins.",
+          "correct": true
+        },
+        {
+          "label": "Buy it straight away",
+          "icon": "shopping-cart",
+          "outcome": "Tom buys it. At home he finds one just like it. His coins are gone."
+        }
+      ],
+      "rightMessage": "Yes, {name}! A minute of thinking saved his coins.",
+      "wrongMessage": "Good try, {name}! A quick stop would have reminded him about the one at home.",
+      "retryIntro": "Let's help Tom again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Lesson done, {name}!",
+      "message": "Stop and think. Then you choose."
+    }
+  ]
+}

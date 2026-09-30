@@ -1,0 +1,98 @@
+{
+  "id": "saving-up-5",
+  "levelID": 4,
+  "title": "Saving Up",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's practise choosing to wait.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "Now, or something bigger?",
+      "cards": [
+        {
+          "icon": "candy",
+          "badge": "NOW",
+          "tint": "copper",
+          "caption": "A small treat today uses your coins."
+        },
+        {
+          "icon": "soccer-ball",
+          "badge": "BIGGER",
+          "tint": "teal",
+          "caption": "Waiting can get you something bigger."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Neither one is naughty, {name}. It's your choice."
+    },
+    {
+      "type": "storyChoice",
+      "id": "wait-or-not",
+      "story": "Nina has 4 coins. Candy costs 4 coins. A soccer ball costs 8 coins.",
+      "storyIcon": "soccer-ball",
+      "prompt": "Nina really wants the ball. What helps her most?",
+      "pennyHint": "Which choice gets her the ball, {name}?",
+      "options": [
+        {
+          "label": "Save 4 more coins",
+          "icon": "jar",
+          "outcome": "Nina waits two weeks, then has 8 coins. She takes the soccer ball home.",
+          "correct": true
+        },
+        {
+          "label": "Buy the candy now",
+          "icon": "candy",
+          "outcome": "Nina enjoys the candy. Her jar is empty again, so the ball has to wait longer."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Waiting a little got her the bigger thing.",
+      "wrongMessage": "Good try, {name}! The candy is nice, but the ball needs 8 coins saved up.",
+      "retryIntro": "Let's help Nina again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "eight-for-the-ball",
+      "prompt": "The ball costs 8 coins. Fill Nina's jar.",
+      "pennyHint": "Count them all in, {name}.",
+      "available": 8,
+      "target": 8,
+      "jarIcon": "jar",
+      "jarLabel": "Nina's jar",
+      "checkLabel": "Check the jar",
+      "rightMessage": "That's 8, {name}! Nina reached her goal.",
+      "wrongMessage": "Good try, {name}! The ball needs all 8 coins. Let's count them in.",
+      "retryIntro": "Let's fill the jar again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "is-waiting-ok",
+      "prompt": "Nina waited two weeks to buy the ball. Was that a good plan?",
+      "pennyHint": "Did she get what she wanted, {name}?",
+      "choices": [
+        {
+          "label": "Yes, she reached her goal",
+          "icon": "trophy",
+          "correct": true
+        },
+        {
+          "label": "No, waiting never helps",
+          "icon": "snowflake"
+        }
+      ],
+      "rightMessage": "Yes, {name}! Waiting helped her get the thing she really wanted.",
+      "wrongMessage": "Good try, {name}! She did get the ball. Waiting was what made it possible.",
+      "retryIntro": "Let's think about Nina's plan again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "You did it, {name}!",
+      "message": "Waiting a little can get you something bigger."
+    }
+  ]
+}

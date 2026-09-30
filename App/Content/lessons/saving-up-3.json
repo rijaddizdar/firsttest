@@ -1,0 +1,124 @@
+{
+  "id": "saving-up-3",
+  "levelID": 4,
+  "title": "Saving Up",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Let's see how small amounts add up.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "A little at a time",
+      "cards": [
+        {
+          "icon": "coin",
+          "badge": "EACH WEEK",
+          "tint": "copper",
+          "caption": "Saving 2 coins a week feels small."
+        },
+        {
+          "icon": "money-bag",
+          "badge": "AFTER A MONTH",
+          "tint": "teal",
+          "caption": "After 4 weeks, those coins make a pile."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "Small coins add up, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "two-a-week",
+      "prompt": "Ben saves 2 coins this week. Put them in his jar.",
+      "pennyHint": "Just 2 today, {name}.",
+      "available": 6,
+      "target": 2,
+      "jarIcon": "jar",
+      "jarLabel": "Ben's jar",
+      "checkLabel": "Check the jar",
+      "rightMessage": "Yes, {name}! Two coins now, and more next week.",
+      "wrongMessage": "Good try, {name}! Ben saves just 2 coins this week. Let's move 2.",
+      "retryIntro": "Let's save Ben's 2 coins again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "after-four-weeks",
+      "prompt": "Ben saves 2 coins every week. After 4 weeks, has his pile grown?",
+      "pennyHint": "Think about adding 2 again and again, {name}.",
+      "choices": [
+        {
+          "label": "Yes, it grew",
+          "icon": "money-bag",
+          "correct": true
+        },
+        {
+          "label": "No, it stayed the same",
+          "icon": "coin"
+        }
+      ],
+      "rightMessage": "That's right, {name}! 2 and 2 and 2 and 2 makes 8 coins.",
+      "wrongMessage": "Good try, {name}! He adds 2 more each week, so the pile gets bigger.",
+      "retryIntro": "Let's think about the four weeks again, {name}."
+    },
+    {
+      "type": "sortIt",
+      "id": "saving-or-not",
+      "prompt": "Which ones help you save?",
+      "pennyHint": "Take your time, {name}.",
+      "groups": [
+        {
+          "id": "saves",
+          "title": "Helps saving",
+          "icon": "jar",
+          "tint": "teal"
+        },
+        {
+          "id": "spends",
+          "title": "Uses it now",
+          "icon": "shopping-cart",
+          "tint": "copper"
+        }
+      ],
+      "items": [
+        {
+          "id": "jar-coin",
+          "label": "Put a coin in the jar",
+          "icon": "jar",
+          "groupID": "saves"
+        },
+        {
+          "id": "wait",
+          "label": "Wait a week",
+          "icon": "glowing-star",
+          "groupID": "saves"
+        },
+        {
+          "id": "buy-candy",
+          "label": "Buy candy today",
+          "icon": "candy",
+          "groupID": "spends"
+        },
+        {
+          "id": "buy-game",
+          "label": "Buy a game today",
+          "icon": "video-game",
+          "groupID": "spends"
+        }
+      ],
+      "rightMessage": "Nice sorting, {name}!",
+      "wrongMessage": "Good try, {name}! Ask yourself: does the coin stay, or go?",
+      "doneMessage": "All sorted, {name}! Keeping coins is how a pile grows.",
+      "retryIntro": "Let's sort those again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Great work, {name}!",
+      "message": "Small amounts add up when you keep going."
+    }
+  ]
+}

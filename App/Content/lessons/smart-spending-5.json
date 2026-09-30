@@ -1,0 +1,98 @@
+{
+  "id": "smart-spending-5",
+  "levelID": 5,
+  "title": "Smart Spending",
+  "estimatedMinutes": 4,
+  "coins": 10,
+  "screens": [
+    {
+      "type": "hello",
+      "penny": "Hi, {name}! Cheapest isn't always best. Let's see why.",
+      "pose": "wave",
+      "continueLabel": "Let's go!"
+    },
+    {
+      "type": "learn",
+      "title": "How long does it last?",
+      "cards": [
+        {
+          "icon": "running-shoe",
+          "badge": "LASTS",
+          "tint": "teal",
+          "caption": "Something well made can last a long time."
+        },
+        {
+          "icon": "balloon",
+          "badge": "BREAKS",
+          "tint": "copper",
+          "caption": "The cheapest thing can break quickly."
+        }
+      ],
+      "continueLabel": "I'm ready",
+      "penny": "We look at the price AND how long it lasts, {name}."
+    },
+    {
+      "type": "storyChoice",
+      "id": "two-pairs-of-shoes",
+      "story": "One pair of shoes costs 4 coins and wears out fast. Another costs 6 coins and lasts a year.",
+      "storyIcon": "running-shoe",
+      "prompt": "Which pair is better value?",
+      "pennyHint": "Think about how long each one lasts, {name}.",
+      "options": [
+        {
+          "label": "The 6-coin pair",
+          "icon": "running-shoe",
+          "outcome": "The shoes last all year. Kai does not have to buy another pair.",
+          "correct": true
+        },
+        {
+          "label": "The 4-coin pair",
+          "icon": "coin",
+          "outcome": "The cheap shoes wear out in a month. Kai has to buy another pair, and spends more in the end."
+        }
+      ],
+      "rightMessage": "Yes, {name}! Paying a bit more can cost less in the end.",
+      "wrongMessage": "Good try, {name}! The cheap pair wears out, so Kai buys shoes twice.",
+      "retryIntro": "Let's compare the shoes again, {name}."
+    },
+    {
+      "type": "countIt",
+      "id": "what-it-really-cost",
+      "prompt": "Kai bought the 4-coin shoes twice. Count what he really spent.",
+      "pennyHint": "4 coins and 4 more, {name}.",
+      "available": 8,
+      "target": 8,
+      "jarIcon": "money-bag",
+      "jarLabel": "What Kai spent",
+      "checkLabel": "Check the bag",
+      "rightMessage": "That's 8 coins, {name}! The 6-coin pair would have cost less.",
+      "wrongMessage": "Good try, {name}! He paid 4 coins, then 4 again. Let's count all 8.",
+      "retryIntro": "Let's count Kai's coins again, {name}."
+    },
+    {
+      "type": "tapToChoose",
+      "id": "cheapest-always-best",
+      "prompt": "Is the cheapest thing always the best choice?",
+      "pennyHint": "Remember Kai's shoes, {name}.",
+      "choices": [
+        {
+          "label": "Not always",
+          "icon": "light-bulb",
+          "correct": true
+        },
+        {
+          "label": "Yes, always",
+          "icon": "coin"
+        }
+      ],
+      "rightMessage": "That's right, {name}! Sometimes it costs more in the end.",
+      "wrongMessage": "Good try, {name}! Kai's cheap shoes cost him more, because he bought them twice.",
+      "retryIntro": "Let's think about the cheapest choice again, {name}."
+    },
+    {
+      "type": "yay",
+      "title": "Great thinking, {name}!",
+      "message": "Look at the price and how long it lasts."
+    }
+  ]
+}
