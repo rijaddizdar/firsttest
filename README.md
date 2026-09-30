@@ -254,7 +254,8 @@ After setup, the app opens to **"Who's learning?"** and each child just taps the
 1. **"What should I call you?"** The child types a **first name or nickname**. No last names.
 2. **"Make it yours!"** The child customizes their profile (see below).
 3. **Meet Penny.** A short intro to Penny and what an armadillo is.
-4. **The map.** From here on, **Penny uses the child's name** in her speech bubbles: *"Great job, Mia!"*
+4. **"Here's how we learn."** Three things before the first question: we learn one idea at a time and levels open as you go; being unsure is fine because you can always try again; and you earn stars and coins, which are pretend, for stickers and outfits. The middle one matters most — a child who is afraid of getting it wrong doesn't tap.
+5. **The map.** From here on, **Penny uses the child's name** in her speech bubbles: *"Great job, Mia!"*
 
 > Penny's *recorded* voice can't say every possible name, so the name appears in speech bubbles and spoken lines stay name-free. On-device text-to-speech could say the name later if we decide it sounds good enough.
 

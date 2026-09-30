@@ -321,6 +321,14 @@ is in [`screenshots/rewards/`](screenshots/rewards):
 | A child with no streak yet | `rewards/09-rewards-no-streak.png` |
 | iPad — rewards, shop, sticker book | `rewards/ipad-*.png` |
 
+The child's first-run tutorial is in
+[`screenshots/tutorial/`](screenshots/tutorial):
+
+| Screen | File |
+|---|---|
+| Meet Penny (unchanged, for context) | `01-meet-penny.png` |
+| "Here's how we learn" — the new step | `02-how-it-works.png` |
+
 ### Reproducing the screenshots
 
 The app reads optional launch-environment hooks (absent in normal use, so they
@@ -338,7 +346,7 @@ only matter when set) so screens can be captured deterministically:
 
 | `UITEST_KIDS` | Replace the kids with a comma-separated family, e.g. `Mia,Jayden,Bartholomew` — this is what stresses the "Who's learning?" grid. The seeded family walks through the avatar builder's choices, so eight names show every hairstyle |
 | `UITEST_ROUTE` | Jump to a screen (`welcome`, `createParentCode`, `addKid`, `whosLearning`, `kidFirstRun`, `editAvatar`, `lessonMap`, `lesson`, `parentDashboard`, …) |
-| `UITEST_FIRSTRUN_STEP` | Which step of the child's first time to open on: `name`, `look` or `penny` (only read on the `kidFirstRun` route) |
+| `UITEST_FIRSTRUN_STEP` | Which step of the child's first time to open on: `name`, `look`, `penny` or `howItWorks` (only read on the `kidFirstRun` route) |
 | `UITEST_LESSON` | Play a lesson by content id, e.g. `sample-screen-types` |
 | `UITEST_LESSON_SCREEN` | Open a given screen of it — a screen id from the JSON, or a 1-based number |
 | `UITEST_LESSON_FEEDBACK` | `right` / `wrong` plays that answer on the current question (and holds the state so a capture can't miss it); `complete` jumps to the Yay! screen, which saves progress |
