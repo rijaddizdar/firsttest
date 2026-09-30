@@ -25,16 +25,22 @@ targets:
       - path: App
         excludes:
           - "Content/**"
+          - "Resources/Sounds/**"
       # Lesson content stays a FOLDER REFERENCE, so the bundle keeps the
       # Content/ tree and a writer can add a lesson file without regenerating
       # the project (see App/Content/curriculum.json).
       - path: App/Content
         type: folder
+      # Penny's three sounds keep their Sounds/ folder in the bundle, so they
+      # are looked up by name + subdirectory rather than flattened.
+      - path: App/Resources/Sounds
+        type: folder
     info:
       path: App/Info.plist
       properties:
         CFBundleDisplayName: MoneyPals            # placeholder name
-        UILaunchScreen: {}
+        UILaunchScreen:
+          UIColorName: LaunchBackground
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
         UISupportedInterfaceOrientations:
@@ -46,17 +52,30 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
+    configFiles:
+      Debug: Signing.xcconfig
+      Release: Signing.xcconfig
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.moneypals
+        # Your own bundle id and Apple team, so the app can run on a real iPhone
+        # or iPad. Both are read from the environment if set, so nothing secret
+        # and nothing machine-specific is committed:
+        #
+        # All three come from Signing.xcconfig, which is the one file to edit.
+        # Its defaults are simulator-only, so a fresh clone needs no account.
+        PRODUCT_BUNDLE_IDENTIFIER: $(MONEYPALS_BUNDLE_ID)
+        DEVELOPMENT_TEAM: $(MONEYPALS_TEAM)
+        CODE_SIGN_STYLE: Automatic
         MARKETING_VERSION: "0.1"
         CURRENT_PROJECT_VERSION: "1"
         TARGETED_DEVICE_FAMILY: "1,2"             # iPhone + iPad
         SWIFT_VERSION: "5.0"
         GENERATE_INFOPLIST_FILE: NO
         ENABLE_PREVIEWS: YES
-        ASSETCATALOG_COMPILER_APPICON_NAME: ""
-        CODE_SIGNING_ALLOWED: NO                   # simulator build needs no signing
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Signing is allowed when a team is set, and skipped when it isn't, so a
+        # plain simulator build still needs no account.
+        CODE_SIGNING_ALLOWED: $(MONEYPALS_SIGNING)
 
   # Unit tests for the parts that must not silently break: content loading and
   # validation, the lesson engine's rules, and what the store saves.

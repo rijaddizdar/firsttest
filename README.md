@@ -361,7 +361,7 @@ Everything a child reads or hears follows these rules.
 | Penny (prototype) | Pre-rendered transparent video clips (HEVC with alpha) and stills from one commissioned, rigged 3D model, played with AVFoundation | Best glossy look, no 3D engine risk while testing lessons |
 | Penny (MVP) | The same model drawn live with **RealityKit** (USDZ) | Scarf colors, outfits and new scales change at runtime; SceneKit is soft-deprecated |
 | Icons | Fluent Emoji 3D assets (MIT) bundled in the app, with the MIT notice on a credits screen in the parent area | 3D style that matches Penny; free for commercial use |
-| Sound and touch | AVFoundation for sounds; SwiftUI sensory feedback for haptics | First-party frameworks |
+| Sound and touch | AVFoundation for sounds — **built**: three synthesised cues in `App/Resources/Sounds`, played on an `.ambient` session so Penny never interrupts music; SwiftUI sensory feedback for haptics | First-party frameworks |
 | Accessibility | Dynamic Type, VoiceOver labels, Reduce Motion support, color contrast checks | Kids of all abilities can learn |
 | Localization | English first, with strings prepared for translation | Easier to add languages later |
 

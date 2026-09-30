@@ -188,6 +188,42 @@ reference. Adding a sticker picture *does* need one, because it is a new asset.
 - Turn on **Settings → Accessibility → Reduce Motion** to confirm the fade-only
   behaviour (nothing bounces or wobbles).
 
+## Putting it on a real iPhone or iPad
+
+The app builds for the simulator with no Apple account at all. To run it on a
+device, edit **`Signing.xcconfig`** — it is the only file you need to touch:
+
+```
+MONEYPALS_BUNDLE_ID = com.yourname.penny     // anything nobody else has used
+MONEYPALS_TEAM      = ABCDE12345             // Xcode > Settings > Accounts
+MONEYPALS_SIGNING   = YES
+```
+
+then `xcodegen generate`, pick your device in Xcode and press Run.
+
+- A **free Apple ID** works. The app stops opening after 7 days and you re-run
+  it from Xcode to renew.
+- The **paid Developer Program** adds TestFlight, which is how you get it onto
+  someone else's iPad without plugging it in.
+
+Still worth a pass on real hardware, because a simulator cannot show them:
+haptics, dragging in "Sort it" with a small finger, the sounds through a real
+speaker, and Dynamic Type at the largest accessibility sizes.
+
+## Sounds and the app icon
+
+Both are **generated, not downloaded**, so the app carries no third-party audio
+or art licence beyond the Fluent Emoji icons it already credits:
+
+```sh
+python3 docs/tools/make_sounds.py   # the three lesson cues
+python3 docs/tools/make_icon.py     # the 1024px app icon
+```
+
+`LessonAudio` plays them on an `.ambient` audio session, so a lesson never
+interrupts music the family already has playing, and the grown-up area's sound
+switch silences them.
+
 ## Tests
 
 ```sh

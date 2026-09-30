@@ -1,0 +1,21 @@
+// Run the app on a real iPhone or iPad.
+//
+// Defaults here are simulator-only, so a fresh clone builds with no Apple
+// account at all. To put the app on a device, change the three values below —
+// this is the only file you need to touch, and it is the one Xcode itself
+// expands, so it works from Xcode and from the command line alike.
+//
+//   1. MONEYPALS_BUNDLE_ID  something nobody else has used, e.g. com.yourname.penny
+//   2. MONEYPALS_TEAM       your Team ID: Xcode > Settings > Accounts, or
+//                           developer.apple.com/account > Membership details
+//   3. MONEYPALS_SIGNING    YES
+//
+// Then: xcodegen generate, and pick your device in Xcode.
+//
+// A free Apple ID works and re-installs every 7 days. The paid Developer
+// Program adds TestFlight, which is how you would send it to someone else's
+// iPad without plugging it in.
+
+MONEYPALS_BUNDLE_ID = com.example.moneypals
+MONEYPALS_TEAM =
+MONEYPALS_SIGNING = NO
