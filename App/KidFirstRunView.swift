@@ -90,6 +90,17 @@ struct KidFirstRunView: View {
                 .accessibilityLabel("Your first name or nickname")
                 .onChange(of: name) { _, new in name = Self.trimToNameLength(new) }
 
+            // The button below waits for a name. Say so kindly, so a child who
+            // taps it and nothing happens is not left guessing (README section
+            // 7: no pressure, and never make a child feel at fault).
+            if trimmedName.isEmpty {
+                Text("Type your name, then we can go!")
+                    .font(.rowSub)
+                    .foregroundStyle(Palette.textSoft)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 30)
+            }
+
             Spacer(minLength: 0)
 
             Button("That's me!") {
@@ -98,6 +109,7 @@ struct KidFirstRunView: View {
             }
             .buttonStyle(BigButtonStyle(fill: Palette.teal))
             .disabled(trimmedName.isEmpty)
+            .opacity(trimmedName.isEmpty ? 0.5 : 1)
             .opacity(trimmedName.isEmpty ? 0.5 : 1)
             .padding(.horizontal, 24)
             .padding(.bottom, 24)

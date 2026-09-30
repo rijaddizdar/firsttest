@@ -212,13 +212,18 @@ speaker, and Dynamic Type at the largest accessibility sizes.
 
 ## Sounds and the app icon
 
-Both are **generated, not downloaded**, so the app carries no third-party audio
-or art licence beyond the Fluent Emoji icons it already credits:
+The three lesson cues are **synthesised, not downloaded**, so the app carries no
+third-party audio licence:
 
 ```sh
 python3 docs/tools/make_sounds.py   # the three lesson cues
-python3 docs/tools/make_icon.py     # the 1024px app icon
 ```
+
+The **app icon is provided art** — Penny curled into her coin ball, in
+`App/Assets.xcassets/AppIcon.appiconset/icon-1024.png`. To change it, replace
+that file with a 1024x1024 PNG **with no alpha channel** (iOS rejects icons that
+have one). There is no generator script for it on purpose: an earlier drawn
+placeholder had one, and a stray re-run would have overwritten the real art.
 
 `LessonAudio` plays them on an `.ambient` audio session, so a lesson never
 interrupts music the family already has playing, and the grown-up area's sound

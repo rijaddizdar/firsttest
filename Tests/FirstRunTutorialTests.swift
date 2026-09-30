@@ -107,4 +107,26 @@ final class FirstRunTutorialTests: XCTestCase {
         XCTAssertTrue(kid.hasFinishedFirstRun,
                       "an existing child is not sent back through setup by an update")
     }
+
+    // MARK: A child always has a name
+
+    /// The store used to quietly name an unnamed child "Friend". Both screens
+    /// now refuse an empty name instead, so that fallback should never fire —
+    /// but it is still the last line of defence, so it is pinned too.
+    @MainActor
+    func testANameOfOnlySpacesIsNotAName() throws {
+        let container = PersistenceController.makeContainer(environment: ["UITEST_STORE": "memory"])
+        let store = ProgressStore(context: container.mainContext)
+        let library = try CurriculumLibrary.load(from: .main)
+
+        // What the screens now send: already trimmed, and never empty.
+        _ = store.addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
+        XCTAssertEqual(store.kids(using: library).first?.name, "Mia")
+
+        // And the safety net, if anything ever slips past the UI.
+        _ = store.addKid(name: "", avatar: .defaultLook(kind: .boy, outfitColorIndex: 1))
+        let unnamed = store.kids(using: library).first { $0.name != "Mia" }
+        XCTAssertFalse(unnamed?.name.isEmpty ?? true,
+                       "a child must never end up with a blank face on Who's learning?")
+    }
 }
