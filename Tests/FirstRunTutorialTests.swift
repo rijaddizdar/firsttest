@@ -67,4 +67,44 @@ final class FirstRunTutorialTests: XCTestCase {
             #endif
         }
     }
+
+    // MARK: Actually reaching it
+
+    /// The whole point: a grown-up adds a profile, the child taps their own
+    /// face, and the first run — tutorial included — is what they get.
+    @MainActor
+    func testAChildAddedByAGrownUpGetsTheFirstRun() throws {
+        let container = PersistenceController.makeContainer(environment: ["UITEST_STORE": "memory"])
+        let app = AppState(container: container,
+                           library: try CurriculumLibrary.load(from: .main),
+                           environment: [:])
+        app.addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
+        let kid = try XCTUnwrap(app.kids.first)
+        XCTAssertFalse(kid.hasFinishedFirstRun, "a brand-new profile has not been through it")
+
+        app.openKid(kid.id)
+        XCTAssertEqual(app.route, .kidFirstRun, "tapping the face opens the first run")
+
+        // ...and only once.
+        app.finishKidFirstRun(kid.id)
+        app.openKid(kid.id)
+        XCTAssertEqual(app.route, .lessonMap)
+    }
+
+    /// A profile saved before the first run existed is deliberately treated as
+    /// already done, so an update never drags an established child back through
+    /// setup. That is also why an OLD install shows no tutorial: the profiles
+    /// pre-date the field. A fresh install is what exercises it.
+    @MainActor
+    func testAProfileFromAnOlderInstallIsLeftAlone() throws {
+        let container = PersistenceController.makeContainer(environment: ["UITEST_STORE": "memory"])
+        let store = ProgressStore(context: container.mainContext)
+        let id = store.addKid(name: "Mia", avatar: .defaultLook(kind: .girl, outfitColorIndex: 0))
+        // Exactly what an upgraded record looks like: the field was never written.
+        try XCTUnwrap(store.records().first { $0.id == id }).hasFinishedFirstRun = nil
+
+        let kid = try XCTUnwrap(store.kids(using: try CurriculumLibrary.load(from: .main)).first)
+        XCTAssertTrue(kid.hasFinishedFirstRun,
+                      "an existing child is not sent back through setup by an update")
+    }
 }
