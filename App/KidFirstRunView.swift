@@ -6,6 +6,8 @@
 //      1. "What should I call you?"  — a first name or nickname, nothing else
 //      2. "Make it yours!"           — the avatar builder
 //      3. Meet Penny                 — who she is, and why her shell is coins
+//      4. How it works               — the three things a child needs to know
+//                                      before their first question
 //      → the map, where Penny starts using the child's name
 //
 //  It runs the first time a child taps their own face on "Who's learning?", and
@@ -22,7 +24,7 @@ struct KidFirstRunView: View {
     @EnvironmentObject private var app: AppState
 
     enum Step: String, CaseIterable {
-        case name, look, penny
+        case name, look, penny, howItWorks
     }
 
     @State private var step: Step = .name
@@ -52,6 +54,7 @@ struct KidFirstRunView: View {
         case .name:  nameStep
         case .look:  lookStep
         case .penny: pennyStep
+        case .howItWorks: howItWorksStep
         }
     }
 
@@ -162,6 +165,45 @@ struct KidFirstRunView: View {
 
             Spacer(minLength: 0)
 
+            Button("Next") { step = .howItWorks }
+            .buttonStyle(BigButtonStyle(fill: Palette.teal))
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+        .padding(.top, 24)
+    }
+
+    // MARK: 4. How it works
+
+    /// Three things a child needs before their first question, in Penny's own
+    /// voice. The middle one is the promise the whole app is built on: a wrong
+    /// answer is never a punishment, so a child who is unsure still taps.
+    ///
+    /// Kept to short sentences, "you" and "we", and no pressure of any kind —
+    /// no timers, no "hurry", nothing to miss out on (README section 7).
+    private var howItWorksStep: some View {
+        VStack(spacing: 22) {
+            PennyView(mood: .idle, size: 150)
+
+            SpeechBubble(text: "Here's how we learn, \(trimmedName)!")
+                .padding(.horizontal, 24)
+
+            VStack(alignment: .leading, spacing: 18) {
+                ForEach(Self.howItWorks, id: \.text) { point in
+                    HStack(alignment: .top, spacing: 14) {
+                        FluentIcon(name: point.icon, size: 38)
+                        Text(point.text)
+                            .font(.title3)
+                            .foregroundStyle(Palette.textMuted)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
+            .padding(.horizontal, 28)
+
+            Spacer(minLength: 0)
+
             Button("Let's go!") {
                 if let id = app.selectedKidID {
                     app.finishKidFirstRun(id)
@@ -174,6 +216,13 @@ struct KidFirstRunView: View {
         }
         .padding(.top, 24)
     }
+
+    /// The three points, as data so a test can read the copy.
+    static let howItWorks: [(icon: String, text: String)] = [
+        ("light-bulb", "We learn one idea at a time. New levels open as you go."),
+        ("thumbs-up",  "Not sure? That's okay. You can always try again."),
+        ("coin",       "You earn stars and coins. Coins are pretend, for stickers and outfits.")
+    ]
 
     // MARK: Saving
 
