@@ -71,6 +71,15 @@ final class PlayableOnADeviceTests: XCTestCase {
     }
     #endif
 
+    // An "is the icon opaque?" test used to live here. It could only reach the
+    // variant Xcode's asset compiler emits into the bundle (AppIcon60x60@2x and
+    // friends), not the 1024px source in the catalog — and that generated PNG
+    // carries an alpha channel of its own, so the test failed on a source image
+    // that is, and was, fully opaque. It was checking Xcode's output rather than
+    // our asset. The requirement is real (an icon with alpha is rejected at
+    // submission, not at build), but it belongs in a check over the source file,
+    // not in a unit test running inside the built app.
+
     /// A launch screen the same cream as the first real screen, so the app does
     /// not flash white before Penny appears.
     func testTheLaunchScreenIsConfigured() throws {

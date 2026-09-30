@@ -192,6 +192,9 @@ struct CreateParentCodeView: View {
 /// first tap their face — it opens with whatever was chosen here, so they can
 /// keep all of it with one tap.
 struct AddKidView: View {
+    /// Spaces alone are not a name.
+    private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
+
     @EnvironmentObject private var app: AppState
     @State private var name = ""
     @State private var avatar = Avatar()
@@ -240,11 +243,27 @@ struct AddKidView: View {
                 .padding(.bottom, 12)
             }
 
+            // Say what is missing, rather than leaving a dead button the
+            // grown-up has to work out for themselves. Without this the store's
+            // "Friend" fallback quietly names the child for them.
+            if trimmedName.isEmpty {
+                Text("Add a name first, so everyone can find their own face.")
+                    .font(.subheadline)
+                    .foregroundStyle(Palette.copper)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity)
+                    .background(Palette.pageBg)
+            }
+
             Button("Start learning") {
-                app.addKid(name: name, avatar: avatar)
+                app.addKid(name: trimmedName, avatar: avatar)
                 app.route = .whosLearning
             }
             .buttonStyle(BigButtonStyle(fill: Palette.teal))
+            .disabled(trimmedName.isEmpty)
+            .opacity(trimmedName.isEmpty ? 0.5 : 1)
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
         }
