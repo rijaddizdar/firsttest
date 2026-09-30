@@ -145,7 +145,7 @@ struct LessonMapView: View {
                 .tracking(1.5)
                 .foregroundStyle(Palette.teal.opacity(0.8))
 
-            ForEach(world.levels) { level in
+            ForEach(Array(world.levels.enumerated()), id: \.element.id) { index, level in
                 LevelNode(level: level,
                           state: kid.lockState(for: level.id),
                           stars: kid.starsByLevel[level.id] ?? 0,
@@ -156,6 +156,7 @@ struct LessonMapView: View {
                     // opens a lesson list rather than launching one lesson.
                     app.openLevel(level.id)
                 }
+                .arrives(index: index)
             }
         }
     }
@@ -223,6 +224,9 @@ struct LevelNode: View {
         }
         .buttonStyle(PressableStyle())
         .disabled(state == .locked || timeIsUp)
+        // One invitation per map: the level they can play right now. Anything
+        // more and the screen fidgets while a child is trying to read it.
+        .modifier(InviteIfCurrent(isCurrent: state == .current && level.hasLessons && !timeIsUp))
         .accessibilityHint(accessibilityHint)
     }
 
@@ -261,3 +265,13 @@ struct LevelNode: View {
     LessonMapView().environmentObject(AppState.preview())
 }
 #endif
+
+
+/// Only the current, playable level breathes — applied through a modifier so the
+/// other twelve rows carry no animation at all.
+private struct InviteIfCurrent: ViewModifier {
+    let isCurrent: Bool
+    func body(content: Content) -> some View {
+        if isCurrent { content.invitesATap() } else { content }
+    }
+}

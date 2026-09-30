@@ -25,13 +25,14 @@ struct TapToChooseScreenView: View {
             LessonPrompt(text: runner.fill(screen.prompt))
 
             HStack(alignment: .top, spacing: 16) {
-                ForEach(screen.choices) { choice in
+                ForEach(Array(screen.choices.enumerated()), id: \.element.id) { index, choice in
                     AnswerCard(icon: choice.icon,
                                label: choice.label,
                                result: result(for: choice),
                                wobble: runner.outcome == .wrong && chosen == choice.id) {
                         pick(choice)
                     }
+                    .arrives(index: index)
                 }
             }
             .padding(.horizontal, 20)

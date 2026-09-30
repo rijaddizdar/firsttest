@@ -39,10 +39,25 @@ struct PennyView: View {
             .scaledToFit()
             .frame(height: size)
             .scaleEffect(breatheScale)
+            // She also rises and settles. The design system's breathe is a 1.5%
+            // scale — correct for a calm app, but on its own it reads as a still
+            // picture. A couple of points of vertical bob is what actually makes
+            // her look alive, and it costs the calm nothing.
+            .offset(y: bobOffset)
             .animation(idleAnimation, value: animate)
             .onAppear { animate = true }
             .accessibilityElement()
             .accessibilityLabel(accessibilityText)
+    }
+
+    /// How far she drifts up and down while idling. Reduce Motion pins her.
+    private var bobOffset: CGFloat {
+        guard animate, !reduceMotion else { return 0 }
+        switch mood {
+        case .cheer, .celebrate: return -size * 0.045   // a hop when celebrating
+        case .idle, .wave:       return -size * 0.018   // a breath
+        case .encourage, .curl:  return 0               // still, on purpose
+        }
     }
 
     // MARK: Pose art

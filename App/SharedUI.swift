@@ -170,6 +170,8 @@ struct RewardChip: View {
         .padding(.vertical, 8)
         .background(.white, in: Capsule())
         .overlay(Capsule().stroke(tint, lineWidth: Border.hairline))
+        // Earning coins should be visible in the chip that counts them.
+        .pops(on: value)
     }
 }
 
@@ -180,18 +182,48 @@ struct StarRow: View {
     var total = 3
     var size: CGFloat = 22
 
+    /// Stars land one after another rather than all at once — it is the moment a
+    /// child has been working towards, and arriving together throws it away.
+    /// Off under Reduce Motion and for the small inline rows, which are a
+    /// summary rather than a celebration.
+    var celebrates = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var landed = 0
+
     var body: some View {
         HStack(spacing: 4) {
             ForEach(0..<total, id: \.self) { i in
-                if i < earned {
-                    FluentIcon(name: "star", size: size)
-                } else {
-                    Circle()
-                        .fill(Palette.lockGrey.opacity(0.5))
-                        .frame(width: size, height: size)
+                Group {
+                    if i < earned {
+                        FluentIcon(name: "star", size: size)
+                    } else {
+                        Circle()
+                            .fill(Palette.lockGrey.opacity(0.5))
+                            .frame(width: size, height: size)
+                    }
                 }
+                .scaleEffect(shows(i) ? 1 : 0.1)
+                .opacity(shows(i) ? 1 : 0)
+                .animation(.spring(duration: Motion.cheer, bounce: 0.5), value: landed)
             }
         }
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(earned) of \(total) stars")
+        .onAppear(perform: land)
+    }
+
+    private func shows(_ index: Int) -> Bool {
+        guard celebrates, !reduceMotion else { return true }
+        return index < landed
+    }
+
+    private func land() {
+        guard celebrates, !reduceMotion else { return }
+        Task {
+            for i in 0..<total {
+                try? await Task.sleep(for: .seconds(i == 0 ? 0.25 : 0.22))
+                landed = i + 1
+            }
+        }
     }
 }

@@ -42,6 +42,7 @@
 		B1BB0A29DD25C328355B6FEB /* LevelCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7E15EDE945AD0FE348460 /* LevelCheckTests.swift */; };
 		BADCE83232E9355F2CE48FEC /* KidFirstRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2808AED1C673F0466FD3DA /* KidFirstRunView.swift */; };
 		C0ACC2F5573A82DA8C04FB25 /* ShopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF093A44F3F1495AA484118 /* ShopTests.swift */; };
+		C29482510C67652776337993 /* Motion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AB5107CC1B5F5FB4D86F50 /* Motion.swift */; };
 		C867CC5B3826B00F3BB905C5 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CAB3F081ACAF5ADAB87F8F /* ProgressStore.swift */; };
 		CE7565848225DA275A63DFAE /* PlayableOnADeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5979E0499A67569B37131C1B /* PlayableOnADeviceTests.swift */; };
 		D00E65529B3F4CC91D4BD7AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F9608B7567912942FCB5C0 /* Assets.xcassets */; };
@@ -89,6 +90,7 @@
 		5979E0499A67569B37131C1B /* PlayableOnADeviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayableOnADeviceTests.swift; sourceTree = "<group>"; };
 		5C842D10712C0C9E33721D36 /* AvatarBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBuilderView.swift; sourceTree = "<group>"; };
 		63601D18391D8FB88CA54742 /* RewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsView.swift; sourceTree = "<group>"; };
+		66AB5107CC1B5F5FB4D86F50 /* Motion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motion.swift; sourceTree = "<group>"; };
 		678571BD1EBC0804EC350751 /* ContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTests.swift; sourceTree = "<group>"; };
 		6A07287E0FBDE0B4B1CAD076 /* LessonMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonMapView.swift; sourceTree = "<group>"; };
 		6DEA3B7CDB71EC04F7F60CE7 /* AvatarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarTests.swift; sourceTree = "<group>"; };
@@ -123,7 +125,7 @@
 		F6FAE50A3137D5AB12AF29D2 /* MoneyPals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MoneyPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F996DA63873748FC16C511CF /* RewardsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsComponents.swift; sourceTree = "<group>"; };
 		FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLessonsView.swift; sourceTree = "<group>"; };
-		"TEMP_2144672D-D781-492A-8727-C9AA7FCC2DFB" /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		"TEMP_4DFC76C5-FF23-4F75-9959-15C8887DE25E" /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -174,6 +176,7 @@
 				FF5271DCABCE7598B8DAFF05 /* LevelLessonsView.swift */,
 				8E943B89B772EF954F054989 /* Models.swift */,
 				A6049A412E2DF86AA06C58B5 /* MoneyPalsApp.swift */,
+				66AB5107CC1B5F5FB4D86F50 /* Motion.swift */,
 				71CB42BD60B9F413CB83C4CF /* ParentDashboardView.swift */,
 				2E2AB334CFBADD137713E105 /* PennyView.swift */,
 				0F913406D798ED8F534E5B14 /* SetupView.swift */,
@@ -250,10 +253,10 @@
 			path = Avatar;
 			sourceTree = "<group>";
 		};
-		"TEMP_45F21E0B-D784-4701-84B2-4CAF239FD051" /* firsttest */ = {
+		"TEMP_D3CA5620-31A0-4565-A79C-5EC7D93E03FF" /* firsttest */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_2144672D-D781-492A-8727-C9AA7FCC2DFB" /* Signing.xcconfig */,
+				"TEMP_4DFC76C5-FF23-4F75-9959-15C8887DE25E" /* Signing.xcconfig */,
 			);
 			path = firsttest;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				5D3A7A9F20875D2B9D4CFACE /* LevelLessonsView.swift in Sources */,
 				3E0425D38E825E074701EAC4 /* Models.swift in Sources */,
 				1B1A98401BDE2C10BBF6BDEA /* MoneyPalsApp.swift in Sources */,
+				C29482510C67652776337993 /* Motion.swift in Sources */,
 				32BCC122AD1EBF0BCF486388 /* ParentDashboardView.swift in Sources */,
 				235465595771F34A31A3FE8B /* PennyView.swift in Sources */,
 				C867CC5B3826B00F3BB905C5 /* ProgressStore.swift in Sources */,
@@ -420,7 +424,7 @@
 /* Begin XCBuildConfiguration section */
 		0A3D90A5E9C2F0082B9B280C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_2144672D-D781-492A-8727-C9AA7FCC2DFB" /* Signing.xcconfig */;
+			baseConfigurationReference = "TEMP_4DFC76C5-FF23-4F75-9959-15C8887DE25E" /* Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_ALLOWED = "$(MONEYPALS_SIGNING)";
@@ -486,7 +490,7 @@
 		};
 		8E0978A494EDA1EA304A91F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_2144672D-D781-492A-8727-C9AA7FCC2DFB" /* Signing.xcconfig */;
+			baseConfigurationReference = "TEMP_4DFC76C5-FF23-4F75-9959-15C8887DE25E" /* Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_ALLOWED = "$(MONEYPALS_SIGNING)";
